@@ -7,6 +7,9 @@ package info.ryandorman.simplescheduler.model;
 
 import java.time.ZonedDateTime;
 
+/**
+ * A model for storing appointment data as it is moved between the data and business layers.
+ */
 public class Appointment {
     private long id;
     private String title;
@@ -19,9 +22,25 @@ public class Appointment {
     private long userId;
     private long contactId;
 
+    /**
+     * No-op constructor, accepts no parameters.
+     */
     public Appointment() {
     }
 
+    /**
+     * Constructor accepts appointment id to allow for storage of the auto-generated id coming from the data layer.
+     * @param id Unique auto generated id created by data layer.
+     * @param title The title of the appointment.
+     * @param description A description of the appointment.
+     * @param location The location that the appointment will occur at.
+     * @param type The type of appointment.
+     * @param start When the appointment is scheduled to start.
+     * @param end When the appointment is scheduled to end.
+     * @param customerId The unique customer id for the customer associated with this appointment.
+     * @param userId The unique user id for the used associated with this appointment.
+     * @param contactId The unique contact id for the contact associated with this appointment.
+     */
     public Appointment(long id, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, long customerId, long userId, long contactId) {
         this.id = id;
         this.title = title;

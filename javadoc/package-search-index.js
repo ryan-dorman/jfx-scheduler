@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"info.ryandorman.simplescheduler"},{"l":"info.ryandorman.simplescheduler.controller"},{"l":"info.ryandorman.simplescheduler.model"},{"l":"info.ryandorman.simplescheduler.service"}]
