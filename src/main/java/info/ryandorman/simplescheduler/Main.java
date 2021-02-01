@@ -8,11 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.Connection;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Main extends Application {
 
+    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final String logFilePath = "/logs.txt";
     private static boolean hasError = false;
 
     @Override
@@ -24,7 +28,7 @@ public class Main extends Application {
         primaryStage.show();
 
         if (hasError) {
-            // TODO: localize this copy
+
             JavaFxUtilities.warning("Error", "Something went wrong.", "Please restart the application and try again.");
         }
     }
@@ -32,11 +36,16 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         try {
-            DBConnection.getConnection();
+            FileHandler fileHandler = new FileHandler(System.getProperty("user.dir") + logFilePath, true);
+            // TODO: Setup formatter per requirements
+            fileHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fileHandler);
+
+            Connection connection = DBConnection.getConnection();
+            logger.info("Successfully connected to database: " + connection.toString());
         } catch (Exception e) {
             hasError = true;
-            // Todo: replace prntln with concat to log file
-            System.out.println(e);
+            logger.severe(e.getMessage());
         }
         launch(args);
         DBConnection.closeConnection();

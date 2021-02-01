@@ -3,7 +3,6 @@ package info.ryandorman.simplescheduler.common;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
