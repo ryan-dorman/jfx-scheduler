@@ -11,13 +11,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../../../../../Software_I-C482/Dorman_Inventory_System/src/main/resources/view/theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.inventorysystem.controller.MainViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.inventorysystem.controller.MainViewController">
     <children>
         <VBox prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -51,11 +50,6 @@
                                                 <String fx:value="secondary-header-text" />
                                             </styleClass>
                                         </Label>
-                                        <Button mnemonicParsing="false" onAction="#onSearchParts" styleClass="sm-button" text="Search" />
-                                        <TextField fx:id="partSearchField" onAction="#onSearchParts" prefHeight="30.0" prefWidth="200.0" promptText="Lookup by Name or ID">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font></TextField>
                                     </children>
                                     <padding>
                                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -76,11 +70,6 @@
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
-                                    <children>
-                                        <Button mnemonicParsing="false" onAction="#onAddPart" styleClass="sm-button" text="Add" />
-                                        <Button mnemonicParsing="false" onAction="#onModifyPart" styleClass="sm-button" text="Modify" />
-                                        <Button mnemonicParsing="false" onAction="#onDeletePart" styleClass="sm-button" text="Delete" />
-                                    </children>
                                     <padding>
                                         <Insets right="60.0" top="10.0" />
                                     </padding>
@@ -109,11 +98,6 @@
                                                 <String fx:value="secondary-header-text" />
                                             </styleClass>
                                         </Label>
-                                        <Button mnemonicParsing="false" onAction="#onSearchProducts" styleClass="sm-button" text="Search" />
-                                        <TextField fx:id="productSearchField" onAction="#onSearchProducts" prefHeight="30.0" prefWidth="200.0" promptText="Lookup by Name or ID">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font></TextField>
                                     </children>
                                     <padding>
                                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -134,11 +118,6 @@
                                     <VBox.margin>
                                         <Insets top="10.0" />
                                     </VBox.margin>
-                                    <children>
-                                        <Button mnemonicParsing="false" onAction="#onAddProduct" styleClass="sm-button" text="Add" />
-                                        <Button mnemonicParsing="false" onAction="#onModifyProduct" styleClass="sm-button" text="Modify" />
-                                        <Button mnemonicParsing="false" onAction="#onDeleteProduct" styleClass="sm-button" text="Delete" />
-                                    </children>
                                     <padding>
                                         <Insets right="60.0" top="10.0" />
                                     </padding>
