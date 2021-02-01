@@ -5,26 +5,22 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class FirstLevelDivision {
-    private long id;
+public class FirstLevelDivision extends Base {
     private String name;
     private long countryId;
 
     public FirstLevelDivision() {
     }
 
-    public FirstLevelDivision(long id, String name, long countryId) {
-        this.id = id;
+    public FirstLevelDivision(Long id, String name, long countryId) {
+        super(id);
         this.name = name;
         this.countryId = countryId;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public FirstLevelDivision(String name, long countryId) {
+        this.name = name;
+        this.countryId = countryId;
     }
 
     public String getName() {

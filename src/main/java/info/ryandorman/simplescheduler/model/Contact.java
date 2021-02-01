@@ -5,26 +5,22 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class Contact {
-    private long id;
+public class Contact extends Base {
     private String name;
     private String email;
 
     public Contact() {
     }
 
-    public Contact(long id, String name, String email) {
-        this.id = id;
+    public Contact(Long id, String name, String email) {
+        super(id);
         this.name = name;
         this.email = email;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public Contact(String name, String email) {
+        this.name = name;
+        this.email = email;
     }
 
     public String getName() {

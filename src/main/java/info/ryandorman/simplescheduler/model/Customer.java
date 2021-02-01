@@ -5,8 +5,7 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class Customer {
-    private long id;
+public class Customer extends Base {
     private String name;
     private String address;
     private String postalCode;
@@ -16,8 +15,8 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(long id, String name, String address, String postalCode, String phone, long firstLevelDivisionId) {
-        this.id = id;
+    public Customer(Long id, String name, String address, String postalCode, String phone, long firstLevelDivisionId) {
+        super(id);
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
@@ -31,14 +30,6 @@ public class Customer {
         this.postalCode = postalCode;
         this.phone = phone;
         this.firstLevelDivisionId = firstLevelDivisionId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

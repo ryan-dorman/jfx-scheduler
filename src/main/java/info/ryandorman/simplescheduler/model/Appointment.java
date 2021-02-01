@@ -10,8 +10,7 @@ import java.time.ZonedDateTime;
 /**
  * A model for storing appointment data as it is moved between the data and business layers.
  */
-public class Appointment {
-    private long id;
+public class Appointment extends Base {
     private String title;
     private String description;
     private String location;
@@ -23,26 +22,13 @@ public class Appointment {
     private long contactId;
 
     /**
-     * No-op constructor, accepts no parameters.
+     * No-op constructor, accepts no parameters to allow for dynamic property assignment post-creation.
      */
     public Appointment() {
     }
 
-    /**
-     * Constructor accepts appointment id to allow for storage of the auto-generated id coming from the data layer.
-     * @param id Unique auto generated id created by data layer.
-     * @param title The title of the appointment.
-     * @param description A description of the appointment.
-     * @param location The location that the appointment will occur at.
-     * @param type The type of appointment.
-     * @param start When the appointment is scheduled to start.
-     * @param end When the appointment is scheduled to end.
-     * @param customerId The unique customer id for the customer associated with this appointment.
-     * @param userId The unique user id for the used associated with this appointment.
-     * @param contactId The unique contact id for the contact associated with this appointment.
-     */
-    public Appointment(long id, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, long customerId, long userId, long contactId) {
-        this.id = id;
+    public Appointment(Long id, String title, String description, String location, String type, ZonedDateTime start, ZonedDateTime end, long customerId, long userId, long contactId) {
+        super(id);
         this.title = title;
         this.description = description;
         this.location = location;
@@ -64,14 +50,6 @@ public class Appointment {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {

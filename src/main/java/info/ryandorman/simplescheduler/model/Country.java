@@ -5,24 +5,19 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class Country {
-    private long id;
+public class Country extends Base {
     private String name;
 
     public Country() {
     }
 
-    public Country(long id, String name) {
-        this.id = id;
+    public Country(Long id, String name) {
+        super(id);
         this.name = name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public Country(String name) {
+        this.name = name;
     }
 
     public String getName() {
