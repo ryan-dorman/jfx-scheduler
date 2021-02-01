@@ -41,6 +41,7 @@ public class Main extends Application {
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
 
+            // TODO: move all refs to DBConnection to DAOs
             Connection connection = DBConnection.getConnection();
             logger.info("Successfully connected to database: " + connection.toString());
         } catch (Exception e) {
