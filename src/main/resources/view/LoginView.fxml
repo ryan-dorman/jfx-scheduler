@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane prefHeight="450.0" prefWidth="450.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.LoginViewController">
+<AnchorPane prefHeight="450.0" prefWidth="450.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.LoginViewController">
     <children>
         <VBox prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -71,7 +71,7 @@
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="250.0">
                      <children>
-                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Close" />
                      </children>
                      <padding>
                         <Insets left="40.0" />

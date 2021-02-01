@@ -5,7 +5,7 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class FirstLevelDivision extends Base {
+public class FirstLevelDivision extends BaseEntity {
     private String name;
     private long countryId;
 

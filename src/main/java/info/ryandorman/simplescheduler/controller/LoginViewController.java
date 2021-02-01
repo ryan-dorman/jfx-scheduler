@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class LoginViewController implements Initializable {
 
-    // State Singelton
+    // State
     private UserSession session;
 
     // Login Labels
@@ -28,7 +28,8 @@ public class LoginViewController implements Initializable {
     @FXML
     private Label userZoneLabel;
 
-    @FXML Label userZone;
+    @FXML
+    private Label userZone;
 
     // Login Fields
     @FXML
@@ -41,7 +42,8 @@ public class LoginViewController implements Initializable {
     @FXML
     private Button loginButton;
 
-    @FXML Button cancelButton;
+    @FXML
+    private Button cancelButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

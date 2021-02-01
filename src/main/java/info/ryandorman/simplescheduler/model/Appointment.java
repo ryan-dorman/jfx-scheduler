@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 /**
  * A model for storing appointment data as it is moved between the data and business layers.
  */
-public class Appointment extends Base {
+public class Appointment extends BaseEntity {
     private String title;
     private String description;
     private String location;

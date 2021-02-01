@@ -8,10 +8,11 @@ package info.ryandorman.simplescheduler.model;
 import java.time.ZonedDateTime;
 
 /**
- * The base data model includes the shared metadata properties coming from the data layer that exist across entities.
+ * The BaseEntity data model includes the shared metadata properties coming from the data layer that exist across
+ * entities.
  * @author Ryan Dorman - ID: 001002824
  */
-public abstract class Base {
+public abstract class BaseEntity {
     protected Long id;
     protected ZonedDateTime created;
     protected String createdBy;
@@ -21,10 +22,10 @@ public abstract class Base {
     /**
      * Class Constructor, accepts no parameters to allow for dynamic property assignment post-creation.
      */
-    public Base() {
+    public BaseEntity() {
     }
 
-    public Base(Long id) {
+    public BaseEntity(Long id) {
         this.id = id;
     }
 

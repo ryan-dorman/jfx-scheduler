@@ -5,7 +5,7 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class User extends Base {
+public class User extends BaseEntity {
     private String name;
     private String password;
 

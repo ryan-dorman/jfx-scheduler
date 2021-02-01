@@ -5,7 +5,7 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class Country extends Base {
+public class Country extends BaseEntity {
     private String name;
 
     public Country() {
