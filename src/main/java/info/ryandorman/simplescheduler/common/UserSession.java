@@ -4,8 +4,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
- * A singleton object used for storing the current user's session in the scheduling application. It stores information
- * useful for tracking the current user such as their username and the location and time their session started from.
+ * A singleton object used for storing the current user's session. It stores information useful for tracking the current
+ * user such as their username and the location and time their session started from.
  */
 public class UserSession {
     private static UserSession session;
