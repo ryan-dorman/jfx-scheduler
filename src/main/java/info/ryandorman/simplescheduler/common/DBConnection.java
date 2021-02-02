@@ -14,13 +14,12 @@ import java.util.Properties;
  * properties are read from resource path set for <code>propFilePath</code>>.
  */
 public class DBConnection {
-    private static final String propFilePath = "/db/connection.properties";
+    private static final String propFile = "connection.properties";
     private static Connection connection;
 
     private DBConnection() throws SQLException, IOException {
-        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         Properties connectionProps = new Properties();
-        connectionProps.load(new FileInputStream(rootPath + propFilePath));
+        connectionProps.load(DBConnection.class.getClassLoader().getResourceAsStream(propFile));
 
         MysqlDataSource d = new MysqlDataSource();
         d.setUrl(connectionProps.getProperty("url"));
@@ -39,7 +38,7 @@ public class DBConnection {
 
     public static boolean closeConnection() {
         try {
-            connection.close();
+            if (connection != null) connection.close();
             return true;
         } catch (SQLException e) {
             return false;
