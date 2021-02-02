@@ -1,7 +1,5 @@
 package info.ryandorman.simplescheduler;
 
-import info.ryandorman.simplescheduler.common.DBConnection;
-import info.ryandorman.simplescheduler.common.JavaFxUtilities;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +8,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.util.logging.*;
 
+/**
+ * The entry point to the application. It makes the initial calls to start the JavaFx application and load the first
+ * scene onto the primary stage.
+ */
 public class Main extends Application {
 
     private static Logger logger = null;
@@ -30,6 +31,11 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Start the JavaFx application and show the initial view <code>LoginView.fxml</code>.
+     * @param primaryStage The primary JavaFx stage the applications scenes are loaded onto
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginView.fxml"));
@@ -39,7 +45,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
+    /**
+     * Take in any CLI arguments and pass them to the JavaFx application.
+     * @param args Array of arguments passed to the JVM on application start
+     */
     public static void main(String[] args) {
         launch(args);
     }
