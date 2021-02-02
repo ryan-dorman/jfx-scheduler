@@ -5,15 +5,18 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class Contact extends BaseEntity {
+import java.time.ZonedDateTime;
+
+public class Contact extends Base {
     private String name;
     private String email;
 
     public Contact() {
     }
 
-    public Contact(Long id, String name, String email) {
-        super(id);
+    public Contact(Long id, String name, String email, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+                   String updatedBy) {
+        super(id, created, createdBy, updated, updatedBy);
         this.name = name;
         this.email = email;
     }

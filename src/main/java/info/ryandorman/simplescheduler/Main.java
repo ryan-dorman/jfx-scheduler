@@ -16,10 +16,9 @@ import java.util.logging.*;
 public class Main extends Application {
 
     private static Logger logger = null;
-    private static boolean hasError = false;
 
     /**
-     * Set global logging configuration based on properties in <code>logging.properties</code>.
+     * Sets the global logging configuration based on properties in <code>logging.properties</code>.
      */
     static {
         try {
@@ -28,7 +27,6 @@ public class Main extends Application {
             logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
         } catch (IOException e) {
             e.printStackTrace();
-            hasError = true;
         }
     }
 
@@ -39,23 +37,10 @@ public class Main extends Application {
         primaryStage.setTitle("Simple Scheduler");
         primaryStage.setScene(new Scene(root, 450, 450));
         primaryStage.show();
-
-        if (hasError) {
-            JavaFxUtilities.warning("Error", "Something went wrong.", "Please restart the application and try again.");
-        }
     }
 
 
     public static void main(String[] args) {
-        try {
-            // TODO: move all refs to DBConnection to DAOs
-            Connection connection = DBConnection.getConnection();
-            logger.info("Successfully connected to database: " + connection.toString());
-        } catch (Exception e) {
-            hasError = true;
-            logger.severe(e.getMessage());
-        }
         launch(args);
-        DBConnection.closeConnection();
     }
 }

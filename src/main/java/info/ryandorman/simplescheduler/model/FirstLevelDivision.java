@@ -5,15 +5,18 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class FirstLevelDivision extends BaseEntity {
+import java.time.ZonedDateTime;
+
+public class FirstLevelDivision extends Base {
     private String name;
     private long countryId;
 
     public FirstLevelDivision() {
     }
 
-    public FirstLevelDivision(Long id, String name, long countryId) {
-        super(id);
+    public FirstLevelDivision(Long id, String name, long countryId, ZonedDateTime created, String createdBy,
+                              ZonedDateTime updated, String updatedBy) {
+        super(id, created, createdBy, updated, updatedBy);
         this.name = name;
         this.countryId = countryId;
     }

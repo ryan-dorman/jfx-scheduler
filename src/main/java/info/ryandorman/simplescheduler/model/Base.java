@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
  * entities.
  * @author Ryan Dorman - ID: 001002824
  */
-public abstract class BaseEntity {
+public abstract class Base {
     protected Long id;
     protected ZonedDateTime created;
     protected String createdBy;
@@ -20,13 +20,17 @@ public abstract class BaseEntity {
     protected String updatedBy;
 
     /**
-     * Class Constructor, accepts no parameters to allow for dynamic property assignment post-creation.
+     * Class Constructor accepts no parameters to allow for dynamic property assignment post-creation.
      */
-    public BaseEntity() {
+    public Base() {
     }
 
-    public BaseEntity(Long id) {
+    public Base(Long id, ZonedDateTime created, String createdBy, ZonedDateTime updated, String updatedBy) {
         this.id = id;
+        this.created = created;
+        this.createdBy = createdBy;
+        this.updated = updated;
+        this.updatedBy = updatedBy;
     }
 
     public Long getId() {

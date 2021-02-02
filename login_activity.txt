@@ -1,0 +1,1 @@
+2021-02-01 21:09:51 [INFO] Successfully connected to database: com.mysql.cj.jdbc.ConnectionImpl@1f9f6368 

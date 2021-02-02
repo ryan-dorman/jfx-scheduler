@@ -5,15 +5,18 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class User extends BaseEntity {
+import java.time.ZonedDateTime;
+
+public class User extends Base {
     private String name;
     private String password;
 
     public User() {
     }
 
-    public User(Long id, String name, String password) {
-        super(id);
+    public User(Long id, String name, String password, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+                String updatedBy) {
+        super(id, created, createdBy, updated, updatedBy);
         this.name = name;
         this.password = password;
     }

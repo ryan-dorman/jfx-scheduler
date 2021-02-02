@@ -5,7 +5,9 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-public class Customer extends BaseEntity {
+import java.time.ZonedDateTime;
+
+public class Customer extends Base {
     private String name;
     private String address;
     private String postalCode;
@@ -15,8 +17,10 @@ public class Customer extends BaseEntity {
     public Customer() {
     }
 
-    public Customer(Long id, String name, String address, String postalCode, String phone, long firstLevelDivisionId) {
-        super(id);
+    public Customer(Long id, String name, String address, String postalCode, String phone,
+                    long firstLevelDivisionId, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+                    String updatedBy) {
+        super(id, created, createdBy, updated, updatedBy);
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
