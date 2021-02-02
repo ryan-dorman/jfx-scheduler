@@ -2,7 +2,6 @@ package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.UserSession;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,11 +10,13 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.time.ZoneId;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class LoginViewController implements Initializable {
 
-    // State
+    private static final Logger userLogger = Logger.getLogger("userActivity");
     private UserSession session;
 
     // Login Labels
@@ -49,6 +50,7 @@ public class LoginViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         session = session.getInstance();
         session.setUserZone(ZoneId.systemDefault());
+        session.setUserLanguage(Locale.getDefault().getLanguage());
         userZone.setText(session.getUserZone().toString());
     }
 
@@ -58,6 +60,7 @@ public class LoginViewController implements Initializable {
         // Call userDao.validateLogin(username: String, password: String): boolean
         // If true then log to file and continue to MainView
         // Else log login failure to file and alert user
+        userLogger.info("Login Attempt");
     }
 
     @FXML
