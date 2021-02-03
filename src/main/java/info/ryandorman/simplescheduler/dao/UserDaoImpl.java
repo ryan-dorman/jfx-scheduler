@@ -25,17 +25,8 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement getAllUsers = conn.prepareStatement(selectStatement)) {
 
             ResultSet rs = getAllUsers.executeQuery();
-
             while (rs.next()) {
-                User user = new User(
-                        rs.getLong("User_Id"),
-                        rs.getString("User_Name"),
-                        rs.getString("Password"),
-                        L10nUtil.utcToLocal(rs.getTimestamp("Create_Date")),
-                        rs.getString("Created_By"),
-                        L10nUtil.utcToLocal(rs.getTimestamp("Last_Update")),
-                        rs.getString("Last_Updated_By")
-                );
+                User user = mapResult(rs);
                 users.add(user);
             }
         } catch (SQLException | IOException e) {
@@ -55,5 +46,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getByNameAndPassword(String username, String password) {
         return null;
+    }
+
+    private User mapResult(ResultSet rs) throws SQLException {
+        return new User(
+                rs.getLong("User_Id"),
+                rs.getString("User_Name"),
+                rs.getString("Password"),
+                L10nUtil.utcToLocal(rs.getTimestamp("Create_Date")),
+                rs.getString("Created_By"),
+                L10nUtil.utcToLocal(rs.getTimestamp("Last_Update")),
+                rs.getString("Last_Updated_By")
+        );
     }
 }

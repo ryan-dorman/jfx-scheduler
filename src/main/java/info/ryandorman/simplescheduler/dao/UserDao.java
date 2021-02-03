@@ -2,6 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.model.User;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 public interface UserDao {

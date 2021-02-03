@@ -8,7 +8,7 @@ package info.ryandorman.simplescheduler.model;
 import java.time.ZonedDateTime;
 
 /**
- * The BaseEntity data model includes the shared metadata properties coming from the data layer that exist across
+ * The Base data model includes the shared metadata properties coming from the data layer that exist across
  * entities.
  * @author Ryan Dorman - ID: 001002824
  */

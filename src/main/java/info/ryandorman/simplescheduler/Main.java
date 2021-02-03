@@ -34,13 +34,13 @@ public class Main extends Application {
             InputStream stream = Main.class.getClassLoader().getResourceAsStream("logging.properties");
             LogManager.getLogManager().readConfiguration(stream);
 
-            FileHandler sysFileHandler = new FileHandler(rootPath + "/sys_activity.txt", false);
+            FileHandler sysFh = new FileHandler(rootPath + "/sys_activity.txt", false);
             sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-            sysLogger.addHandler(sysFileHandler);
+            sysLogger.addHandler(sysFh);
 
-            FileHandler userFileHandler = new FileHandler(rootPath + "/login_activity.txt", true);
+            FileHandler userFh = new FileHandler(rootPath + "/login_activity.txt", true);
             userLogger = Logger.getLogger("userActivity");
-            userLogger.addHandler(userFileHandler);
+            userLogger.addHandler(userFh);
         } catch (IOException e) {
             e.printStackTrace();
         }
