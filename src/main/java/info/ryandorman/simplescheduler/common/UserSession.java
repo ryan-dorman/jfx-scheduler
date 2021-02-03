@@ -12,7 +12,7 @@ public class UserSession {
     private long userId;
     private String userName;
     private ZoneId userZone;
-    private ZonedDateTime sessionStart;
+    private String userLanguage;
 
     /**
      * Private constructor cannot be called externally. This singleton requires Session initialization via
@@ -57,11 +57,11 @@ public class UserSession {
         this.userZone = userZone;
     }
 
-    public ZonedDateTime getSessionStart() {
-        return sessionStart;
+    public String getUserLanguage() {
+        return userLanguage;
     }
 
-    public void setSessionStart(ZonedDateTime sessionStart) {
-        this.sessionStart = sessionStart;
+    public void setUserLanguage(String userLanguage) {
+        this.userLanguage = userLanguage;
     }
 }
