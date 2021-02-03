@@ -1,6 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
-import info.ryandorman.simplescheduler.common.LocalizationUtil;
+import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.common.UserSession;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,8 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.time.ZoneId;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -45,14 +43,19 @@ public class LoginViewController implements Initializable {
     private Button loginButton;
 
     @FXML
-    private Button cancelButton;
+    private Button closeButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // TODO: Set labels with text appropriate for the locale
+        // Set label and button text with correct language
+        usernameLabel.setText(L10nUtil.getLanguage("label.username"));
+        passwordLabel.setText(L10nUtil.getLanguage("label.password"));
+        userZoneLabel.setText(L10nUtil.getLanguage("label.userZone"));
+        loginButton.setText(L10nUtil.getLanguage("btn.login"));
+        closeButton.setText(L10nUtil.getLanguage("btn.close"));
 
         // Set Timezone Value
-        userZone.setText(LocalizationUtil.zoneId.toString());
+        userZone.setText(L10nUtil.zoneId.toString());
     }
 
     @FXML

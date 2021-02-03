@@ -71,7 +71,7 @@
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="250.0">
                      <children>
-                        <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancel" text="Close" />
+                        <Button fx:id="closeButton" mnemonicParsing="false" onAction="#onCancel" text="Close" />
                      </children>
                      <padding>
                         <Insets left="40.0" />

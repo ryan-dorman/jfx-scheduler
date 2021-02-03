@@ -15,12 +15,11 @@ import java.util.logging.Logger;
  */
 public class DBConnection {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private static final String propFile = "connection.properties";
     private static Connection connection;
 
     private DBConnection() throws SQLException, IOException {
         Properties connectionProps = new Properties();
-        connectionProps.load(DBConnection.class.getClassLoader().getResourceAsStream(propFile));
+        connectionProps.load(getClass().getResourceAsStream("connection.properties"));
 
         MysqlDataSource d = new MysqlDataSource();
         d.setUrl(connectionProps.getProperty("url"));
