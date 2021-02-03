@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * properties are read from the file <code>connection.properties</code>>.
  */
 public class DBConnection {
-    private static final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static final String propFile = "connection.properties";
     private static Connection connection;
 
@@ -30,7 +30,7 @@ public class DBConnection {
         connection = d.getConnection();
 
         if (connection != null) {
-            logger.info("Database connection created: " + connection.toString());
+            sysLogger.info("Database connection created: " + connection.toString());
             connection.setAutoCommit(false);
         }
     }
@@ -45,7 +45,7 @@ public class DBConnection {
     public static boolean closeConnection() {
         try {
             if (connection != null) connection.close();
-            logger.info("Database connection closed");
+            sysLogger.info("Database connection closed");
             return true;
         } catch (SQLException e) {
             return false;

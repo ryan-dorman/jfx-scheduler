@@ -1,5 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
+import info.ryandorman.simplescheduler.common.LocalizationUtil;
 import info.ryandorman.simplescheduler.common.UserSession;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -48,10 +49,10 @@ public class LoginViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        session = session.getInstance();
-        session.setUserZone(ZoneId.systemDefault());
-        session.setUserLanguage(Locale.getDefault().getLanguage());
-        userZone.setText(session.getUserZone().toString());
+        // TODO: Set labels with text appropriate for the locale
+
+        // Set Timezone Value
+        userZone.setText(LocalizationUtil.zoneId.toString());
     }
 
     @FXML
