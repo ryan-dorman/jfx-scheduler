@@ -19,7 +19,7 @@ public class DBConnection {
 
     private DBConnection() throws SQLException, IOException {
         Properties connectionProps = new Properties();
-        connectionProps.load(getClass().getResourceAsStream("connection.properties"));
+        connectionProps.load(DBConnection.class.getClassLoader().getResourceAsStream("connection.properties"));
 
         MysqlDataSource d = new MysqlDataSource();
         d.setUrl(connectionProps.getProperty("url"));

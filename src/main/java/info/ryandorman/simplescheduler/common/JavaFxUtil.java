@@ -6,7 +6,7 @@ import javafx.scene.control.DialogPane;
 
 import java.util.Optional;
 
-public class ViewUtil {
+public class JavaFxUtil {
     public static boolean confirmation(String title, String header, String content) {
         return alert(Alert.AlertType.CONFIRMATION, title, header, content);
     }
@@ -19,7 +19,7 @@ public class ViewUtil {
         // Create Confirmation Alert and set the stylesheet on the pane
         Alert alert = new Alert(type);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(ViewUtil.class.getResource("/view/theme.css").toExternalForm());
+        dialogPane.getStylesheets().add(JavaFxUtil.class.getResource("/view/theme.css").toExternalForm());
 
         // Set the Alert's type content
         alert.setTitle(title);

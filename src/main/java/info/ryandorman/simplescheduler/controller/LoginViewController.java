@@ -1,7 +1,9 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.UserSession;
+import info.ryandorman.simplescheduler.dao.UserDao;
+import info.ryandorman.simplescheduler.dao.UserDaoImpl;
+import info.ryandorman.simplescheduler.model.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,13 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class LoginViewController implements Initializable {
 
     private static final Logger userLogger = Logger.getLogger("userActivity");
-    private UserSession session;
+    private User user;
 
     // Login Labels
     @FXML
@@ -65,6 +68,18 @@ public class LoginViewController implements Initializable {
         // If true then log to file and continue to MainView
         // Else log login failure to file and alert user
         userLogger.info("Login Attempt");
+//        UserDao userDao = new UserDaoImpl();
+//        List<User> users = userDao.getAll();
+//
+//        for (User user : users) {
+//            System.out.println(user.getId());
+//            System.out.println(user.getName());
+//            System.out.println(user.getPassword());
+//            System.out.println(user.getCreated());
+//            System.out.println(user.getCreatedBy());
+//            System.out.println(user.getUpdated());
+//            System.out.println(user.getUpdatedBy());
+//        }
     }
 
     @FXML

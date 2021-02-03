@@ -1,0 +1,2 @@
+2021-02-02 22:05:09 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@8b5ea6 
+2021-02-02 22:05:09 [INFO] 2 Users returned by database. 
