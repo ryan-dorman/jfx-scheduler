@@ -1,2 +1,6 @@
-2021-02-02 22:05:09 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@8b5ea6 
-2021-02-02 22:05:09 [INFO] 2 Users returned by database. 
+2021-02-03 22:31:56 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@108afc8e 
+2021-02-03 22:31:56 [INFO] Database Auto Commit: false 
+2021-02-03 22:31:57 [INFO] test returned from database by UserDao.getByName 
+2021-02-03 22:32:04 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@52b8cdd6 
+2021-02-03 22:32:04 [INFO] Database Auto Commit: false 
+2021-02-03 22:32:04 [INFO] test returned from database by UserDao.getByName 

@@ -1,5 +1,11 @@
 package info.ryandorman.simplescheduler.controller;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
+import info.ryandorman.simplescheduler.common.JavaFxUtil;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.dao.UserDao;
 import info.ryandorman.simplescheduler.dao.UserDaoImpl;
@@ -12,14 +18,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class LoginViewController implements Initializable {
 
     private static final Logger userLogger = Logger.getLogger("userActivity");
-    private User user;
+    private User currentUser;
 
     // Login Labels
     @FXML
@@ -63,23 +68,36 @@ public class LoginViewController implements Initializable {
 
     @FXML
     public void onLogin() {
-        // Validate Form fields and show errors for missing values
-        // Call userDao.validateLogin(username: String, password: String): boolean
-        // If true then log to file and continue to MainView
-        // Else log login failure to file and alert user
-        userLogger.info("Login Attempt");
-//        UserDao userDao = new UserDaoImpl();
-//        List<User> users = userDao.getAll();
-//
-//        for (User user : users) {
-//            System.out.println(user.getId());
-//            System.out.println(user.getName());
-//            System.out.println(user.getPassword());
-//            System.out.println(user.getCreated());
-//            System.out.println(user.getCreatedBy());
-//            System.out.println(user.getUpdated());
-//            System.out.println(user.getUpdatedBy());
-//        }
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        // Validate fields and show errors for missing values
+        if (username.isBlank() || username.length() > 50) {
+            JavaFxUtil.warning(L10nUtil.getLanguage("alert.invalidUsername.title"),
+                    L10nUtil.getLanguage("alert.invalidUsername.header"),
+                    L10nUtil.getLanguage("alert.invalidUsername.content"));
+            return;
+        } else if (password.isBlank()) {
+            JavaFxUtil.warning(L10nUtil.getLanguage("alert.invalidPassword.title"),
+                    L10nUtil.getLanguage("alert.invalidPassword.header"),
+                    L10nUtil.getLanguage("alert.invalidPassword.content"));
+            return;
+        }
+
+        UserDao userDao = new UserDaoImpl();
+        User user = userDao.getByName(username);
+        String loginOutcome = "";
+
+        if (user != null && user.getPassword().equals(password)) {
+            loginOutcome = "Successful";
+            // TODO: to main view
+        } else {
+            loginOutcome = "Invalid";
+            JavaFxUtil.warning(L10nUtil.getLanguage("alert.invalidLogin.title"),
+                    L10nUtil.getLanguage("alert.invalidLogin.header"),
+                    L10nUtil.getLanguage("alert.invalidLogin.content"));
+        }
+
+        userLogger.info(user.getName() + " - " + loginOutcome + " Login Attempt");
     }
 
     @FXML

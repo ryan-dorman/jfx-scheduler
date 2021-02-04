@@ -7,3 +7,10 @@ INFO: [USER] Login Clicked
 2021-02-02 22:02:22 [INFO] Login Attempt 
 2021-02-02 22:03:52 [INFO] Login Attempt 
 2021-02-02 22:05:08 [INFO] Login Attempt 
+2021-02-03 21:27:39 [INFO] test - Invalid Login Attempt 
+2021-02-03 21:45:18 [INFO] test - Invalid Login Attempt 
+2021-02-03 21:45:27 [INFO] test - Successful Login Attempt 
+2021-02-03 22:30:02 [INFO] test - Invalid Login Attempt 
+2021-02-03 22:30:07 [INFO] test - Successful Login Attempt 
+2021-02-03 22:31:59 [INFO] test - Invalid Login Attempt 
+2021-02-03 22:32:04 [INFO] test - Successful Login Attempt 

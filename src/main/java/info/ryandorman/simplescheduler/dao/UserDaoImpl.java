@@ -16,47 +16,89 @@ import java.util.logging.Logger;
 public class UserDaoImpl implements UserDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    private static final String GET_ALL = "SELECT * FROM users;";
+    private static final String GET_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
+    private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
+
     @Override
     public List<User> getAll() {
         ArrayList<User> users = new ArrayList<>();
-        String selectStatement = "SELECT * FROM users;";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement getAllUsers = conn.prepareStatement(selectStatement)) {
+             PreparedStatement stmt = conn.prepareStatement(GET_ALL)) {
 
-            ResultSet rs = getAllUsers.executeQuery();
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 User user = mapResult(rs);
                 users.add(user);
             }
+
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
-            e.printStackTrace();
+            sysLogger.severe(e.getStackTrace().toString());
         }
 
-        sysLogger.info(users.size() + " Users returned by database.");
+        sysLogger.info(users.size() + " Users returned from database by UserDao.getAll");
         return users;
     }
 
     @Override
-    public User getById(long id) {
-        return null;
+    public User getById(int id) {
+        User user = null;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(GET_BY_ID)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user = mapResult(rs);
+                sysLogger.info(user.getName() + " returned from database by UserDao.getById");
+            }
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            sysLogger.severe(e.getStackTrace().toString());
+        }
+
+        return user;
     }
 
     @Override
-    public User getByNameAndPassword(String username, String password) {
-        return null;
+    public User getByName(String name) {
+        User user = null;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(GET_BY_NAME)) {
+
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user = mapResult(rs);
+                sysLogger.info(user.getName() + " returned from database by UserDao.getByName");
+            }
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            sysLogger.severe(e.getStackTrace().toString());
+        }
+
+        return user;
     }
 
     private User mapResult(ResultSet rs) throws SQLException {
         return new User(
-                rs.getLong("User_Id"),
-                rs.getString("User_Name"),
-                rs.getString("Password"),
-                L10nUtil.utcToLocal(rs.getTimestamp("Create_Date")),
-                rs.getString("Created_By"),
-                L10nUtil.utcToLocal(rs.getTimestamp("Last_Update")),
-                rs.getString("Last_Updated_By")
+                rs.getInt("user_id"),
+                rs.getString("user_name"),
+                rs.getString("password"),
+                L10nUtil.utcToLocal(rs.getTimestamp("create_date")),
+                rs.getString("created_by"),
+                L10nUtil.utcToLocal(rs.getTimestamp("last_update")),
+                rs.getString("last_updated_by")
         );
     }
 }

@@ -14,7 +14,7 @@ public class Contact extends Base {
     public Contact() {
     }
 
-    public Contact(Long id, String name, String email, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+    public Contact(int id, String name, String email, ZonedDateTime created, String createdBy, ZonedDateTime updated,
                    String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
@@ -40,5 +40,18 @@ public class Contact extends Base {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", created=" + created +
+                ", createdBy='" + createdBy + '\'' +
+                ", updated=" + updated +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

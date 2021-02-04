@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler.common;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;

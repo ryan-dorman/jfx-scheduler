@@ -14,7 +14,7 @@ public class User extends Base {
     public User() {
     }
 
-    public User(Long id, String name, String password, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+    public User(int id, String name, String password, ZonedDateTime created, String createdBy, ZonedDateTime updated,
                 String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
@@ -40,5 +40,18 @@ public class User extends Base {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", created=" + created +
+                ", createdBy='" + createdBy + '\'' +
+                ", updated=" + updated +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

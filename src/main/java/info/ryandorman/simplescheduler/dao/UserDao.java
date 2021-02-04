@@ -2,11 +2,12 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.model.User;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 public interface UserDao {
-    public List<User> getAll();
-    public User getById(long id);
-    public User getByNameAndPassword(String username, String password);
+    List<User> getAll();
+
+    User getById(int id);
+
+    User getByName(String name);
 }

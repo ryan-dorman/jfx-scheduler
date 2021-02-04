@@ -1,9 +1,16 @@
 package info.ryandorman.simplescheduler.common;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -15,39 +22,28 @@ import java.util.logging.Logger;
  */
 public class DBConnection {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    private static Connection connection;
+    private static MysqlDataSource d;
 
-    private DBConnection() throws SQLException, IOException {
-        Properties connectionProps = new Properties();
-        connectionProps.load(DBConnection.class.getClassLoader().getResourceAsStream("connection.properties"));
-
-        MysqlDataSource d = new MysqlDataSource();
-        d.setUrl(connectionProps.getProperty("url"));
-        d.setDatabaseName(connectionProps.getProperty("name"));
-        d.setUser(connectionProps.getProperty("user"));
-        d.setPassword(connectionProps.getProperty("pass"));
-        connection = d.getConnection();
-
-        if (connection != null) {
-            sysLogger.info("Database connection created: " + connection.toString());
-            connection.setAutoCommit(false);
-        }
+    private DBConnection() {
     }
 
     public static Connection getConnection() throws SQLException, IOException {
-        if (connection == null) {
-            new DBConnection();
-        }
-        return connection;
-    }
+        if (d == null) {
+            Properties connectionProps = new Properties();
+            connectionProps.load(DBConnection.class.getClassLoader().getResourceAsStream("connection.properties"));
 
-    public static boolean closeConnection() {
-        try {
-            if (connection != null) connection.close();
-            sysLogger.info("Database connection closed");
-            return true;
-        } catch (SQLException e) {
-            return false;
+            d = new MysqlDataSource();
+            d.setUrl(connectionProps.getProperty("url"));
+            d.setDatabaseName(connectionProps.getProperty("name"));
+            d.setUser(connectionProps.getProperty("user"));
+            d.setPassword(connectionProps.getProperty("pass"));
         }
+
+        Connection conn = d.getConnection();
+        conn.setAutoCommit(false);
+        sysLogger.info("Database connection created: " + conn.toString());
+        sysLogger.info("Database Auto Commit: " + conn.getAutoCommit());
+
+        return conn;
     }
 }

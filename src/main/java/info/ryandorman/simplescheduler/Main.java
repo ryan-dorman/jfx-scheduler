@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.Locale;
 import java.util.logging.FileHandler;
 import java.util.logging.LogManager;
@@ -52,7 +56,7 @@ public class Main extends Application {
      * @param args Array of arguments passed to the JVM on application start
      */
     public static void main(String[] args) {
-        Locale.setDefault(new Locale("fr")); // For testing
+//        Locale.setDefault(new Locale("fr")); // For testing
         launch(args);
     }
 
@@ -60,10 +64,10 @@ public class Main extends Application {
      * Start the JavaFx application and show the initial view <code>LoginView.fxml</code>.
      *
      * @param primaryStage The primary JavaFx stage the applications scenes are loaded onto
-     * @throws Exception
+     * @throws IOException Thrown when the <Code>FXMLLoader</Code> cannot locate the <code>*.fxml</code> file.
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/LoginView.fxml"));
 
         primaryStage.setTitle("Simple Scheduler");

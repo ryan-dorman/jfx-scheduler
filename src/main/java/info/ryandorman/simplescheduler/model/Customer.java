@@ -12,13 +12,13 @@ public class Customer extends Base {
     private String address;
     private String postalCode;
     private String phone;
-    private long firstLevelDivisionId;
+    private int firstLevelDivisionId;
 
     public Customer() {
     }
 
-    public Customer(Long id, String name, String address, String postalCode, String phone,
-                    long firstLevelDivisionId, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+    public Customer(int id, String name, String address, String postalCode, String phone,
+                    int firstLevelDivisionId, ZonedDateTime created, String createdBy, ZonedDateTime updated,
                     String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
@@ -28,7 +28,7 @@ public class Customer extends Base {
         this.firstLevelDivisionId = firstLevelDivisionId;
     }
 
-    public Customer(String name, String address, String postalCode, String phone, long firstLevelDivisionId) {
+    public Customer(String name, String address, String postalCode, String phone, int firstLevelDivisionId) {
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
@@ -68,11 +68,27 @@ public class Customer extends Base {
         this.phone = phone;
     }
 
-    public long getFirstLevelDivisionId() {
+    public int getFirstLevelDivisionId() {
         return firstLevelDivisionId;
     }
 
-    public void setFirstLevelDivisionId(long firstLevelDivisionId) {
+    public void setFirstLevelDivisionId(int firstLevelDivisionId) {
         this.firstLevelDivisionId = firstLevelDivisionId;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", created=" + created +
+                ", createdBy='" + createdBy + '\'' +
+                ", updated=" + updated +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", phone='" + phone + '\'' +
+                ", firstLevelDivisionId=" + firstLevelDivisionId +
+                '}';
     }
 }

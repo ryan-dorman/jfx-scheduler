@@ -13,7 +13,7 @@ public class Country extends Base {
     public Country() {
     }
 
-    public Country(Long id, String name, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+    public Country(int id, String name, ZonedDateTime created, String createdBy, ZonedDateTime updated,
                    String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
@@ -29,5 +29,17 @@ public class Country extends Base {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "id=" + id +
+                ", created=" + created +
+                ", createdBy='" + createdBy + '\'' +
+                ", updated=" + updated +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

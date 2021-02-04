@@ -10,10 +10,11 @@ import java.time.ZonedDateTime;
 /**
  * The Base data model includes the shared metadata properties coming from the data layer that exist across
  * entities.
+ *
  * @author Ryan Dorman - ID: 001002824
  */
 public abstract class Base {
-    protected Long id;
+    protected int id;
     protected ZonedDateTime created;
     protected String createdBy;
     protected ZonedDateTime updated;
@@ -25,7 +26,7 @@ public abstract class Base {
     public Base() {
     }
 
-    public Base(Long id, ZonedDateTime created, String createdBy, ZonedDateTime updated, String updatedBy) {
+    public Base(int id, ZonedDateTime created, String createdBy, ZonedDateTime updated, String updatedBy) {
         this.id = id;
         this.created = created;
         this.createdBy = createdBy;
@@ -33,11 +34,11 @@ public abstract class Base {
         this.updatedBy = updatedBy;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
