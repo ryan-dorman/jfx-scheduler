@@ -14,3 +14,5 @@ INFO: [USER] Login Clicked
 2021-02-03 22:30:07 [INFO] test - Successful Login Attempt 
 2021-02-03 22:31:59 [INFO] test - Invalid Login Attempt 
 2021-02-03 22:32:04 [INFO] test - Successful Login Attempt 
+2021-02-03 23:39:32 [INFO] test - Successful Login Attempt 
+2021-02-03 23:39:52 [INFO] test - Invalid Login Attempt 

@@ -14,20 +14,26 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * A wrapper around a JDBC connection that can be accessed throughout the application. The connections provided
- * can be new or existing due to JConnector connection pooling. The the connection properties are read from the file
- * <code>connection.properties</code>>.
+ * A wrapper around a datasource that allows straight forward access to a connection with that source. The connection
+ * properties are read from the file <code>connection.properties</code>.
  */
 public class DBConnection {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private static MysqlDataSource d;
+    private static Connection conn;
 
+    /**
+     * Constructor is private to prevent class creation.
+     */
     private DBConnection() {
     }
 
     /**
-     * Provides a database connection
-     * @return
+     * Provides a database connection after ensuring the datasource is established. The connection <code>should</code>
+     * be obtained in a try-with-resources to exploit Connection's extension of AutoClosable. A reference to the
+     * connection is stored statically to ensure only one connection is established at any  time. If a connection does
+     * not exist or has closed, a new one is opened. Auto-commit is turned off by default on new connections.
+     * @return Connection
      * @throws SQLException
      * @throws IOException
      */
@@ -43,10 +49,12 @@ public class DBConnection {
             d.setPassword(connectionProps.getProperty("pass"));
         }
 
-        Connection conn = d.getConnection();
-        conn.setAutoCommit(false);
-        sysLogger.info("Database connection created: " + conn.toString());
-        sysLogger.info("Database Auto Commit: " + conn.getAutoCommit());
+        if (conn == null || (conn != null && conn.isClosed())) {
+            conn = d.getConnection();
+            conn.setAutoCommit(false);
+            sysLogger.info("Database connection created: " + conn.toString());
+            sysLogger.info("Database Auto Commit: " + conn.getAutoCommit());
+        }
 
         return conn;
     }
