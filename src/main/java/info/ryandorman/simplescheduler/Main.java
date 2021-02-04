@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 import java.util.logging.FileHandler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
