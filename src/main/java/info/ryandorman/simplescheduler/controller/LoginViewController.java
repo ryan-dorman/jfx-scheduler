@@ -89,6 +89,7 @@ public class LoginViewController implements Initializable {
 
         if (user != null && user.getPassword().equals(password)) {
             loginOutcome = "Successful";
+            currentUser = user;
             // TODO: to main view
         } else {
             loginOutcome = "Invalid";

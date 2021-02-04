@@ -7,18 +7,16 @@ package info.ryandorman.simplescheduler.common;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * A wrapper around a JDBC connection that can be accessed throughout the application. The singleton design prevents
- * multiple connections form being established to the database at one time. The environment variables for the connection
- * properties are read from the file <code>connection.properties</code>>.
+ * A wrapper around a JDBC connection that can be accessed throughout the application. The connections provided
+ * can be new or existing due to JConnector connection pooling. The the connection properties are read from the file
+ * <code>connection.properties</code>>.
  */
 public class DBConnection {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -27,6 +25,12 @@ public class DBConnection {
     private DBConnection() {
     }
 
+    /**
+     * Provides a database connection
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public static Connection getConnection() throws SQLException, IOException {
         if (d == null) {
             Properties connectionProps = new Properties();
