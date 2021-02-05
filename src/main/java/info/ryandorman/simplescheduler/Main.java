@@ -5,6 +5,7 @@ package info.ryandorman.simplescheduler;
  *   ID: 001002824
  */
 
+import info.ryandorman.simplescheduler.common.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -72,5 +73,13 @@ public class Main extends Application {
         primaryStage.setTitle("Simple Scheduler");
         primaryStage.setScene(new Scene(root, 450, 450));
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        sysLogger.info("Application Exiting...");
+        sysLogger.info("Closing any open database connections");
+        DBConnection.close();
+        super.stop();
     }
 }

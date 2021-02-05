@@ -1,4 +1,10 @@
-2021-02-04 22:37:59 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@e8d4903 
-2021-02-04 22:37:59 [INFO] Database Auto Commit: false 
-2021-02-04 22:37:59 [INFO] test returned from database by UserDao.getByName 
-2021-02-04 22:37:59 [INFO] Main view loaded for User{id=1, created=2021-01-30T20:06:04-06:00[America/Chicago], createdBy='script', updated=2021-01-30T20:06:04-06:00[America/Chicago], updatedBy='script', name='test', password='test'} 
+2021-02-05 15:11:39 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@20f231a5 
+2021-02-05 15:11:39 [INFO] Database Auto Commit: false 
+2021-02-05 15:11:39 [INFO] test returned from database by UserDao.getByName 
+2021-02-05 15:11:45 [INFO] Using existing connection: com.mysql.cj.jdbc.ConnectionImpl@20f231a5 
+2021-02-05 15:11:45 [INFO] test returned from database by UserDao.getByName 
+2021-02-05 15:11:54 [INFO] Using existing connection: com.mysql.cj.jdbc.ConnectionImpl@20f231a5 
+2021-02-05 15:11:54 [INFO] test returned from database by UserDao.getByName 
+2021-02-05 15:11:54 [INFO] Main view loaded for User{id=1, created=2021-01-30T20:06:04-06:00[America/Chicago], createdBy='script', updated=2021-01-30T20:06:04-06:00[America/Chicago], updatedBy='script', name='test', password='test'} 
+2021-02-05 15:12:01 [INFO] Application Exiting... 
+2021-02-05 15:12:01 [INFO] Closing any open database connections 

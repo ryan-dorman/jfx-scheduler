@@ -22,10 +22,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAll() {
+        Connection conn = null;
+        PreparedStatement stmt = null;
         ArrayList<User> users = new ArrayList<>();
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(GET_ALL)) {
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(GET_ALL);
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -36,6 +39,8 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             sysLogger.severe(e.getStackTrace().toString());
+        } finally {
+            DBConnection.close(stmt);
         }
 
         sysLogger.info(users.size() + " Users returned from database by UserDao.getAll");
@@ -44,10 +49,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(int id) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
         User user = null;
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(GET_BY_ID)) {
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(GET_BY_ID);
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -61,6 +69,8 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             sysLogger.severe(e.getStackTrace().toString());
+        } finally {
+            DBConnection.close(stmt);
         }
 
         return user;
@@ -68,10 +78,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getByName(String name) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
         User user = null;
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(GET_BY_NAME)) {
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(GET_BY_NAME);
 
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
@@ -85,6 +98,8 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             sysLogger.severe(e.getStackTrace().toString());
+        } finally {
+            DBConnection.close(stmt);
         }
 
         return user;
