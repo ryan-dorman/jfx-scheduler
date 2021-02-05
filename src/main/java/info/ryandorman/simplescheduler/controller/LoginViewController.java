@@ -83,10 +83,12 @@ public class LoginViewController implements Initializable {
             return;
         }
 
+        // Check DB for User of provided name
         UserDao userDao = new UserDaoImpl();
         User user = userDao.getByName(username);
         String loginOutcome = "";
 
+        // If the passwords match login, otherwise alert
         if (user != null && user.getPassword().equals(password)) {
             loginOutcome = "Successful";
             currentUser = user;
