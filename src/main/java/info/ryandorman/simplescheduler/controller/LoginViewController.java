@@ -11,20 +11,27 @@ import info.ryandorman.simplescheduler.dao.UserDao;
 import info.ryandorman.simplescheduler.dao.UserDaoImpl;
 import info.ryandorman.simplescheduler.model.User;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class LoginViewController implements Initializable {
+    private int loginAttempts = 0;
 
     private static final Logger userLogger = Logger.getLogger("userActivity");
-    private User currentUser;
 
     // Login Labels
     @FXML
@@ -67,9 +74,10 @@ public class LoginViewController implements Initializable {
     }
 
     @FXML
-    public void onLogin() {
+    public void onLogin(ActionEvent actionEvent) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
+
         // Validate fields and show errors for missing values
         if (username.isBlank() || username.length() > 50) {
             JavaFxUtil.warning(L10nUtil.getLanguage("alert.invalidUsername.title"),
@@ -86,25 +94,39 @@ public class LoginViewController implements Initializable {
         // Check DB for User of provided name
         UserDao userDao = new UserDaoImpl();
         User user = userDao.getByName(username);
-        String loginOutcome = "";
+        loginAttempts++;
 
         // If the passwords match login, otherwise alert
         if (user != null && user.getPassword().equals(password)) {
-            loginOutcome = "Successful";
-            currentUser = user;
-            // TODO: to main view
+            userLogger.info("User: " + user.getName() + " - Successful Login (Try=" + loginAttempts + ")");
+            loadMainView(actionEvent, user);
         } else {
-            loginOutcome = "Invalid";
+            userLogger.info("User: " + user.getName() + " - Invalid Login (Try=" + loginAttempts + ")");
             JavaFxUtil.warning(L10nUtil.getLanguage("alert.invalidLogin.title"),
                     L10nUtil.getLanguage("alert.invalidLogin.header"),
                     L10nUtil.getLanguage("alert.invalidLogin.content"));
         }
-
-        userLogger.info(user.getName() + " - " + loginOutcome + " Login Attempt");
     }
 
     @FXML
     public void onCancel() {
         Platform.exit();
+    }
+
+    private void loadMainView(ActionEvent actionEvent, User currentUser) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/MainView.fxml"));
+        Parent parent = loader.load();
+        MainViewController controller = loader.getController();
+
+
+        // Pass Store and Part ref to Controller
+        controller.initData(currentUser);
+
+        // Set stage with Product View
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        window.setTitle(window.getTitle());
+        window.setScene(new Scene(parent, 1200, 800));
+        window.show();
     }
 }
