@@ -29,9 +29,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class LoginViewController implements Initializable {
-    private int loginAttempts = 0;
-
     private static final Logger userLogger = Logger.getLogger("userActivity");
+    private int loginAttempts = 0;
 
     // Login Labels
     @FXML
@@ -93,7 +92,7 @@ public class LoginViewController implements Initializable {
 
         // Check DB for User of provided name
         UserDao userDao = new UserDaoImpl();
-        User user = userDao.getByName(username);
+        User user = userDao.getByName(username.toLowerCase());
         loginAttempts++;
 
         // If the passwords match login, otherwise alert
@@ -117,16 +116,16 @@ public class LoginViewController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/MainView.fxml"));
         Parent parent = loader.load();
+
+        // Pass currentUser ref to Controller
         MainViewController controller = loader.getController();
-
-
-        // Pass Store and Part ref to Controller
         controller.initData(currentUser);
 
-        // Set stage with Product View
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle(window.getTitle());
-        window.setScene(new Scene(parent, 1200, 800));
-        window.show();
+        // Set stage with MainView
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setTitle(stage.getTitle());
+        stage.setScene(new Scene(parent, 1200, 800));
+        stage.centerOnScreen();
+        stage.show();
     }
 }

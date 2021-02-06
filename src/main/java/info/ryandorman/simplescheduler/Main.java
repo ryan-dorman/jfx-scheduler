@@ -72,6 +72,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Simple Scheduler");
         primaryStage.setScene(new Scene(root, 450, 450));
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
