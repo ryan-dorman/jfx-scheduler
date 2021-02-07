@@ -81,12 +81,7 @@
   -fx-border-color: transparent transparent transparent transparent;
 }
 
-.tab:hover {
-  -fx-border-color: transparent transparent accent-color transparent;
-}
-
 .tab--active {
-  -fx-border-width: 4px;
   -fx-border-color: transparent transparent accent-color transparent;
 }
 

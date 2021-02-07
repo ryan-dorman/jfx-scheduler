@@ -68,6 +68,9 @@ public class LoginViewController implements Initializable {
         loginButton.setText(L10nUtil.getLanguage("btn.login"));
         closeButton.setText(L10nUtil.getLanguage("btn.close"));
 
+        // Fire 'onLogin' on 'Enter' key
+        loginButton.setDefaultButton(true);
+
         // Set Timezone Value
         userZone.setText(L10nUtil.zoneId.toString());
     }

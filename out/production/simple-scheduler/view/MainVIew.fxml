@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.SVGPath?>
 
-<StackPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.MainViewController">
+<StackPane prefHeight="800.0" prefWidth="1200.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.MainViewController">
    <children>
       <BorderPane fx:id="mainView" prefHeight="200.0" prefWidth="200.0">
          <top>

@@ -9,6 +9,7 @@ import info.ryandorman.simplescheduler.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseDragEvent;
@@ -20,6 +21,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+/**
+ * Controller for the the MainView of the application. Handles the logic associated with the navigation items
+ * in the application and loading the appropriate child views into the MainView based on the navigation item selected.
+ */
 public class MainViewController implements Initializable {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -50,16 +55,19 @@ public class MainViewController implements Initializable {
     @FXML
     public void onDashboardClick() {
         setActiveView("DashboardView");
+        setActiveStyle(dashboardButton);
     }
 
     @FXML
     public void onCustomersClick() {
         setActiveView("CustomersView");
+        setActiveStyle(customersButton);
     }
 
     @FXML
     public void onAppointmentsClick() {
         setActiveView("AppointmentsView");
+        setActiveStyle(appointmentsButton);
     }
 
     private void setActiveView(String viewName)  {
@@ -74,6 +82,14 @@ public class MainViewController implements Initializable {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void setActiveStyle(Button selectedTab) {
+        dashboardButton.getStyleClass().remove("tab--active");
+        customersButton.getStyleClass().remove("tab--active");
+        appointmentsButton.getStyleClass().remove("tab--active");
+
+        selectedTab.getStyleClass().add("tab--active");
     }
 
 }

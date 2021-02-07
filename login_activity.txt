@@ -33,3 +33,7 @@ INFO: [USER] Login Clicked
 2021-02-05 21:00:24 [INFO] User: test - Successful Login (Try=1) 
 2021-02-05 21:01:22 [INFO] User: test - Successful Login (Try=1) 
 2021-02-05 21:01:57 [INFO] User: test - Successful Login (Try=1) 
+2021-02-06 21:37:07 [INFO] User: test - Successful Login (Try=1) 
+2021-02-06 22:35:58 [INFO] User: test - Successful Login (Try=1) 
+2021-02-06 22:36:45 [INFO] User: test - Successful Login (Try=1) 
+2021-02-06 22:41:42 [INFO] User: test - Successful Login (Try=1) 
