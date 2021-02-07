@@ -1,6 +1,9 @@
 package info.ryandorman.simplescheduler.controller;
 
+import info.ryandorman.simplescheduler.dao.CustomerDao;
+import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -11,6 +14,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
+
+    // Customers State
+    ObservableList<Customer> customers;
 
     // Customers Table
     @FXML
@@ -37,7 +43,16 @@ public class CustomersViewController implements Initializable {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        divisionColumn.setCellValueFactory(new PropertyValueFactory<>("firstLevelDivision.name"));
 
+        // Populate customers with DAOs
+        initData();
+
+        customersTable.setItems(customers);
+    }
+
+    private void initData() {
+        CustomerDao customerDao = new CustomerDaoImpl();
+        customers = (ObservableList<Customer>) customerDao.getAll();
     }
 }

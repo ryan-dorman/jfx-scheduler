@@ -20,7 +20,7 @@
                         <TableColumn fx:id="phoneColumn" prefWidth="147.0" text="Phone" />
                         <TableColumn fx:id="addressColumn" prefWidth="319.0" text="Address" />
                         <TableColumn fx:id="postalCodeColumn" prefWidth="105.0" text="Postal Code" />
-                        <TableColumn fx:id="firstLevelDivisionColumn" prefWidth="183.0" text="First Level Division" />
+                        <TableColumn fx:id="divisionColumn" prefWidth="183.0" text="First Level Division" />
                     </columns>
                   </TableView>
                </children>

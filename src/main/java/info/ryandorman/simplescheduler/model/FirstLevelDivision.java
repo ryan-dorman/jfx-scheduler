@@ -9,21 +9,21 @@ import java.time.ZonedDateTime;
 
 public class FirstLevelDivision extends Base {
     private String name;
-    private int countryId;
+    private Country country;
 
     public FirstLevelDivision() {
     }
 
-    public FirstLevelDivision(int id, String name, int countryId, ZonedDateTime created, String createdBy,
+    public FirstLevelDivision(int id, String name, Country country, ZonedDateTime created, String createdBy,
                               ZonedDateTime updated, String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
-        this.countryId = countryId;
+        this.country = country;
     }
 
-    public FirstLevelDivision(String name, int countryId) {
+    public FirstLevelDivision(String name, Country country) {
         this.name = name;
-        this.countryId = countryId;
+        this.country = country;
     }
 
     public String getName() {
@@ -34,12 +34,12 @@ public class FirstLevelDivision extends Base {
         this.name = name;
     }
 
-    public int getCountryId() {
-        return countryId;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     @Override
@@ -50,8 +50,7 @@ public class FirstLevelDivision extends Base {
                 ", createdBy='" + createdBy + '\'' +
                 ", updated=" + updated +
                 ", updatedBy='" + updatedBy + '\'' +
-                ", name='" + name + '\'' +
-                ", countryId=" + countryId +
+                ", country=" + country +
                 '}';
     }
 }

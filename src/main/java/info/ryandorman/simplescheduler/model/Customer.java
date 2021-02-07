@@ -12,28 +12,28 @@ public class Customer extends Base {
     private String address;
     private String postalCode;
     private String phone;
-    private int firstLevelDivisionId;
+    private FirstLevelDivision firstLevelDivision;
 
     public Customer() {
     }
 
     public Customer(int id, String name, String address, String postalCode, String phone,
-                    int firstLevelDivisionId, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+                    FirstLevelDivision firstLevelDivision, ZonedDateTime created, String createdBy, ZonedDateTime updated,
                     String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.firstLevelDivisionId = firstLevelDivisionId;
+        this.firstLevelDivision = firstLevelDivision;
     }
 
-    public Customer(String name, String address, String postalCode, String phone, int firstLevelDivisionId) {
+    public Customer(String name, String address, String postalCode, String phone, FirstLevelDivision firstLevelDivision) {
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.firstLevelDivisionId = firstLevelDivisionId;
+        this.firstLevelDivision = firstLevelDivision;
     }
 
     public String getName() {
@@ -68,12 +68,12 @@ public class Customer extends Base {
         this.phone = phone;
     }
 
-    public int getFirstLevelDivisionId() {
-        return firstLevelDivisionId;
+    public FirstLevelDivision getFirstLevelDivision() {
+        return firstLevelDivision;
     }
 
-    public void setFirstLevelDivisionId(int firstLevelDivisionId) {
-        this.firstLevelDivisionId = firstLevelDivisionId;
+    public void setFirstLevelDivision(FirstLevelDivision firstLevelDivision) {
+        this.firstLevelDivision = firstLevelDivision;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Customer extends Base {
                 ", address='" + address + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", phone='" + phone + '\'' +
-                ", firstLevelDivisionId=" + firstLevelDivisionId +
+                ", firstLevelDivision=" + firstLevelDivision +
                 '}';
     }
 }
