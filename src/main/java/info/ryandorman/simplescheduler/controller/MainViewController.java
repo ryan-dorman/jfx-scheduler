@@ -29,7 +29,7 @@ public class MainViewController implements Initializable {
     @FXML
     private BorderPane mainView;
 
-    // Nav Buttons
+    // Menu Buttons
     @FXML
     private Button dashboardButton;
 
@@ -41,7 +41,6 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // https://stackoverflow.com/questions/50286130/javafx-keep-toolbar-when-loading-next-scene
         onDashboardClick();
     }
 
@@ -82,10 +81,12 @@ public class MainViewController implements Initializable {
     }
 
     private void setActiveStyle(Button selectedTab) {
+        // reset
         dashboardButton.getStyleClass().remove("tab--active");
         customersButton.getStyleClass().remove("tab--active");
         appointmentsButton.getStyleClass().remove("tab--active");
 
+        // set
         selectedTab.getStyleClass().add("tab--active");
     }
 

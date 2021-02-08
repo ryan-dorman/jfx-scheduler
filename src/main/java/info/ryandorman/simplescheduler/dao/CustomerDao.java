@@ -9,6 +9,8 @@ public interface CustomerDao {
 
     public Customer getById(int id);
 
+    public List<Customer> getByNameLike(String name);
+
     public Customer create(Customer customer);
 
     public Customer update(Customer customer);

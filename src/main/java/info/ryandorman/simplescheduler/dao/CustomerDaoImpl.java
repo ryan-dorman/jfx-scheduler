@@ -83,6 +83,11 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
+    public List<Customer> getByNameLike(String name) {
+        return null;
+    }
+
+    @Override
     public Customer create(Customer customer) {
         return null;
     }
