@@ -59,6 +59,7 @@ public class CustomerDaoImpl implements CustomerDao {
             stmt = conn.prepareStatement(GET_ALL);
 
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
                 Customer customer = mapResult(rs);
                 customers.add(customer);
