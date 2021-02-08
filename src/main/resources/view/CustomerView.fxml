@@ -23,7 +23,7 @@
             <children>
                 <HBox prefHeight="50.0" prefWidth="500.0" spacing="40.0">
                     <children>
-                        <Label fx:id="title" styleClass="secondary-header-text" text="Add Customer" />
+                        <Label fx:id="title" styleClass="secondary-header-text" text="Create Customer" />
                     </children>
                <VBox.margin>
                   <Insets />

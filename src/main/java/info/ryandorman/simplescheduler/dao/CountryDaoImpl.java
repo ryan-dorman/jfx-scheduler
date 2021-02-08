@@ -2,8 +2,8 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
+import info.ryandorman.simplescheduler.common.ResultColumnIterator;
 import info.ryandorman.simplescheduler.model.Country;
-import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,24 +20,24 @@ public class CountryDaoImpl implements CountryDao {
     private static final String GET_ALL = "SELECT * FROM countries;";
 
     public static Country mapResult(ResultSet rs) throws SQLException {
-        int[] counter = new int[]{1};
-        return mapResult(rs, counter);
+        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        return mapResult(rs, resultColumn);
     }
 
-    public static Country mapResult(ResultSet rs, int[] counter) throws SQLException {
+    public static Country mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
         return new Country(
-                rs.getInt(counter[0]++),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++)
+                rs.getInt(resultColumn.next()),
+                rs.getString(resultColumn.next()),
+                L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
+                rs.getString(resultColumn.next()),
+                L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
+                rs.getString(resultColumn.next())
         );
     }
 
     @Override
     public List<Country> getAll() {
-        Connection conn = null;
+        Connection conn;
         PreparedStatement stmt = null;
         List<Country> countries = new ArrayList<>();
 

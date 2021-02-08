@@ -2,6 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
+import info.ryandorman.simplescheduler.common.ResultColumnIterator;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
@@ -22,35 +23,35 @@ public class CustomerDaoImpl implements CustomerDao {
             "LEFT JOIN countries co ON fld.country_id = co.country_id;";
 
     public static Customer mapResult(ResultSet rs) throws SQLException {
-        int[] counter = new int[]{1};
-        return mapResult(rs, counter);
+        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        return mapResult(rs, resultColumn);
     }
 
-    public static Customer mapResult(ResultSet rs, int[] counter) throws SQLException {
-        FirstLevelDivision division = FirstLevelDivisionDaoImpl.mapResult(rs, counter);
+    public static Customer mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
+        FirstLevelDivision division = FirstLevelDivisionDaoImpl.mapResult(rs, resultColumn);
 
         Customer customer = new Customer(
-                rs.getInt(counter[0]++),
-                rs.getString(counter[0]++),
-                rs.getString(counter[0]++),
-                rs.getString(counter[0]++),
-                rs.getString(counter[0]++),
+                rs.getInt(resultColumn.next()),
+                rs.getString(resultColumn.next()),
+                rs.getString(resultColumn.next()),
+                rs.getString(resultColumn.next()),
+                rs.getString(resultColumn.next()),
                 division,
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++)
+                L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
+                rs.getString(resultColumn.next()),
+                L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
+                rs.getString(resultColumn.next())
         );
 
         // Skip division_id column, instead we store the FirstLevelDivision class directly in Customer
-        counter[0]++;
+        resultColumn.next();
 
         return customer;
     }
 
     @Override
     public List<Customer> getAll() {
-        Connection conn = null;
+        Connection conn;
         PreparedStatement stmt = null;
         List<Customer> customers = new ArrayList<>();
 

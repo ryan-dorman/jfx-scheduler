@@ -72,7 +72,14 @@ public class CustomersViewController implements Initializable {
     }
 
     @FXML
-    public void onCreate() {}
+    public void onSearch() {
+
+    }
+
+    @FXML
+    public void onCreate() {
+
+    }
 
     @FXML
     public void onEdit() {}

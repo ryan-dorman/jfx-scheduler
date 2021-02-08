@@ -2,6 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
+import info.ryandorman.simplescheduler.common.ResultColumnIterator;
 import info.ryandorman.simplescheduler.model.User;
 
 import java.io.IOException;
@@ -21,25 +22,25 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
     public static User mapResult(ResultSet rs) throws SQLException {
-        int[] counter = new int[]{1};
-        return mapResult(rs, counter);
+        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        return mapResult(rs, resultColumn);
     }
 
-    public static User mapResult(ResultSet rs, int[] counter) throws SQLException {
+    public static User mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
         return new User(
-                rs.getInt(counter[0]++),
-                rs.getString(counter[0]++),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++)
+                rs.getInt(resultColumn.next()),
+                rs.getString(resultColumn.next()),
+                rs.getString(resultColumn.next()),
+                L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
+                rs.getString(resultColumn.next()),
+                L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
+                rs.getString(resultColumn.next())
         );
     }
 
     @Override
     public List<User> getAll() {
-        Connection conn = null;
+        Connection conn;
         PreparedStatement stmt = null;
         ArrayList<User> users = new ArrayList<>();
 
@@ -66,7 +67,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(int id) {
-        Connection conn = null;
+        Connection conn;
         PreparedStatement stmt = null;
         User user = null;
 
@@ -95,7 +96,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getByName(String name) {
-        Connection conn = null;
+        Connection conn;
         PreparedStatement stmt = null;
         User user = null;
 
