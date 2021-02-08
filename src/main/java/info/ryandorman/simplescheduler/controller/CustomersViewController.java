@@ -10,8 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -40,7 +42,9 @@ public class CustomersViewController implements Initializable {
     @FXML
     private TableColumn<Customer, String> countryColumn;
 
-    // Buttons
+    // Field
+    @FXML
+    private TextField searchField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,4 +70,13 @@ public class CustomersViewController implements Initializable {
         CustomerDao customerDao = new CustomerDaoImpl();
         customers = FXCollections.observableArrayList(customerDao.getAll());
     }
+
+    @FXML
+    public void onCreate() {}
+
+    @FXML
+    public void onEdit() {}
+
+    @FXML
+    public void onDelete() {}
 }
