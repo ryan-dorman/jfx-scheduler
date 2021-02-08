@@ -53,10 +53,10 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onDelete" text="Delete">
                      <HBox.margin>
-                        <Insets right="640.0" />
+                        <Insets right="630.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#onEdit" text="Edit" />
+                  <Button mnemonicParsing="false" onAction="#onUpdate" text="Update" />
                   <Button mnemonicParsing="false" onAction="#onCreate" text="Create" />
                </children>
                <padding>

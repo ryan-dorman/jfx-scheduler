@@ -8,14 +8,22 @@ import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -77,13 +85,39 @@ public class CustomersViewController implements Initializable {
     }
 
     @FXML
-    public void onCreate() {
-
+    public void onCreate(ActionEvent actionEvent) throws IOException {
+        loadCustomerView(actionEvent, "Create Customer", null);
     }
 
     @FXML
-    public void onEdit() {}
+    public void onUpdate(ActionEvent actionEvent) throws IOException {
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+
+        if (selectedCustomer != null) {
+            loadCustomerView(actionEvent, "Update Customer", selectedCustomer);
+        }
+    }
 
     @FXML
     public void onDelete() {}
+
+    private void loadCustomerView(ActionEvent actionEvent, String title, Customer selectCustomer) throws IOException {
+        Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/CustomerView.fxml"));
+        Parent partViewParent = loader.load();
+        Stage partViewStage = new Stage();
+        CustomerViewController controller = loader.getController();
+
+        // Pass Customer ref to Controller
+        controller.initData(selectCustomer);
+
+        // Init View
+        partViewStage.setTitle(title);
+        partViewStage.setScene(new Scene(partViewParent, 450, 500));
+        partViewStage.initOwner(customerStage);
+        partViewStage.initModality(Modality.APPLICATION_MODAL);
+        partViewStage.showAndWait();
+    }
 }
