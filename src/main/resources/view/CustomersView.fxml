@@ -1,60 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.CustomersViewController">
    <children>
       <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1200.0" spacing="10.0">
          <children>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="1160.0">
+            <HBox layoutX="30.0" layoutY="575.0" prefHeight="100.0" prefWidth="200.0" />
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="1160.0">
                <children>
-                  <GridPane>
-                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="75.0" />
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="175.0" minWidth="-Infinity" prefWidth="110.0" />
-                        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="342.0" minWidth="10.0" prefWidth="350.0" />
-                        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="342.0" minWidth="-Infinity" prefWidth="135.0" />
-                        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="342.0" minWidth="10.0" prefWidth="329.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
-                     </rowConstraints>
-                     <children>
-                        <Label styleClass="secondary-header-text" text="Id" GridPane.columnIndex="1" />
-                        <TextField fx:id="idTextField" disable="true" maxWidth="-Infinity" prefWidth="200.0" promptText="Auto Gen - Disabled" GridPane.columnIndex="2" />
-                        <Label styleClass="secondary-header-text" text="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="nameTextField" maxWidth="-Infinity" prefWidth="200.0" promptText="Customer Name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label styleClass="secondary-header-text" text="Phone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="phoneTextField" maxWidth="-Infinity" prefWidth="150.0" promptText="Phone Number" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label styleClass="secondary-header-text" text="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="addressTextField" maxWidth="-Infinity" prefWidth="300.0" promptText="Street Address" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Label styleClass="secondary-header-text" text="Postal Code" GridPane.columnIndex="3" />
-                        <TextField fx:id="postalCodeTextField" maxWidth="-Infinity" prefWidth="100.0" promptText="Postal Code" GridPane.columnIndex="4" />
-                        <Label layoutX="524.0" layoutY="25.0" styleClass="secondary-header-text" text="Division" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="divisionComboBox" prefWidth="225.0" promptText="First Level Division" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <Label layoutX="524.0" layoutY="75.0" styleClass="secondary-header-text" text="Country" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="countryComboBox" layoutX="634.0" layoutY="72.0" prefWidth="225.0" promptText="Country" styleClass="text-field" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                     </children>
-                  </GridPane>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="430.0" prefWidth="1160.0">
-               <children>
-                  <TableView fx:id="customersTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="1140.0">
+                  <TableView fx:id="customersTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1140.0">
                     <columns>
                       <TableColumn fx:id="idColumn" prefWidth="60.0" text="Id" />
                       <TableColumn fx:id="nameColumn" prefWidth="170.0" text="Name" />
@@ -70,6 +30,7 @@
                   </TableView>
                </children>
             </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

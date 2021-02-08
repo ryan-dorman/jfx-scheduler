@@ -21,14 +21,6 @@ public class CustomersViewController implements Initializable {
 
     // State
     ObservableList<Customer> customers;
-    ObservableList<Country> countries;
-    ObservableList<FirstLevelDivision> divisions;
-
-    // Customer Labels
-
-    // Customer Fields
-
-    // Customer Combos
 
     // Customers Table
     @FXML
@@ -47,6 +39,8 @@ public class CustomersViewController implements Initializable {
     private TableColumn<Customer, String> divisionColumn;
     @FXML
     private TableColumn<Customer, String> countryColumn;
+
+    // Buttons
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -71,12 +65,5 @@ public class CustomersViewController implements Initializable {
         // Load Customers for TableView
         CustomerDao customerDao = new CustomerDaoImpl();
         customers = FXCollections.observableArrayList(customerDao.getAll());
-
-        // Load Countries for ComboBox
-
-    }
-
-    public void onCountrySelection() {
-        // set values on division combo base on selection
     }
 }

@@ -34,9 +34,9 @@
 }
 
 .secondary-header-text {
-  -fx-font-size: 18px;
-  -fx-text-fill: secondary-text-color;
-  -fx-font-weight: bold;
+  -fx-font-size: 26px;
+  -fx-text-fill: accent-color;
+  -fx-font-weight: lighter;
 }
 
 .button {
@@ -56,8 +56,8 @@
   -fx-padding: 7px 20px;
   -fx-background-color: accent-color;
   -fx-effect: dropshadow(one-pass-box, dark-primary-color, 1.5px, 0, 1px, 1px);
-  -fx-background-radius: 2px;
-  -fx-border-radius: 2px;
+  -fx-background-radius: 20px;
+  -fx-border-radius: 20px;
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
 }
@@ -103,6 +103,12 @@
 
 .text-align-right {
   -fx-text-alignment: right;
+}
+
+.text-label {
+  -fx-font-size: 18px;
+  -fx-text-fill: secondary-text-color;
+  -fx-font-weight: bold;
 }
 
 .text-field {
