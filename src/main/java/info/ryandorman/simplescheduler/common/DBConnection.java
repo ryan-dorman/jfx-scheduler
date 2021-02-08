@@ -16,7 +16,9 @@ import java.util.logging.Logger;
 
 /**
  * A wrapper around a database that allows straight forward access to a connection with it. The connection
- * properties are read from the file <code>connection.properties</code>.
+ * properties are read from the file <code>connection.properties</code>. Allows only one open DB connection to be
+ * obtained throughout the application. <em>Close the connection before the application exits.</em> Auto-commit is
+ * turned off by default on connections.
  */
 public class DBConnection {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -30,8 +32,7 @@ public class DBConnection {
     }
 
     /**
-     * Reads the database properties from <code>connection.properties</code> and sets up the datasource. A ref to the
-     * data source is stored statically for <code>getConnection</code> to use.
+     * Reads the database properties from <code>connection.properties</code> and sets up the datasource.
      *
      * @throws IOException If there are issues reading the properties file
      */
@@ -48,12 +49,9 @@ public class DBConnection {
 
     /**
      * Provides a database connection. The connection <code>should not</code> be obtained in a try-with-resources
-     * to avoid closing the connection due to its extension of AutoClosable. A reference to the connection is stored
-     * statically to ensure only one connection is established at any time. If a connection does not exist or has
-     * closed, a new one is opened. Close all connection's before the application exits. Auto-commit is turned off by
-     * default on new connections.
+     * to avoid closing the connection due to its extension of AutoClosable.
      *
-     * @return Connection
+     * @return Connection Reference to the application's current database connection
      * @throws SQLException If there is an issue establishing the connection
      * @throws IOException  If there are issues initializing the data source from the properties file
      */
@@ -93,7 +91,7 @@ public class DBConnection {
     /**
      * Close an existing PreparedStatement associated with a connection. Captures any errors
      *
-     * @param stmt
+     * @param stmt PreparedStatement to be closed
      */
     public static void close(PreparedStatement stmt) {
         try {

@@ -9,7 +9,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -26,13 +28,28 @@ public class CustomerViewController implements Initializable {
     @FXML
     private Label header;
 
-    // Customer Labels
-
     // Customer Fields
+    @FXML
+    private TextField idTextField;
 
-    // Customer Combos
+    @FXML
+    private TextField nameTextField;
 
-    // Buttons
+    @FXML
+    private TextField phoneTextField;
+
+    @FXML
+    private TextField addressTextField;
+
+    @FXML
+    private TextField postalCodeTextField;
+
+    @FXML
+    private ComboBox<Country> countryComboBox;
+
+    @FXML
+    private ComboBox<FirstLevelDivision> divisionComboBox;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Load Countries for ComboBox

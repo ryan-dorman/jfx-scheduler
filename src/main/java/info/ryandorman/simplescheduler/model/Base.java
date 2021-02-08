@@ -10,8 +10,6 @@ import java.time.ZonedDateTime;
 /**
  * The Base data model includes the shared metadata properties coming from the data layer that exist across
  * entities.
- *
- * @author Ryan Dorman - ID: 001002824
  */
 public abstract class Base {
     protected int id;
