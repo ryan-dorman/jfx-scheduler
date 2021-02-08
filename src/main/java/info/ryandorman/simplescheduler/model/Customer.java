@@ -12,28 +12,28 @@ public class Customer extends Base {
     private String address;
     private String postalCode;
     private String phone;
-    private FirstLevelDivision firstLevelDivision;
+    private FirstLevelDivision division;
 
     public Customer() {
     }
 
     public Customer(int id, String name, String address, String postalCode, String phone,
-                    FirstLevelDivision firstLevelDivision, ZonedDateTime created, String createdBy, ZonedDateTime updated,
+                    FirstLevelDivision division, ZonedDateTime created, String createdBy, ZonedDateTime updated,
                     String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.firstLevelDivision = firstLevelDivision;
+        this.division = division;
     }
 
-    public Customer(String name, String address, String postalCode, String phone, FirstLevelDivision firstLevelDivision) {
+    public Customer(String name, String address, String postalCode, String phone, FirstLevelDivision division) {
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.firstLevelDivision = firstLevelDivision;
+        this.division = division;
     }
 
     public String getName() {
@@ -68,12 +68,12 @@ public class Customer extends Base {
         this.phone = phone;
     }
 
-    public FirstLevelDivision getFirstLevelDivision() {
-        return firstLevelDivision;
+    public FirstLevelDivision getDivision() {
+        return division;
     }
 
-    public void setFirstLevelDivision(FirstLevelDivision firstLevelDivision) {
-        this.firstLevelDivision = firstLevelDivision;
+    public void setDivision(FirstLevelDivision division) {
+        this.division = division;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Customer extends Base {
                 ", address='" + address + '\'' +
                 ", postalCode='" + postalCode + '\'' +
                 ", phone='" + phone + '\'' +
-                ", firstLevelDivision=" + firstLevelDivision +
+                ", firstLevelDivision=" + division +
                 '}';
     }
 }

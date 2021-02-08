@@ -3,6 +3,7 @@ package info.ryandorman.simplescheduler.controller;
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 public class CustomersViewController implements Initializable {
 
     // Customers State
-    ObservableList<Customer> customers;
+    ObservableList<Customer> customers = FXCollections.observableArrayList();
 
     // Customers Table
     @FXML
@@ -34,7 +35,6 @@ public class CustomersViewController implements Initializable {
     @FXML
     private TableColumn<Customer, String> divisionColumn;
 
-    //
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Setup Customers Table View Columns
@@ -53,6 +53,6 @@ public class CustomersViewController implements Initializable {
 
     private void initData() {
         CustomerDao customerDao = new CustomerDaoImpl();
-        customers = (ObservableList<Customer>) customerDao.getAll();
+        customerDao.getAll();
     }
 }

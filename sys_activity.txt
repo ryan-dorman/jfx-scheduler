@@ -1,7 +1,9 @@
-2021-02-06 22:41:42 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@5460587a 
-2021-02-06 22:41:42 [INFO] Database Auto Commit: false 
-2021-02-06 22:41:42 [INFO] test returned from database by UserDao.getByName 
-2021-02-06 22:41:42 [INFO] Main view loaded for User{id=1, created=2021-01-30T20:06:04-06:00[America/Chicago], createdBy='script', updated=2021-01-30T20:06:04-06:00[America/Chicago], updatedBy='script', name='test', password='test'} 
-2021-02-06 22:41:44 [INFO] Application Exiting... 
-2021-02-06 22:41:44 [INFO] Closing any open database connections 
-2021-02-06 22:41:44 [INFO] Database connection closed: com.mysql.cj.jdbc.ConnectionImpl@5460587a 
+2021-02-07 19:00:59 [INFO] Database connection created: com.mysql.cj.jdbc.ConnectionImpl@7662a85d 
+2021-02-07 19:00:59 [INFO] Database Auto Commit: false 
+2021-02-07 19:00:59 [INFO] test returned from database by UserDao.getByName 
+2021-02-07 19:00:59 [INFO] Main view loaded for User{id=1, created=2021-01-30T20:06:04-06:00[America/Chicago], createdBy='script', updated=2021-01-30T20:06:04-06:00[America/Chicago], updatedBy='script', name='test', password='test'} 
+2021-02-07 19:01:01 [INFO] Using existing connection: com.mysql.cj.jdbc.ConnectionImpl@7662a85d 
+2021-02-07 19:01:01 [INFO] 3 Customers returned from database by CustomerDao.getAll 
+2021-02-07 19:01:03 [INFO] Application Exiting... 
+2021-02-07 19:01:03 [INFO] Closing any open database connections 
+2021-02-07 19:01:03 [INFO] Database connection closed: com.mysql.cj.jdbc.ConnectionImpl@7662a85d 

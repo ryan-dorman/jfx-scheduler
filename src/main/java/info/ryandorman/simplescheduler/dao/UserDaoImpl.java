@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
 
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
-            sysLogger.severe(e.getStackTrace().toString());
+            e.printStackTrace();
         } finally {
             DBConnection.close(stmt);
         }
@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
 
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
-            sysLogger.severe(e.getStackTrace().toString());
+            e.printStackTrace();
         } finally {
             DBConnection.close(stmt);
         }
@@ -97,7 +97,7 @@ public class UserDaoImpl implements UserDao {
 
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
-            sysLogger.severe(e.getStackTrace().toString());
+            e.printStackTrace();
         } finally {
             DBConnection.close(stmt);
         }
@@ -105,15 +105,20 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    private User mapResult(ResultSet rs) throws SQLException {
+    public static User mapResult(ResultSet rs) throws SQLException {
+        int[] counter = new int[]{1};
+        return mapResult(rs, counter);
+    }
+
+    public static User mapResult(ResultSet rs, int[] counter) throws SQLException {
         return new User(
-                rs.getInt("user_id"),
-                rs.getString("user_name"),
-                rs.getString("password"),
-                L10nUtil.utcToLocal(rs.getTimestamp("create_date")),
-                rs.getString("created_by"),
-                L10nUtil.utcToLocal(rs.getTimestamp("last_update")),
-                rs.getString("last_updated_by")
+                rs.getInt(counter[0]++),
+                rs.getString(counter[0]++),
+                rs.getString(counter[0]++),
+                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
+                rs.getString(counter[0]++),
+                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
+                rs.getString(counter[0]++)
         );
     }
 }
