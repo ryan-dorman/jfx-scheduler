@@ -79,9 +79,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                user = new User();
                 user = mapResult(rs);
-                sysLogger.info(user.getName() + " returned from database by UserDao.getById");
             }
 
         } catch (SQLException | IOException e) {
@@ -91,6 +89,7 @@ public class UserDaoImpl implements UserDao {
             DBConnection.close(stmt);
         }
 
+        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getById");
         return user;
     }
 
@@ -110,7 +109,6 @@ public class UserDaoImpl implements UserDao {
             if (rs.next()) {
                 user = new User();
                 user = mapResult(rs);
-                sysLogger.info(user.getName() + " returned from database by UserDao.getByName");
             }
 
         } catch (SQLException | IOException e) {
@@ -120,6 +118,7 @@ public class UserDaoImpl implements UserDao {
             DBConnection.close(stmt);
         }
 
+        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getByName");
         return user;
     }
 }
