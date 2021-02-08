@@ -100,10 +100,10 @@ public class LoginViewController implements Initializable {
 
         // If the passwords match login, otherwise alert
         if (user != null && user.getPassword().equals(password)) {
-            userLogger.info("User: " + user.getName() + " - Successful Login (Try=" + loginAttempts + ")");
+            userLogger.info("User: " + user.getName() + " - Successful Login (try=" + loginAttempts + ")");
             loadMainView(actionEvent, user);
         } else {
-            userLogger.info("User: " + user.getName() + " - Invalid Login (Try=" + loginAttempts + ")");
+            userLogger.info("User: " + user.getName() + " - Invalid Login (try=" + loginAttempts + ")");
             JavaFxUtil.warning(L10nUtil.getLanguage("alert.invalidLogin.title"),
                     L10nUtil.getLanguage("alert.invalidLogin.header"),
                     L10nUtil.getLanguage("alert.invalidLogin.content"));
