@@ -32,6 +32,7 @@ public class DBConnection {
     /**
      * Reads the database properties from <code>connection.properties</code> and sets up the datasource. A ref to the
      * data source is stored statically for <code>getConnection</code> to use.
+     *
      * @throws IOException If there are issues reading the properties file
      */
     private static void initDataSource() throws IOException {
@@ -51,9 +52,10 @@ public class DBConnection {
      * statically to ensure only one connection is established at any time. If a connection does not exist or has
      * closed, a new one is opened. Close all connection's before the application exits. Auto-commit is turned off by
      * default on new connections.
+     *
      * @return Connection
      * @throws SQLException If there is an issue establishing the connection
-     * @throws IOException If there are issues initializing the data source from the properties file
+     * @throws IOException  If there are issues initializing the data source from the properties file
      */
     public static Connection getConnection() throws SQLException, IOException {
         if (d == null) {
@@ -90,6 +92,7 @@ public class DBConnection {
 
     /**
      * Close an existing PreparedStatement associated with a connection. Captures any errors
+     *
      * @param stmt
      */
     public static void close(PreparedStatement stmt) {

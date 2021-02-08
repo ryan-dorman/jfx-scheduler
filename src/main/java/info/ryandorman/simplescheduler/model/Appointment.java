@@ -45,7 +45,7 @@ public class Appointment extends Base {
      * @param created     The date and time the appointment was created at, <em>should</em> be assigned at data layer
      * @param createdBy   The source that created the appointment
      * @param updated     The date and time the appointment was last updated at, <em>should</em> be assigned at data
-     *                   layer
+     *                    layer
      * @param updatedBy   The source that updated the appointment
      */
     public Appointment(int id, String title, String description, String location, String type, ZonedDateTime start,

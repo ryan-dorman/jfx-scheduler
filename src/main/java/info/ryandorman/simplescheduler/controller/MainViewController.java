@@ -9,11 +9,8 @@ import info.ryandorman.simplescheduler.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -70,7 +67,7 @@ public class MainViewController implements Initializable {
         setActiveStyle(appointmentsButton);
     }
 
-    private void setActiveView(String viewName)  {
+    private void setActiveView(String viewName) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/" + viewName + ".fxml"));
 

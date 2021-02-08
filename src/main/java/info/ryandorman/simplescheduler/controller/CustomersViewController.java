@@ -3,6 +3,7 @@ package info.ryandorman.simplescheduler.controller;
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -34,6 +35,8 @@ public class CustomersViewController implements Initializable {
     private TableColumn<Customer, String> postalCodeColumn;
     @FXML
     private TableColumn<Customer, String> divisionColumn;
+    @FXML
+    private TableColumn<Customer, String> countryColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -43,7 +46,10 @@ public class CustomersViewController implements Initializable {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        divisionColumn.setCellValueFactory(new PropertyValueFactory<>("firstLevelDivision.name"));
+        divisionColumn.setCellValueFactory(customerData ->
+                new SimpleStringProperty(customerData.getValue().getDivision().getName()));
+        divisionColumn.setCellValueFactory(customerData ->
+                new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
         // Populate customers with DAOs
         initData();
@@ -53,6 +59,6 @@ public class CustomersViewController implements Initializable {
 
     private void initData() {
         CustomerDao customerDao = new CustomerDaoImpl();
-        customerDao.getAll();
+        customers = (ObservableList<Customer>) customerDao.getAll();
     }
 }

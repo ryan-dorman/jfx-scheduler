@@ -20,6 +20,23 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
+    public static User mapResult(ResultSet rs) throws SQLException {
+        int[] counter = new int[]{1};
+        return mapResult(rs, counter);
+    }
+
+    public static User mapResult(ResultSet rs, int[] counter) throws SQLException {
+        return new User(
+                rs.getInt(counter[0]++),
+                rs.getString(counter[0]++),
+                rs.getString(counter[0]++),
+                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
+                rs.getString(counter[0]++),
+                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
+                rs.getString(counter[0]++)
+        );
+    }
+
     @Override
     public List<User> getAll() {
         Connection conn = null;
@@ -103,22 +120,5 @@ public class UserDaoImpl implements UserDao {
         }
 
         return user;
-    }
-
-    public static User mapResult(ResultSet rs) throws SQLException {
-        int[] counter = new int[]{1};
-        return mapResult(rs, counter);
-    }
-
-    public static User mapResult(ResultSet rs, int[] counter) throws SQLException {
-        return new User(
-                rs.getInt(counter[0]++),
-                rs.getString(counter[0]++),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++),
-                L10nUtil.utcToLocal(rs.getTimestamp(counter[0]++)),
-                rs.getString(counter[0]++)
-        );
     }
 }

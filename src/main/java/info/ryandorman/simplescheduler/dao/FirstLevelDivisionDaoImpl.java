@@ -7,7 +7,7 @@ import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao{
+public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
 
     public static FirstLevelDivision mapResult(ResultSet rs) throws SQLException {
         int[] counter = new int[]{1};
