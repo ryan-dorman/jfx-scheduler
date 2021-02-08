@@ -121,6 +121,17 @@
   -fx-border-color: transparent transparent accent-color transparent;
 }
 
+.combo-box {
+  -fx-background-color: -fx-control-inner-background;
+  -fx-background-insets: 0;
+  -fx-padding: 5px;
+  -fx-background-radius: 0;
+  -fx-border-radius: 0;
+  -fx-border-width: 2px;
+  -fx-border-color: transparent;
+  -fx-effect: dropshadow(one-pass-box, default-primary-color, 2px, 0, 1px, 1px);
+}
+
 .radio-button .radio {
   -fx-background-color: default-primary-color;
 }

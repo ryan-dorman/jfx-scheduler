@@ -2,7 +2,9 @@ package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
+import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
+import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +19,10 @@ import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
 
-    // Customers State
+    // State
     ObservableList<Customer> customers;
+    ObservableList<Country> countries;
+    ObservableList<FirstLevelDivision> divisions;
 
     // Customers Table
     @FXML
@@ -51,7 +55,7 @@ public class CustomersViewController implements Initializable {
         countryColumn.setCellValueFactory(customerData ->
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
-        // Populate customers with DAOs
+        // Populate the initial state with DAOs
         initData();
 
         customersTable.setItems(customers);
