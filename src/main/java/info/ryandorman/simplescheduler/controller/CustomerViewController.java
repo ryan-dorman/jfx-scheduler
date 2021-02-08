@@ -1,6 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
-import info.ryandorman.simplescheduler.common.JavaFxUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
@@ -80,7 +80,7 @@ public class CustomerViewController implements Initializable {
     @FXML
     public void onCancel(ActionEvent actionEvent) {
         // Confirm cancel before closing the associated Modal
-        boolean userConfirmed = JavaFxUtil.confirmation("Cancel", "Cancel Changes",
+        boolean userConfirmed = AlertUtil.confirmation("Cancel", "Cancel Changes",
                 "Are you sure you want to return to the Customers?");
 
         if (userConfirmed) {

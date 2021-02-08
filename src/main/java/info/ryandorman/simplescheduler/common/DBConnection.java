@@ -78,6 +78,7 @@ public class DBConnection {
     public static void close() {
         try {
             if (conn != null && !conn.isClosed()) {
+                conn.commit();
                 conn.close();
                 sysLogger.info("Database connection closed: " + conn.toString());
             }

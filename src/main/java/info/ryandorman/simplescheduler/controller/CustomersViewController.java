@@ -2,9 +2,7 @@ package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
-import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
-import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +22,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
@@ -69,19 +68,29 @@ public class CustomersViewController implements Initializable {
 
         // Populate the initial state with DAOs
         initData();
-
-        customersTable.setItems(customers);
     }
 
-    private void initData() {
+    public void initData() {
         // Load Customers for TableView
         CustomerDao customerDao = new CustomerDaoImpl();
-        customers = FXCollections.observableArrayList(customerDao.getAll());
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
+        customersTable.setItems(customers);
     }
 
     @FXML
     public void onSearch() {
+        String input = searchField.getText().trim().toLowerCase(Locale.ROOT);
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
+        CustomerDao customerDao = new CustomerDaoImpl();
 
+        // If no search input was given display all customers
+        if (input.isEmpty()) {
+            customers.setAll(customerDao.getAll());
+        } else {
+            customers.setAll(customerDao.getByNameLike(input));
+        }
+
+        customersTable.setItems(customers);
     }
 
     @FXML
@@ -99,7 +108,8 @@ public class CustomersViewController implements Initializable {
     }
 
     @FXML
-    public void onDelete() {}
+    public void onDelete() {
+    }
 
     private void loadCustomerView(ActionEvent actionEvent, String title, Customer selectCustomer) throws IOException {
         Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

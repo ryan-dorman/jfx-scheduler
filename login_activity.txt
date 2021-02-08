@@ -60,3 +60,6 @@ INFO: [USER] Login Clicked
 2021-02-07 19:37:02 [INFO] User: test - Successful Login (Try=1) 
 2021-02-07 19:37:58 [INFO] User: test - Successful Login (Try=1) 
 2021-02-07 19:41:49 [INFO] User: test - Successful Login (Try=1) 
+2021-02-08 17:24:35 [INFO] User: test - Successful Login (try=1) 
+2021-02-08 17:27:27 [INFO] User: test - Successful Login (try=1) 
+2021-02-08 17:37:47 [INFO] User: test - Successful Login (try=1) 

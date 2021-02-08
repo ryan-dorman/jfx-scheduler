@@ -30,7 +30,7 @@ public class CustomerDaoImpl implements CustomerDao {
     private static final String GET_BY_NAME_LIKE = "SELECT co.*, fld.*, c.* FROM customers c " +
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
-            "WHERE c.customer_name LIKE '%?%';";
+            "WHERE LOWER(c.customer_name) LIKE CONCAT('%', ?, '%')";
 
     public static Customer mapResult(ResultSet rs) throws SQLException {
         ResultColumnIterator resultColumn = new ResultColumnIterator(1);
