@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 public class CustomersViewController implements Initializable {
 
     // Customers State
-    ObservableList<Customer> customers = FXCollections.observableArrayList();
+    ObservableList<Customer> customers;
 
     // Customers Table
     @FXML
@@ -48,7 +48,7 @@ public class CustomersViewController implements Initializable {
         postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         divisionColumn.setCellValueFactory(customerData ->
                 new SimpleStringProperty(customerData.getValue().getDivision().getName()));
-        divisionColumn.setCellValueFactory(customerData ->
+        countryColumn.setCellValueFactory(customerData ->
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
         // Populate customers with DAOs
@@ -59,6 +59,6 @@ public class CustomersViewController implements Initializable {
 
     private void initData() {
         CustomerDao customerDao = new CustomerDaoImpl();
-        customers = (ObservableList<Customer>) customerDao.getAll();
+        customers = FXCollections.observableArrayList(customerDao.getAll());
     }
 }
