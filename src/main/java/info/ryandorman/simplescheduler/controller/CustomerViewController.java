@@ -1,11 +1,12 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.AlertUtil;
-import info.ryandorman.simplescheduler.dao.CustomerDao;
-import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
+import info.ryandorman.simplescheduler.dao.*;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,12 +15,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
 
+    private CustomerDao customerDao = new CustomerDaoImpl();
+    private CountryDao countryDao = new CountryDaoImpl();
+    private FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
     private boolean isUpdating = false;
 
     // Modal Header
@@ -50,12 +56,30 @@ public class CustomerViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Setup ComboBoxes to display the correct class properties
+        // Load Countries
+        ObservableList<Country> countries = FXCollections.observableArrayList(countryDao.getAll());
 
-        // Setup fld ComboBox to load items based on selection of Country
+        // Configure how ComboBox displays a Country
+        countryComboBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Country co) {
+                return co.getName();
+            }
 
-        // Load Countries for ComboBox
+            @Override
+            public Country fromString(String string) {
+                return countries.stream().filter(co ->
+                        co.getName().equals(string)).findFirst().orElse(null);
+            }
+        });
 
+        // Listener to configure divisions ComboBox based on country selected
+        countryComboBox.valueProperty().addListener((obs, oldVale, newValue) -> {
+            if (newValue != null) {
+                setupDivisionComboBox(newValue.getId());
+            }
+        });
+        countryComboBox.setItems(countries);
     }
 
     public void initData(Stage currentStage, int selectedCustomerId) {
@@ -64,7 +88,6 @@ public class CustomerViewController implements Initializable {
         header.setText("Edit Customer");
 
         // Get current version of customer
-        CustomerDao customerDao = new CustomerDaoImpl();
         Customer customer = customerDao.getById(selectedCustomerId);
 
         if (customer != null) {
@@ -77,15 +100,13 @@ public class CustomerViewController implements Initializable {
             postalCodeTextField.setText(customer.getPostalCode());
 
             // set combo values based on country and fld
+            countryComboBox.valueProperty().setValue(customer.getDivision().getCountry());
+            divisionComboBox.valueProperty().setValue(customer.getDivision());
         } else {
             // Display warning and close
             AlertUtil.warning("Not Found", "Invalid Id", "Customer specified no longer exists.");
             currentStage.close();
         }
-    }
-
-    public void onCountrySelection() {
-        // set values on division combo base on selection
     }
 
     @FXML
@@ -108,4 +129,23 @@ public class CustomerViewController implements Initializable {
             currentStage.close();
         }
     }
+
+    private void setupDivisionComboBox(int countryId) {
+        ObservableList<FirstLevelDivision> divisions = FXCollections.observableArrayList(divisionDao.getByCountryId(countryId));
+        divisionComboBox.setConverter(new StringConverter<>() {
+
+            @Override
+            public String toString(FirstLevelDivision division) {
+                return division.getName();
+            }
+
+            @Override
+            public FirstLevelDivision fromString(String string) {
+                return divisions.stream().filter(fld ->
+                        fld.getName().equals(string)).findFirst().orElse(null);
+            }
+        });
+        divisionComboBox.setItems(divisions);
+    }
+
 }

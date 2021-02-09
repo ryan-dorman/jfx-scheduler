@@ -8,7 +8,9 @@ package info.ryandorman.simplescheduler.common;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.util.StringConverter;
 
+import java.util.List;
 import java.util.Optional;
 
 /**

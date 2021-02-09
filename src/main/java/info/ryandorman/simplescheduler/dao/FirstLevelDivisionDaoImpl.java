@@ -70,7 +70,8 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(divisions.size() + " Divisions returned from database by FirstLevelDivisionDao.getAll");
+        sysLogger.info(divisions.size() +
+                " Divisions returned from database by FirstLevelDivisionDao.getByCountryId=" + countryId);
         return divisions;
     }
 }

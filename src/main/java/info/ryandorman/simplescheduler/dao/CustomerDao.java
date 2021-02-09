@@ -5,15 +5,15 @@ import info.ryandorman.simplescheduler.model.Customer;
 import java.util.List;
 
 public interface CustomerDao {
-    public List<Customer> getAll();
+    List<Customer> getAll();
 
-    public Customer getById(int id);
+    Customer getById(int id);
 
-    public List<Customer> getByNameLike(String name);
+    List<Customer> getByNameLike(String name);
 
-    public Customer create(Customer customer);
+    Customer create(Customer customer);
 
-    public Customer update(Customer customer);
+    Customer update(Customer customer);
 
-    public Customer delete(Customer customer);
+    Customer delete(Customer customer);
 }

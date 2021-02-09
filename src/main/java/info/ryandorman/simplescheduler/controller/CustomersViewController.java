@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
 
+    private CustomerDao customerDao = new CustomerDaoImpl();
     private boolean isFiltered = false;
 
     // Customers Table
@@ -65,23 +66,25 @@ public class CustomersViewController implements Initializable {
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
         // Populate the TableView
-        loadCustomers();
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
+        customersTable.setItems(customers);
     }
 
     @FXML
     public void onSearch() {
         String input = searchField.getText().trim().toLowerCase(Locale.ROOT);
+        ObservableList<Customer> customers = FXCollections.observableArrayList();
 
         // If no search input was given reset search filter and display all customers
         if (input.isEmpty() && isFiltered) {
-            loadCustomers();
+            customers.addAll(customerDao.getAll());
             isFiltered = false;
         } else {
-            CustomerDao customerDao = new CustomerDaoImpl();
-            ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getByNameLike(input));
-            customersTable.setItems(customers);
+            customers.addAll(customerDao.getByNameLike(input));
             isFiltered = true;
         }
+
+        customersTable.setItems(customers);
     }
 
     @FXML
@@ -106,9 +109,7 @@ public class CustomersViewController implements Initializable {
      * Load customers and populate the TableView with the results.
      */
     private void loadCustomers() {
-        CustomerDao customerDao = new CustomerDaoImpl();
-        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
-        customersTable.setItems(customers);
+
     }
 
     private void loadCustomerView(ActionEvent actionEvent, String title, int selectCustomerId) throws IOException {

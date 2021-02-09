@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 public class LoginViewController implements Initializable {
     private static final Logger userLogger = Logger.getLogger("userActivity");
+    private final UserDao userDao = new UserDaoImpl();
     private int loginAttempts = 0;
 
     // Login Labels
@@ -77,8 +78,8 @@ public class LoginViewController implements Initializable {
 
     @FXML
     public void onLogin(ActionEvent actionEvent) throws IOException {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
 
         // Validate fields and show errors for missing values
         if (username.isBlank() || username.length() > 50) {
@@ -94,7 +95,6 @@ public class LoginViewController implements Initializable {
         }
 
         // Check DB for User of provided name
-        UserDao userDao = new UserDaoImpl();
         User user = userDao.getByName(username.toLowerCase());
         loginAttempts++;
 
