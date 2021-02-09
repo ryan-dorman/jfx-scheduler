@@ -22,14 +22,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
 
-    // State
-    ObservableList<Customer> customers;
+    private boolean isFiltered = false;
 
     // Customers Table
     @FXML
@@ -66,36 +64,29 @@ public class CustomersViewController implements Initializable {
         countryColumn.setCellValueFactory(customerData ->
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
-        // Populate the initial state with DAOs
-        initData();
-    }
-
-    public void initData() {
-        // Load Customers for TableView
-        CustomerDao customerDao = new CustomerDaoImpl();
-        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
-        customersTable.setItems(customers);
+        // Populate the TableView
+        loadCustomers();
     }
 
     @FXML
     public void onSearch() {
         String input = searchField.getText().trim().toLowerCase(Locale.ROOT);
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
-        CustomerDao customerDao = new CustomerDaoImpl();
 
-        // If no search input was given display all customers
-        if (input.isEmpty()) {
-            customers.setAll(customerDao.getAll());
+        // If no search input was given reset search filter and display all customers
+        if (input.isEmpty() && isFiltered) {
+            loadCustomers();
+            isFiltered = false;
         } else {
-            customers.setAll(customerDao.getByNameLike(input));
+            CustomerDao customerDao = new CustomerDaoImpl();
+            ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getByNameLike(input));
+            customersTable.setItems(customers);
+            isFiltered = true;
         }
-
-        customersTable.setItems(customers);
     }
 
     @FXML
     public void onCreate(ActionEvent actionEvent) throws IOException {
-        loadCustomerView(actionEvent, "Create Customer", null);
+        loadCustomerView(actionEvent, "Create Customer", -1);
     }
 
     @FXML
@@ -103,7 +94,7 @@ public class CustomersViewController implements Initializable {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 
         if (selectedCustomer != null) {
-            loadCustomerView(actionEvent, "Update Customer", selectedCustomer);
+            loadCustomerView(actionEvent, "Update Customer", selectedCustomer.getId());
         }
     }
 
@@ -111,23 +102,34 @@ public class CustomersViewController implements Initializable {
     public void onDelete() {
     }
 
-    private void loadCustomerView(ActionEvent actionEvent, String title, Customer selectCustomer) throws IOException {
+    /**
+     * Load customers and populate the TableView with the results.
+     */
+    private void loadCustomers() {
+        CustomerDao customerDao = new CustomerDaoImpl();
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
+        customersTable.setItems(customers);
+    }
+
+    private void loadCustomerView(ActionEvent actionEvent, String title, int selectCustomerId) throws IOException {
         Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/CustomerView.fxml"));
-        Parent partViewParent = loader.load();
-        Stage partViewStage = new Stage();
+        Parent parent = loader.load();
+        Stage stage = new Stage();
         CustomerViewController controller = loader.getController();
 
-        // Pass Customer ref to Controller
-        controller.initData(selectCustomer);
+        // A valid customer id indicates a record is being updated
+        if (selectCustomerId > 0) {
+            controller.initData(stage, selectCustomerId);
+        }
 
         // Init View
-        partViewStage.setTitle(title);
-        partViewStage.setScene(new Scene(partViewParent, 450, 500));
-        partViewStage.initOwner(customerStage);
-        partViewStage.initModality(Modality.APPLICATION_MODAL);
-        partViewStage.showAndWait();
+        stage.setTitle(title);
+        stage.setScene(new Scene(parent, 450, 500));
+        stage.initOwner(customerStage);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 }

@@ -1,10 +1,11 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.AlertUtil;
+import info.ryandorman.simplescheduler.dao.CustomerDao;
+import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,10 +20,7 @@ import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
 
-    // State
-    Customer selectedCustomer;
-    ObservableList<Country> countries;
-    ObservableList<FirstLevelDivision> divisions;
+    private boolean isUpdating = false;
 
     // Modal Header
     @FXML
@@ -52,21 +50,37 @@ public class CustomerViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Setup ComboBoxes to display the correct class properties
+
+        // Setup fld ComboBox to load items based on selection of Country
+
         // Load Countries for ComboBox
+
     }
 
-    public void initData(Customer selectedCustomers) {
-        this.selectedCustomer = selectedCustomer;
+    public void initData(Stage currentStage, int selectedCustomerId) {
+        // Setup modal for editing
+        isUpdating = true;
+        header.setText("Edit Customer");
 
-        // Determine if the user is Creating or Updating
-        if (this.selectedCustomer != null) {
-            // Setup modal for editing
-            header.setText("Edit Customer");
+        // Get current version of customer
+        CustomerDao customerDao = new CustomerDaoImpl();
+        Customer customer = customerDao.getById(selectedCustomerId);
 
+        if (customer != null) {
             // Set up form with selected customer for updating
             // populate text fields
+            idTextField.setText(String.valueOf(customer.getId()));
+            nameTextField.setText(customer.getName());
+            phoneTextField.setText(customer.getPhone());
+            addressTextField.setText(customer.getAddress());
+            postalCodeTextField.setText(customer.getPostalCode());
 
             // set combo values based on country and fld
+        } else {
+            // Display warning and close
+            AlertUtil.warning("Not Found", "Invalid Id", "Customer specified no longer exists.");
+            currentStage.close();
         }
     }
 
@@ -75,7 +89,13 @@ public class CustomerViewController implements Initializable {
     }
 
     @FXML
-    public void onSave() {}
+    public void onSave() {
+        if (isUpdating) {
+            // Update call to dao
+        } else {
+            // Save call to dao
+        }
+    }
 
     @FXML
     public void onCancel(ActionEvent actionEvent) {
@@ -84,8 +104,8 @@ public class CustomerViewController implements Initializable {
                 "Are you sure you want to return to the Customers?");
 
         if (userConfirmed) {
-            Stage partStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            partStage.close();
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            currentStage.close();
         }
     }
 }
