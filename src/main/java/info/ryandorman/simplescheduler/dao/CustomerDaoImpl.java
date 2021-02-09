@@ -112,7 +112,7 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         sysLogger.info(customer.getId() + ":" + customer.getName()
-                + " returned from database by CustomerDao.getById");
+                + " returned from database by CustomerDao.getById=" + id);
         return customer;
     }
 
@@ -141,7 +141,7 @@ public class CustomerDaoImpl implements CustomerDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(customers.size() + " Customers returned from database by CustomerDao.getByNameLike");
+        sysLogger.info(customers.size() + " Customers returned from database by CustomerDao.getByNameLike=" + name);
         return customers;
     }
 

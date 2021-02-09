@@ -89,7 +89,7 @@ public class UserDaoImpl implements UserDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getById");
+        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getById=" + id);
         return user;
     }
 
@@ -118,7 +118,7 @@ public class UserDaoImpl implements UserDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getByName");
+        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getByName=" + name);
         return user;
     }
 }
