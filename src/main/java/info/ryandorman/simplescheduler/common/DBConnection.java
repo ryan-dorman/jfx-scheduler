@@ -73,6 +73,22 @@ public class DBConnection {
     }
 
     /**
+     * Commit any open transactions to the database.
+     */
+    public static void commit() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.commit();
+                sysLogger.info("Committing open database transactions for connection : " + conn.toString());
+            }
+        } catch (SQLException e) {
+            sysLogger.severe("Database commit failed for connection: " + conn.toString());
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Close the existing connection to the database. Log the outcome and capture any errors.
      */
     public static void close() {
