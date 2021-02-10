@@ -113,6 +113,8 @@ public class CustomerViewController implements Initializable {
 
     @FXML
     public void onSave(ActionEvent actionEvent) {
+        int saved;
+
         // Get customer fields updated in form
         String name = nameTextField.getText().trim();
         String phone = phoneTextField.getText().trim();
@@ -129,10 +131,16 @@ public class CustomerViewController implements Initializable {
         currentCustomer.setUpdatedBy(MainViewController.currentUser.getName());
 
         if (isUpdating) {
-            customerDao.update(currentCustomer);
+            saved = customerDao.update(currentCustomer);
         } else {
             currentCustomer.setCreatedBy(MainViewController.currentUser.getName());
-            customerDao.create(currentCustomer);
+            saved = customerDao.create(currentCustomer);
+        }
+
+        if (saved == 0) {
+            AlertUtil.warning("Failed", "Failed to Save Changes",
+                    "Something went wrong. Please try to save the Customer again.");
+            return;
         }
 
         // Close the Modal and reload customers to view create/update

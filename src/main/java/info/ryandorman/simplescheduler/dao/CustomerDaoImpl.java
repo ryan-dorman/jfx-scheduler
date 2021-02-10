@@ -160,9 +160,10 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public void create(Customer customer) {
+    public int create(Customer customer) {
         Connection conn;
         PreparedStatement stmt = null;
+        int created = 0;
 
         try {
             conn = DBConnection.getConnection();
@@ -178,6 +179,8 @@ public class CustomerDaoImpl implements CustomerDao {
             stmt.setString(i++, customer.getUpdatedBy());
             stmt.execute();
 
+            created = stmt.getUpdateCount();
+
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
@@ -187,12 +190,14 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         sysLogger.info("Customer created in the database by CustomerDao.create");
+        return created;
     }
 
     @Override
-    public void update(Customer customer) {
+    public int update(Customer customer) {
         Connection conn;
         PreparedStatement stmt = null;
+        int updated = 0;
 
         try {
             conn = DBConnection.getConnection();
@@ -208,6 +213,8 @@ public class CustomerDaoImpl implements CustomerDao {
             stmt.setInt(i++, customer.getId());
             stmt.execute();
 
+            updated = stmt.getUpdateCount();
+
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
@@ -217,12 +224,14 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         sysLogger.info("Customer updated in the database by CustomerDao.update");
+        return updated;
     }
 
     @Override
-    public void delete(int id) {
+    public int delete(int id) {
         Connection conn;
         PreparedStatement stmt = null;
+        int deleted = 0;
 
         try {
             conn = DBConnection.getConnection();
@@ -230,6 +239,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
             stmt.setInt(1, id);
             stmt.execute();
+
+            deleted = stmt.getUpdateCount();
 
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
@@ -240,5 +251,6 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         sysLogger.info("Customer deleted from the database by CustomerDao.delete");
+        return deleted;
     }
 }

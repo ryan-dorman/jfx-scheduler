@@ -11,9 +11,9 @@ public interface CustomerDao {
 
     List<Customer> getByNameLike(String name);
 
-    void create(Customer customer);
+    int create(Customer customer);
 
-    void update(Customer customer);
+    int update(Customer customer);
 
-    void delete(int id);
+    int delete(int id);
 }

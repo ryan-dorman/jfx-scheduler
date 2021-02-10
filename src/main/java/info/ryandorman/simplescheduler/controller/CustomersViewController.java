@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -106,11 +104,25 @@ public class CustomersViewController implements Initializable {
     public void onDelete() {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 
-        boolean userConfirmed = AlertUtil.confirmation("Delete", selectedCustomer.getId()
-                        + " - " + selectedCustomer.getName(),"Are you sure you want to delete this Customer?");
+        if (selectedCustomer != null) {
+            boolean userConfirmed = AlertUtil.confirmation("Delete", selectedCustomer.getId()
+                    + " - " + selectedCustomer.getName(), "Are you sure you want to delete this Customer?");
 
-        if (selectedCustomer != null && userConfirmed) {
-            customerDao.delete(selectedCustomer.getId());
+            if (userConfirmed) {
+                int deleted;
+                // TODO: Handle foreign key constraint on a customer's appointments (delete all appointments for customer_id)
+                deleted = customerDao.delete(selectedCustomer.getId());
+
+                if (deleted == 0) {
+                    AlertUtil.warning("Failed", "Failed to Save Changes",
+                            "Something went wrong. Please try to save the Customer again.");
+                } else {
+                    AlertUtil.inform("Success", "Delete Successful",
+                            "Customer " + selectedCustomer.getId() + " - " + selectedCustomer.getName() +
+                                    " has been deleted.");
+                    loadCustomers();
+                }
+            }
         }
     }
 

@@ -60,7 +60,7 @@ public class DBConnection {
             initDataSource();
         }
 
-        if (conn == null || (conn != null && conn.isClosed())) {
+        if (conn == null || conn.isClosed()) {
             conn = d.getConnection();
             conn.setAutoCommit(false);
             sysLogger.info("Database connection created: " + conn.toString());

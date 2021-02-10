@@ -53,7 +53,7 @@ public class MainViewController implements Initializable {
     }
 
     public void initData(User currentUser) {
-        this.currentUser = currentUser;
+        MainViewController.currentUser = currentUser;
         sysLogger.info("Main view loaded for " + currentUser.toString());
     }
 
