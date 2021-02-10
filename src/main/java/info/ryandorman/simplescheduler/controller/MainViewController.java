@@ -23,7 +23,9 @@ import java.util.logging.Logger;
  * in the application and loading the appropriate child views into the MainView based on the navigation item selected.
  */
 public class MainViewController implements Initializable {
+
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     public static User currentUser;
 
     // Container

@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 import java.net.URL;
@@ -22,9 +23,10 @@ import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
 
-    private CustomerDao customerDao = new CustomerDaoImpl();
-    private CountryDao countryDao = new CountryDaoImpl();
-    private FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
+    private final CustomerDao customerDao = new CustomerDaoImpl();
+    private final CountryDao countryDao = new CountryDaoImpl();
+    private final FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
+
     private Customer currentCustomer = new Customer();
     private boolean isUpdating = false;
 
@@ -133,9 +135,9 @@ public class CustomerViewController implements Initializable {
             customerDao.create(currentCustomer);
         }
 
-        // Close the Modal
-        Stage partStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-        partStage.close();
+        // Close the Modal and reload customers to view create/update
+        Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML

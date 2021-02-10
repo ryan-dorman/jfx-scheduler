@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +30,8 @@ import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
 
-    private CustomerDao customerDao = new CustomerDaoImpl();
+    private final CustomerDao customerDao = new CustomerDaoImpl();
+
     private boolean isFiltered = false;
 
     // Customers Table
@@ -67,25 +70,22 @@ public class CustomersViewController implements Initializable {
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
         // Populate the TableView
-        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
-        customersTable.setItems(customers);
+        loadCustomers();
     }
 
     @FXML
     public void onSearch() {
         String input = searchField.getText().trim().toLowerCase(Locale.ROOT);
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
 
         // If no search input was given reset search filter and display all customers
         if (input.isEmpty() && isFiltered) {
-            customers.addAll(customerDao.getAll());
+            loadCustomers();
             isFiltered = false;
         } else {
-            customers.addAll(customerDao.getByNameLike(input));
+            ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getByNameLike(input));
+            customersTable.setItems(customers);
             isFiltered = true;
         }
-
-        customersTable.setItems(customers);
     }
 
     @FXML
@@ -114,6 +114,11 @@ public class CustomersViewController implements Initializable {
         }
     }
 
+    private void loadCustomers() {
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
+        customersTable.setItems(customers);
+    }
+
     private void loadCustomerView(ActionEvent actionEvent, String title, int selectCustomerId) throws IOException {
         Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
@@ -133,8 +138,7 @@ public class CustomersViewController implements Initializable {
         stage.setScene(new Scene(parent, 450, 500));
         stage.initOwner(customerStage);
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setOnCloseRequest(we -> loadCustomers());
         stage.showAndWait();
-        // TODO:
-        // https://stackoverflow.com/questions/34590798/how-to-refresh-parent-window-after-closing-child-window-in-javafx
     }
 }
