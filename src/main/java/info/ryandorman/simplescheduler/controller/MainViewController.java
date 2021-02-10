@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  */
 public class MainViewController implements Initializable {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static User currentUser;
 
     // Container
     @FXML
@@ -39,12 +40,18 @@ public class MainViewController implements Initializable {
     @FXML
     private Button appointmentsButton;
 
+    /**
+     * Initializes the controller. Sets the initial View chosen on the navigation menu.
+     * @param url Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         onDashboardClick();
     }
 
     public void initData(User currentUser) {
+        this.currentUser = currentUser;
         sysLogger.info("Main view loaded for " + currentUser.toString());
     }
 

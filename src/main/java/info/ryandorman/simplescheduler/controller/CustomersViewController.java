@@ -1,5 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
@@ -103,13 +104,14 @@ public class CustomersViewController implements Initializable {
 
     @FXML
     public void onDelete() {
-    }
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 
-    /**
-     * Load customers and populate the TableView with the results.
-     */
-    private void loadCustomers() {
+        boolean userConfirmed = AlertUtil.confirmation("Delete", selectedCustomer.getId()
+                        + " - " + selectedCustomer.getName(),"Are you sure you want to delete this Customer?");
 
+        if (selectedCustomer != null && userConfirmed) {
+            customerDao.delete(selectedCustomer.getId());
+        }
     }
 
     private void loadCustomerView(ActionEvent actionEvent, String title, int selectCustomerId) throws IOException {
@@ -132,5 +134,7 @@ public class CustomersViewController implements Initializable {
         stage.initOwner(customerStage);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
+        // TODO:
+        // https://stackoverflow.com/questions/34590798/how-to-refresh-parent-window-after-closing-child-window-in-javafx
     }
 }

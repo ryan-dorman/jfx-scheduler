@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
@@ -26,6 +25,7 @@ public class CustomerViewController implements Initializable {
     private CustomerDao customerDao = new CustomerDaoImpl();
     private CountryDao countryDao = new CountryDaoImpl();
     private FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
+    private Customer currentCustomer = new Customer();
     private boolean isUpdating = false;
 
     // Modal Header
@@ -87,21 +87,21 @@ public class CustomerViewController implements Initializable {
         isUpdating = true;
         header.setText("Edit Customer");
 
-        // Get current version of customer
-        Customer customer = customerDao.getById(selectedCustomerId);
+        // Get latest version of customer
+        currentCustomer = customerDao.getById(selectedCustomerId);
 
-        if (customer != null) {
+        if (currentCustomer != null) {
             // Set up form with selected customer for updating
             // populate text fields
-            idTextField.setText(String.valueOf(customer.getId()));
-            nameTextField.setText(customer.getName());
-            phoneTextField.setText(customer.getPhone());
-            addressTextField.setText(customer.getAddress());
-            postalCodeTextField.setText(customer.getPostalCode());
+            idTextField.setText(String.valueOf(currentCustomer.getId()));
+            nameTextField.setText(currentCustomer.getName());
+            phoneTextField.setText(currentCustomer.getPhone());
+            addressTextField.setText(currentCustomer.getAddress());
+            postalCodeTextField.setText(currentCustomer.getPostalCode());
 
             // set combo values based on country and fld
-            countryComboBox.valueProperty().setValue(customer.getDivision().getCountry());
-            divisionComboBox.valueProperty().setValue(customer.getDivision());
+            countryComboBox.valueProperty().setValue(currentCustomer.getDivision().getCountry());
+            divisionComboBox.valueProperty().setValue(currentCustomer.getDivision());
         } else {
             // Display warning and close
             AlertUtil.warning("Not Found", "Invalid Id", "Customer specified no longer exists.");
@@ -110,12 +110,32 @@ public class CustomerViewController implements Initializable {
     }
 
     @FXML
-    public void onSave() {
+    public void onSave(ActionEvent actionEvent) {
+        // Get customer fields updated in form
+        String name = nameTextField.getText().trim();
+        String phone = phoneTextField.getText().trim();
+        String address = addressTextField.getText().trim();
+        String postalCode = postalCodeTextField.getText().trim();
+        FirstLevelDivision division = divisionComboBox.valueProperty().getValue();
+
+        // Update customer object
+        currentCustomer.setName(name);
+        currentCustomer.setPhone(phone);
+        currentCustomer.setAddress(address);
+        currentCustomer.setPostalCode(postalCode);
+        currentCustomer.setDivision(division);
+        currentCustomer.setUpdatedBy(MainViewController.currentUser.getName());
+
         if (isUpdating) {
-            // Update call to dao
+            customerDao.update(currentCustomer);
         } else {
-            // Save call to dao
+            currentCustomer.setCreatedBy(MainViewController.currentUser.getName());
+            customerDao.create(currentCustomer);
         }
+
+        // Close the Modal
+        Stage partStage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        partStage.close();
     }
 
     @FXML

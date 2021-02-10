@@ -30,13 +30,12 @@ public class CustomerDaoImpl implements CustomerDao {
             "WHERE LOWER(c.customer_name) LIKE CONCAT('%', ?, '%')";
 
     private static final String CREATE_CUSTOMER = "INSERT customers " +
-            "(customer_name, address, postal_code, phone, created_by, last_updated_by, division_id) " +
+            "(customer_name, address, postal_code, phone, division_id, created_by, last_updated_by) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
     private static final String UPDATE_CUSTOMER = "UPDATE customers " +
-            "SET customer_name = ?, address = ?, postal_code = ?, " +
-            "phone = ?, create_date = ?, created_by = ?, " +
-            "last_update = NOW(), last_updated_by = ?, division_id = ? " +
+            "SET customer_name = ?, address = ?, postal_code = ?, phone = ?, " +
+            "division_id = ?, last_update = NOW(), last_updated_by = ? " +
             "WHERE customer_id = ?;";
 
     private static final String DELETE_CUSTOMER = "DELETE FROM customers " +
@@ -161,32 +160,24 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public int create(Customer customer) {
+    public void create(Customer customer) {
         Connection conn;
         PreparedStatement stmt = null;
-        int newCustomerId = 0;
 
         try {
             conn = DBConnection.getConnection();
             stmt = conn.prepareStatement(CREATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            int i = 1;
 
-            stmt.setString(1, customer.getName());
-            stmt.setString(2, customer.getAddress());
-            stmt.setString(3, customer.getPostalCode());
-            stmt.setString(4, customer.getPhone());
-            stmt.setString(5, customer.getCreatedBy());
-            stmt.setString(6, customer.getUpdatedBy());
-            stmt.setInt(7, customer.getDivision().getId());
-            ResultSet rs = stmt.executeQuery();
+            stmt.setString(i++, customer.getName());
+            stmt.setString(i++, customer.getAddress());
+            stmt.setString(i++, customer.getPostalCode());
+            stmt.setString(i++, customer.getPhone());
+            stmt.setInt(i++, customer.getDivision().getId());
+            stmt.setString(i++, customer.getCreatedBy());
+            stmt.setString(i++, customer.getUpdatedBy());
+            stmt.execute();
 
-            if (rs.next()) {
-                newCustomerId = rs.getInt(1);
-            }
-
-
-            if (newCustomerId == 0) {
-                throw new SQLException("Creating new customer failed.");
-            }
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
@@ -195,37 +186,28 @@ public class CustomerDaoImpl implements CustomerDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info("Customer=" + newCustomerId + " created in the database by CustomerDao.create");
-        return newCustomerId;
+        sysLogger.info("Customer created in the database by CustomerDao.create");
     }
 
     @Override
-    public int update(Customer customer) {
+    public void update(Customer customer) {
         Connection conn;
         PreparedStatement stmt = null;
-        int updatedCustomerId = 0;
 
         try {
             conn = DBConnection.getConnection();
             stmt = conn.prepareStatement(UPDATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            int i = 1;
 
-            stmt.setString(1, customer.getName());
-            stmt.setString(2, customer.getAddress());
-            stmt.setString(3, customer.getPostalCode());
-            stmt.setString(4, customer.getPhone());
-            stmt.setString(5, customer.getCreatedBy());
-            stmt.setString(6, customer.getUpdatedBy());
-            stmt.setInt(7, customer.getDivision().getId());
-            stmt.setInt(8, customer.getId());
-            ResultSet rs = stmt.executeQuery();
+            stmt.setString(i++, customer.getName());
+            stmt.setString(i++, customer.getAddress());
+            stmt.setString(i++, customer.getPostalCode());
+            stmt.setString(i++, customer.getPhone());
+            stmt.setInt(i++, customer.getDivision().getId());
+            stmt.setString(i++, customer.getUpdatedBy());
+            stmt.setInt(i++, customer.getId());
+            stmt.execute();
 
-            if (rs.next()) {
-                updatedCustomerId = rs.getInt(1);
-            }
-
-            if (updatedCustomerId == 0) {
-                throw new SQLException("Updating customer failed.");
-            }
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
@@ -234,30 +216,21 @@ public class CustomerDaoImpl implements CustomerDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info("Customer=" + updatedCustomerId + " updated in the database by CustomerDao.update");
-        return updatedCustomerId;
+        sysLogger.info("Customer updated in the database by CustomerDao.update");
     }
 
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         Connection conn;
         PreparedStatement stmt = null;
-        int deletedCustomerId = 0;
 
         try {
             conn = DBConnection.getConnection();
-            stmt = conn.prepareStatement(CREATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement(DELETE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
+            stmt.execute();
 
-            if (rs.next()) {
-                deletedCustomerId = rs.getInt(1);
-            }
-
-            if (deletedCustomerId == 0) {
-                throw new SQLException("Deleting customer failed.");
-            }
         } catch (SQLException | IOException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
@@ -266,7 +239,6 @@ public class CustomerDaoImpl implements CustomerDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info("Customer=" + deletedCustomerId + " deleted from the database by CustomerDao.delete");
-        return deletedCustomerId;
+        sysLogger.info("Customer deleted from the database by CustomerDao.delete");
     }
 }
