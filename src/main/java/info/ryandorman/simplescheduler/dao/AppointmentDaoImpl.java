@@ -10,6 +10,7 @@ import java.util.List;
 public class AppointmentDaoImpl implements AppointmentDao {
 
     public static Appointment mapResult(ResultSet rs) {
+        // TODO
         return null;
     }
 
