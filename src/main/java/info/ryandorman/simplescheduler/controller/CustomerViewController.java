@@ -15,17 +15,19 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class CustomerViewController implements Initializable {
 
-    private CustomerDao customerDao = new CustomerDaoImpl();
-    private CountryDao countryDao = new CountryDaoImpl();
-    private FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
+    private final CustomerDao customerDao = new CustomerDaoImpl();
+    private final CountryDao countryDao = new CountryDaoImpl();
+    private final FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
+
+    private Customer currentCustomer = new Customer();
     private boolean isUpdating = false;
 
     // Modal Header
@@ -87,21 +89,21 @@ public class CustomerViewController implements Initializable {
         isUpdating = true;
         header.setText("Edit Customer");
 
-        // Get current version of customer
-        Customer customer = customerDao.getById(selectedCustomerId);
+        // Get latest version of customer
+        currentCustomer = customerDao.getById(selectedCustomerId);
 
-        if (customer != null) {
+        if (currentCustomer != null) {
             // Set up form with selected customer for updating
             // populate text fields
-            idTextField.setText(String.valueOf(customer.getId()));
-            nameTextField.setText(customer.getName());
-            phoneTextField.setText(customer.getPhone());
-            addressTextField.setText(customer.getAddress());
-            postalCodeTextField.setText(customer.getPostalCode());
+            idTextField.setText(String.valueOf(currentCustomer.getId()));
+            nameTextField.setText(currentCustomer.getName());
+            phoneTextField.setText(currentCustomer.getPhone());
+            addressTextField.setText(currentCustomer.getAddress());
+            postalCodeTextField.setText(currentCustomer.getPostalCode());
 
             // set combo values based on country and fld
-            countryComboBox.valueProperty().setValue(customer.getDivision().getCountry());
-            divisionComboBox.valueProperty().setValue(customer.getDivision());
+            countryComboBox.valueProperty().setValue(currentCustomer.getDivision().getCountry());
+            divisionComboBox.valueProperty().setValue(currentCustomer.getDivision());
         } else {
             // Display warning and close
             AlertUtil.warning("Not Found", "Invalid Id", "Customer specified no longer exists.");
@@ -110,12 +112,40 @@ public class CustomerViewController implements Initializable {
     }
 
     @FXML
-    public void onSave() {
+    public void onSave(ActionEvent actionEvent) {
+        int saved;
+
+        // Get customer fields updated in form
+        String name = nameTextField.getText().trim();
+        String phone = phoneTextField.getText().trim();
+        String address = addressTextField.getText().trim();
+        String postalCode = postalCodeTextField.getText().trim();
+        FirstLevelDivision division = divisionComboBox.valueProperty().getValue();
+
+        // Update customer object
+        currentCustomer.setName(name);
+        currentCustomer.setPhone(phone);
+        currentCustomer.setAddress(address);
+        currentCustomer.setPostalCode(postalCode);
+        currentCustomer.setDivision(division);
+        currentCustomer.setUpdatedBy(MainViewController.currentUser.getName());
+
         if (isUpdating) {
-            // Update call to dao
+            saved = customerDao.update(currentCustomer);
         } else {
-            // Save call to dao
+            currentCustomer.setCreatedBy(MainViewController.currentUser.getName());
+            saved = customerDao.create(currentCustomer);
         }
+
+        if (saved == 0) {
+            AlertUtil.warning("Failed", "Failed to Save Changes",
+                    "Something went wrong. Please try to save the Customer again.");
+            return;
+        }
+
+        // Close the Modal and reload customers to view create/update
+        Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML

@@ -7,10 +7,7 @@ import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,6 +28,18 @@ public class CustomerDaoImpl implements CustomerDao {
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "WHERE LOWER(c.customer_name) LIKE CONCAT('%', ?, '%')";
+
+    private static final String CREATE_CUSTOMER = "INSERT customers " +
+            "(customer_name, address, postal_code, phone, division_id, created_by, last_updated_by) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    private static final String UPDATE_CUSTOMER = "UPDATE customers " +
+            "SET customer_name = ?, address = ?, postal_code = ?, phone = ?, " +
+            "division_id = ?, last_update = NOW(), last_updated_by = ? " +
+            "WHERE customer_id = ?;";
+
+    private static final String DELETE_CUSTOMER = "DELETE FROM customers " +
+            "WHERE customer_id = ?;";
 
     public static Customer mapResult(ResultSet rs) throws SQLException {
         ResultColumnIterator resultColumn = new ResultColumnIterator(1);
@@ -111,8 +120,13 @@ public class CustomerDaoImpl implements CustomerDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(customer.getId() + ":" + customer.getName()
-                + " returned from database by CustomerDao.getById=" + id);
+        if (customer != null) {
+            sysLogger.info(customer.getId() + ":" + customer.getName()
+                    + " returned from database by CustomerDao.getById");
+        } else {
+            sysLogger.warning("No customer returned from database by CustomerDao.getById=" + id);
+        }
+
         return customer;
     }
 
@@ -146,17 +160,97 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer create(Customer customer) {
-        return null;
+    public int create(Customer customer) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int created = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(CREATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            int i = 1;
+
+            stmt.setString(i++, customer.getName());
+            stmt.setString(i++, customer.getAddress());
+            stmt.setString(i++, customer.getPostalCode());
+            stmt.setString(i++, customer.getPhone());
+            stmt.setInt(i++, customer.getDivision().getId());
+            stmt.setString(i++, customer.getCreatedBy());
+            stmt.setString(i++, customer.getUpdatedBy());
+            stmt.execute();
+
+            created = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Customer created in the database by CustomerDao.create");
+        return created;
     }
 
     @Override
-    public Customer update(Customer customer) {
-        return null;
+    public int update(Customer customer) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int updated = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(UPDATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            int i = 1;
+
+            stmt.setString(i++, customer.getName());
+            stmt.setString(i++, customer.getAddress());
+            stmt.setString(i++, customer.getPostalCode());
+            stmt.setString(i++, customer.getPhone());
+            stmt.setInt(i++, customer.getDivision().getId());
+            stmt.setString(i++, customer.getUpdatedBy());
+            stmt.setInt(i++, customer.getId());
+            stmt.execute();
+
+            updated = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Customer updated in the database by CustomerDao.update");
+        return updated;
     }
 
     @Override
-    public Customer delete(Customer customer) {
-        return null;
+    public int delete(int id) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int deleted = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(DELETE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setInt(1, id);
+            stmt.execute();
+
+            deleted = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Customer deleted from the database by CustomerDao.delete");
+        return deleted;
     }
 }

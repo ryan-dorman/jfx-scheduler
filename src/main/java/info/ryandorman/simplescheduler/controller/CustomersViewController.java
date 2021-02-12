@@ -1,5 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
@@ -27,7 +28,8 @@ import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
 
-    private CustomerDao customerDao = new CustomerDaoImpl();
+    private final CustomerDao customerDao = new CustomerDaoImpl();
+
     private boolean isFiltered = false;
 
     // Customers Table
@@ -66,25 +68,22 @@ public class CustomersViewController implements Initializable {
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
 
         // Populate the TableView
-        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
-        customersTable.setItems(customers);
+        loadCustomers();
     }
 
     @FXML
     public void onSearch() {
         String input = searchField.getText().trim().toLowerCase(Locale.ROOT);
-        ObservableList<Customer> customers = FXCollections.observableArrayList();
 
         // If no search input was given reset search filter and display all customers
         if (input.isEmpty() && isFiltered) {
-            customers.addAll(customerDao.getAll());
+            loadCustomers();
             isFiltered = false;
         } else {
-            customers.addAll(customerDao.getByNameLike(input));
+            ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getByNameLike(input));
+            customersTable.setItems(customers);
             isFiltered = true;
         }
-
-        customersTable.setItems(customers);
     }
 
     @FXML
@@ -103,13 +102,33 @@ public class CustomersViewController implements Initializable {
 
     @FXML
     public void onDelete() {
+        Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
+
+        if (selectedCustomer != null) {
+            boolean userConfirmed = AlertUtil.confirmation("Delete", selectedCustomer.getId()
+                    + " - " + selectedCustomer.getName(), "Are you sure you want to delete this Customer?");
+
+            if (userConfirmed) {
+                int deleted;
+                // TODO: Handle foreign key constraint on a customer's appointments (delete all appointments for customer_id)
+                deleted = customerDao.delete(selectedCustomer.getId());
+
+                if (deleted == 0) {
+                    AlertUtil.warning("Failed", "Failed to Save Changes",
+                            "Something went wrong. Please try to save the Customer again.");
+                } else {
+                    AlertUtil.inform("Success", "Delete Successful",
+                            "Customer " + selectedCustomer.getId() + " - " + selectedCustomer.getName() +
+                                    " has been deleted.");
+                    loadCustomers();
+                }
+            }
+        }
     }
 
-    /**
-     * Load customers and populate the TableView with the results.
-     */
     private void loadCustomers() {
-
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
+        customersTable.setItems(customers);
     }
 
     private void loadCustomerView(ActionEvent actionEvent, String title, int selectCustomerId) throws IOException {
@@ -131,6 +150,7 @@ public class CustomersViewController implements Initializable {
         stage.setScene(new Scene(parent, 450, 500));
         stage.initOwner(customerStage);
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setOnCloseRequest(we -> loadCustomers());
         stage.showAndWait();
     }
 }

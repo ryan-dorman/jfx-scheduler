@@ -1,9 +1,9 @@
 package info.ryandorman.simplescheduler.common;
 
 /**
- * Wrapper class that keeps track of the current column being read from a result set <code>ResultSet</code>. It can be
- * used to easily map results from multiple tables into multple classes by keeping track of which columns have been read
- * by index.
+ * Wrapper class that keeps track of the current column being read from a result set <code>ResultSet</code> or into a
+ * <code>Prepared Statement</code>. It can be used to easily map multiple tables into multiple classes by keeping track
+ * of which columns have been read.
  */
 public class ResultColumnIterator {
     private int current;

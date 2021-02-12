@@ -43,6 +43,18 @@ public class AlertUtil {
     }
 
     /**
+     * Create a warning window that informs the user and requires they accept to continue.
+     *
+     * @param title Title of the window
+     * @param header Header in the window
+     * @param content Content in main body of window
+     * @return A boolean that indicates the user has accepted the information
+     */
+    public static boolean inform(String title, String header, String content) {
+        return alert(Alert.AlertType.INFORMATION, title, header, content);
+    }
+
+    /**
      * A wrapper function that allows easy population of a JavaFx alert window that is displayed until the user selects
      * a confirmation/choice.
      *
@@ -66,6 +78,6 @@ public class AlertUtil {
         // Show the Alert and wait for a response, returning it to the calling method
         Optional<ButtonType> option = alert.showAndWait();
 
-        return ButtonType.OK.equals(option.get());
+        return option.filter(ButtonType.OK::equals).isPresent();
     }
 }

@@ -60,7 +60,7 @@ public class DBConnection {
             initDataSource();
         }
 
-        if (conn == null || (conn != null && conn.isClosed())) {
+        if (conn == null || conn.isClosed()) {
             conn = d.getConnection();
             conn.setAutoCommit(false);
             sysLogger.info("Database connection created: " + conn.toString());
@@ -70,6 +70,22 @@ public class DBConnection {
         }
 
         return conn;
+    }
+
+    /**
+     * Commit any open transactions to the database.
+     */
+    public static void commit() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.commit();
+                sysLogger.info("Committing open database transactions for connection : " + conn.toString());
+            }
+        } catch (SQLException e) {
+            sysLogger.severe("Database commit failed for connection: " + conn.toString());
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -23,7 +23,10 @@ import java.util.logging.Logger;
  * in the application and loading the appropriate child views into the MainView based on the navigation item selected.
  */
 public class MainViewController implements Initializable {
+
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    public static User currentUser;
 
     // Container
     @FXML
@@ -39,12 +42,18 @@ public class MainViewController implements Initializable {
     @FXML
     private Button appointmentsButton;
 
+    /**
+     * Initializes the controller. Sets the initial View chosen on the navigation menu.
+     * @param url Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         onDashboardClick();
     }
 
     public void initData(User currentUser) {
+        MainViewController.currentUser = currentUser;
         sysLogger.info("Main view loaded for " + currentUser.toString());
     }
 
