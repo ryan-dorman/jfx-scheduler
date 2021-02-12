@@ -35,18 +35,25 @@ public class CustomersViewController implements Initializable {
     // Customers Table
     @FXML
     private TableView<Customer> customersTable;
+
     @FXML
     private TableColumn<Customer, Integer> idColumn;
+
     @FXML
     private TableColumn<Customer, String> nameColumn;
+
     @FXML
     private TableColumn<Customer, String> phoneColumn;
+
     @FXML
     private TableColumn<Customer, String> addressColumn;
+
     @FXML
     private TableColumn<Customer, String> postalCodeColumn;
+
     @FXML
     private TableColumn<Customer, String> divisionColumn;
+
     @FXML
     private TableColumn<Customer, String> countryColumn;
 

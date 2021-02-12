@@ -17,9 +17,9 @@ public class Appointment extends Base {
     private String type;
     private ZonedDateTime start;
     private ZonedDateTime end;
-    private int customerId;
-    private int userId;
-    private int contactId;
+    private Customer customer;
+    private User user;
+    private Contact contact;
 
     /**
      * Constructor accepts no parameters to allow for empty class creation and dynamic property assignment
@@ -39,9 +39,9 @@ public class Appointment extends Base {
      * @param type        Type of appointment
      * @param start       Start date and time of the appointment
      * @param end         End date and time of the appointment
-     * @param customerId  Unique id for the customer associated with the appointment
-     * @param userId      Unique id for the user associated with the appointment
-     * @param contactId   Unique id for the contact associated with the appointment
+     * @param customer    Customer associated with the appointment
+     * @param user        User associated with the appointment
+     * @param contact     Contact associated with the appointment
      * @param created     The date and time the appointment was created at, <em>should</em> be assigned at data layer
      * @param createdBy   The source that created the appointment
      * @param updated     The date and time the appointment was last updated at, <em>should</em> be assigned at data
@@ -49,7 +49,7 @@ public class Appointment extends Base {
      * @param updatedBy   The source that updated the appointment
      */
     public Appointment(int id, String title, String description, String location, String type, ZonedDateTime start,
-                       ZonedDateTime end, int customerId, int userId, int contactId, ZonedDateTime created,
+                       ZonedDateTime end, Customer customer, User user, Contact contact, ZonedDateTime created,
                        String createdBy, ZonedDateTime updated, String updatedBy) {
         super(id, created, createdBy, updated, updatedBy);
         this.title = title;
@@ -58,9 +58,9 @@ public class Appointment extends Base {
         this.type = type;
         this.start = start;
         this.end = end;
-        this.customerId = customerId;
-        this.userId = userId;
-        this.contactId = contactId;
+        this.customer = customer;
+        this.user = user;
+        this.contact = contact;
     }
 
     /**
@@ -73,21 +73,21 @@ public class Appointment extends Base {
      * @param type        Type of appointment
      * @param start       Start date and time of the appointment
      * @param end         End date and time of the appointment
-     * @param customerId  Unique id for the customer associated with the appointment
-     * @param userId      Unique id for the user associated with the appointment
-     * @param contactId   Unique id for the contact associated with the appointment
+     * @param customer    Customer associated with the appointment
+     * @param user        User associated with the appointment
+     * @param contact     Contact associated with the appointment
      */
     public Appointment(String title, String description, String location, String type, ZonedDateTime start,
-                       ZonedDateTime end, int customerId, int userId, int contactId) {
+                       ZonedDateTime end, Customer customer, User user, Contact contact) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
         this.start = start;
         this.end = end;
-        this.customerId = customerId;
-        this.userId = userId;
-        this.contactId = contactId;
+        this.customer = customer;
+        this.user = user;
+        this.contact = contact;
     }
 
     public String getTitle() {
@@ -138,28 +138,28 @@ public class Appointment extends Base {
         this.end = end;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getContactId() {
-        return contactId;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     @Override
@@ -171,9 +171,9 @@ public class Appointment extends Base {
                 ", type='" + type + '\'' +
                 ", start=" + start +
                 ", end=" + end +
-                ", customerId=" + customerId +
-                ", userId=" + userId +
-                ", contactId=" + contactId +
+                ", customer=" + customer +
+                ", user=" + user +
+                ", contact=" + contact +
                 ", id=" + id +
                 ", created=" + created +
                 ", createdBy='" + createdBy + '\'' +
