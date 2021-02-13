@@ -12,6 +12,8 @@ public interface AppointmentDao {
 
     Appointment getById(int id);
 
+    Appointment getByCustomerIdAndDateTime(int customerId, ZonedDateTime appointmentTime);
+
     int create();
 
     int update();

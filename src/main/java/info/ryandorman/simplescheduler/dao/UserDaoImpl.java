@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
-    public static User mapResult(ResultSet rs) throws SQLException {
+    private User mapResult(ResultSet rs) throws SQLException {
         ResultColumnIterator resultColumn = new ResultColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
