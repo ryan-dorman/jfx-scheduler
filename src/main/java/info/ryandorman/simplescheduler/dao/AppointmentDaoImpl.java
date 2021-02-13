@@ -99,9 +99,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
             stmt = conn.prepareStatement(GET_BY_DATE_TIME_WINDOW);
 
             ResultSet rs = stmt.executeQuery();
-            // TODO: convert start from local to utc
-//            stmt.setTimestamp(1, start);
-//            stmt.setString(2, end);
+
+            stmt.setTimestamp(1, L10nUtil.LocalToUtc(start));
+            stmt.setTimestamp(2, L10nUtil.LocalToUtc(end));
 
             while (rs.next()) {
                 Appointment appointment = mapResult(rs);
@@ -115,7 +115,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(appointments.size() + " Appointments returned from database by AppointmentDao.getAll");
+        sysLogger.info(appointments.size() + " Appointments returned from database by " +
+                "AppointmentDao.getByDateTimeWindow");
         return appointments;
     }
 

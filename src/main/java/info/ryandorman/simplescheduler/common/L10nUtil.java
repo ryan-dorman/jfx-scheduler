@@ -8,6 +8,7 @@ package info.ryandorman.simplescheduler.common;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -33,6 +34,10 @@ public class L10nUtil {
     }
 
     public static ZonedDateTime utcToLocal(Timestamp timestamp) {
-        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), zoneId);
+            return ZonedDateTime.ofInstant(timestamp.toInstant(), zoneId);
+    }
+
+    public static Timestamp LocalToUtc(ZonedDateTime zonedDateTime) {
+        return Timestamp.from(Instant.from(ZonedDateTime.ofInstant(zonedDateTime.toInstant(), ZoneOffset.UTC)));
     }
 }
