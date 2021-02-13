@@ -6,8 +6,10 @@ import info.ryandorman.simplescheduler.model.Appointment;
 import java.sql.ResultSet;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AppointmentDaoImpl implements AppointmentDao {
+    private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public static Appointment mapResult(ResultSet rs) {
         // TODO

@@ -14,9 +14,8 @@ public class Contact extends Base {
     public Contact() {
     }
 
-    public Contact(int id, String name, String email, ZonedDateTime created, String createdBy, ZonedDateTime updated,
-                   String updatedBy) {
-        super(id, created, createdBy, updated, updatedBy);
+    public Contact(int id, String name, String email) {
+        super(id, null, null, null, null);
         this.name = name;
         this.email = email;
     }
