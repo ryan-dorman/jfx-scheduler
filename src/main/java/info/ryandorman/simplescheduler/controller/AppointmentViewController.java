@@ -61,6 +61,7 @@ public class AppointmentViewController implements Initializable {
         // Setup comboBoxes
 
         // Setup Spinners to handle time input
+//        https://www.reddit.com/r/javahelp/comments/79cocp/javafx_time_spinner_hhmm_24_hour_format/
 
     }
 }
