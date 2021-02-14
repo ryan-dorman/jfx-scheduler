@@ -5,8 +5,6 @@ package info.ryandorman.simplescheduler.model;
  *   ID: 001002824
  */
 
-import java.time.ZonedDateTime;
-
 public class Contact extends Base {
     private String name;
     private String email;

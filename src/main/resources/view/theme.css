@@ -45,8 +45,8 @@
   -fx-padding: 10px 50px;
   -fx-background-color: accent-color;
   -fx-effect: dropshadow(one-pass-box, dark-primary-color, 2px, 0, 1px, 1px);
-  -fx-background-radius: 20px;
-  -fx-border-radius: 20px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
 }
 
 .sm-button,
@@ -56,8 +56,8 @@
   -fx-padding: 7px 20px;
   -fx-background-color: accent-color;
   -fx-effect: dropshadow(one-pass-box, dark-primary-color, 1.5px, 0, 1px, 1px);
-  -fx-background-radius: 20px;
-  -fx-border-radius: 20px;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
 }
