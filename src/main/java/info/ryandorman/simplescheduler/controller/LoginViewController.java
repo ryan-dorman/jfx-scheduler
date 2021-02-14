@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -73,7 +74,7 @@ public class LoginViewController implements Initializable {
         loginButton.setDefaultButton(true);
 
         // Set Timezone Value
-        userZone.setText(L10nUtil.zoneId.toString());
+        userZone.setText(ZoneId.systemDefault().toString());
     }
 
     @FXML

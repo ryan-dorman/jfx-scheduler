@@ -18,9 +18,6 @@ import java.util.ResourceBundle;
  * and languages to be used before the data is displayed in the view.
  */
 public class L10nUtil {
-    public static final Locale locale = Locale.getDefault();
-    public static final ZoneId zoneId = ZoneId.systemDefault();
-
     /**
      * Get the language string associated with a given key from <code>languageBundle_**.properties</code> based on the
      * default locale detected.
@@ -29,12 +26,12 @@ public class L10nUtil {
      * @return Language string for the locale
      */
     public static String getLanguage(String bundleKey) {
-        ResourceBundle rb = ResourceBundle.getBundle("languageBundle", locale);
+        ResourceBundle rb = ResourceBundle.getBundle("languageBundle", Locale.getDefault());
         return rb.getString(bundleKey);
     }
 
     public static ZonedDateTime utcToLocal(Timestamp timestamp) {
-            return ZonedDateTime.ofInstant(timestamp.toInstant(), zoneId);
+            return ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
     }
 
     public static Timestamp LocalToUtc(ZonedDateTime zonedDateTime) {

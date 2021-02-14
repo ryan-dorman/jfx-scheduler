@@ -6,10 +6,7 @@ import info.ryandorman.simplescheduler.common.ResultColumnIterator;
 import info.ryandorman.simplescheduler.model.*;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,10 +118,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
             conn = DBConnection.getConnection();
             stmt = conn.prepareStatement(GET_BY_DATE_TIME_WINDOW);
 
-            ResultSet rs = stmt.executeQuery();
-
             stmt.setTimestamp(1, L10nUtil.LocalToUtc(start));
             stmt.setTimestamp(2, L10nUtil.LocalToUtc(end));
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Appointment appointment = mapResult(rs);

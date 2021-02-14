@@ -1,22 +1,24 @@
 package info.ryandorman.simplescheduler.controller;
 
+import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.dao.AppointmentDao;
 import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AppointmentsViewController implements Initializable {
@@ -84,12 +86,32 @@ public class AppointmentsViewController implements Initializable {
                 new SimpleObjectProperty<>(appointmentData.getValue().getCustomer().getId()));
 
         // Set default sort
+        startColumn.setSortType(TableColumn.SortType.ASCENDING);
+        appointmentsTable.getSortOrder().add(startColumn);
 
         // Setup radio buttons, default to all appointments shown
-
-
-        loadAppointments();
+        ToggleGroup filters = new ToggleGroup();
+        filters.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            RadioButton selected = (RadioButton) filters.getSelectedToggle();
+            if (selected != null) {
+                switch (selected.getText()) {
+                    case "This Week":
+                        filterAppointments(CalendarUtil.getFirstDayOfWeek(), CalendarUtil.getLastDayOfWeek());
+                        break;
+                    case "This Month":
+                        filterAppointments(CalendarUtil.getFirstDayOfMonth(), CalendarUtil.getLastDayOfMonth());
+                        break;
+                    default:
+                        loadAppointments();
+                }
+            }
+        });
+        allRadioButton.setToggleGroup(filters);
+        thisWeekRadioButton.setToggleGroup(filters);
+        thisMonthRadioButton.setToggleGroup(filters);
+        allRadioButton.setSelected(true);
     }
+
     @FXML
     public void onCreate() {}
 
@@ -101,6 +123,12 @@ public class AppointmentsViewController implements Initializable {
 
     private void loadAppointments() {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList(appointmentDao.getAll());
+        appointmentsTable.setItems(appointments);
+    }
+
+    private void filterAppointments(ZonedDateTime start, ZonedDateTime end) {
+        List<Appointment> filteredAppointments = appointmentDao.getByDateTimeWindow(start, end);
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList(filteredAppointments);
         appointmentsTable.setItems(appointments);
     }
 }
