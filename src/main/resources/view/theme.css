@@ -112,6 +112,7 @@
 }
 
 .text-area,
+.text-area .content,
 .text-field {
   -fx-background-color: -fx-text-box-border, -fx-control-inner-background;
   -fx-background-insets: 0;

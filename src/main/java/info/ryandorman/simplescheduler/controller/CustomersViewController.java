@@ -1,6 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
-import info.ryandorman.simplescheduler.common.AlertUtil;
+import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
@@ -120,7 +120,7 @@ public class CustomersViewController implements Initializable {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
 
         if (selectedCustomer != null) {
-            boolean userConfirmed = AlertUtil.confirmation("Delete", selectedCustomer.getId()
+            boolean userConfirmed = JavaFXUtil.confirmation("Delete", selectedCustomer.getId()
                     + " - " + selectedCustomer.getName(), "Are you sure you want to delete this Customer?");
 
             if (userConfirmed) {
@@ -129,10 +129,10 @@ public class CustomersViewController implements Initializable {
                 deleted = customerDao.delete(selectedCustomer.getId());
 
                 if (deleted == 0) {
-                    AlertUtil.warning("Failed", "Failed to Save Changes",
+                    JavaFXUtil.warning("Failed", "Failed to Save Changes",
                             "Something went wrong. Please try to save the Customer again.");
                 } else {
-                    AlertUtil.inform("Success", "Delete Successful",
+                    JavaFXUtil.inform("Success", "Delete Successful",
                             "Customer " + selectedCustomer.getId() + " - " + selectedCustomer.getName() +
                                     " has been deleted.");
                     loadCustomers();

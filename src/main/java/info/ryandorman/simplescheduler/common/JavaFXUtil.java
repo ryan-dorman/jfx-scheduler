@@ -5,6 +5,8 @@ package info.ryandorman.simplescheduler.common;
  *   ID: 001002824
  */
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
@@ -14,10 +16,25 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A utility class that allow easy creation and manipulation of various JavaFx alerts that are used to inform and
- * interact with users.
+ * A utility class that allow easy creation and manipulation of various JavaFx components such as ComboBoxes and Alerts.
  */
-public class AlertUtil {
+public class JavaFXUtil {
+
+    public static StringConverter getComboBoxConverter(List<ComboBoxOption> options) {
+        return new StringConverter<ComboBoxOption>() {
+            @Override
+            public String toString(ComboBoxOption option) {
+                return option.getLabel();
+            }
+
+            @Override
+            public ComboBoxOption fromString(String string) {
+                return options.stream().filter(co ->
+                        co.getLabel().equals(string)).findFirst().orElse(null);
+            }
+        };
+    }
+
     /**
      * Create a confirmation window that requires user feedback to determine which path the application takes.
      *
@@ -68,7 +85,7 @@ public class AlertUtil {
         // Create Confirmation Alert and set the stylesheet on the pane
         Alert alert = new Alert(type);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(AlertUtil.class.getResource("/view/theme.css").toExternalForm());
+        dialogPane.getStylesheets().add(JavaFXUtil.class.getResource("/view/theme.css").toExternalForm());
 
         // Set the Alert's type content
         alert.setTitle(title);
@@ -80,4 +97,6 @@ public class AlertUtil {
 
         return option.filter(ButtonType.OK::equals).isPresent();
     }
+
+
 }

@@ -21,7 +21,7 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </Button>
-                  <TextField fx:id="searchField" onAction="#onSearch" prefHeight="30.0" prefWidth="250.0" promptText="Lookup by First or Last Name">
+                  <TextField fx:id="searchField" onAction="#onSearch" prefHeight="30.0" prefWidth="250.0" promptText="Lookup by Name or Id">
                      <font>
                         <Font size="13.0" />
                      </font>
