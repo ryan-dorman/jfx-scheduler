@@ -28,14 +28,14 @@
                   <TableView fx:id="appointmentsTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1140.0">
                     <columns>
                       <TableColumn fx:id="idColumn" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Id" />
-                      <TableColumn fx:id="titleColumn" text="Title" />
+                      <TableColumn fx:id="titleColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Title" />
                         <TableColumn fx:id="descriptionColumn" text="Description" />
                         <TableColumn fx:id="locationColumn" text="Location" />
-                        <TableColumn fx:id="contactColumn" text="Contact" />
-                        <TableColumn fx:id="typeColumn" prefWidth="100.0" text="Type" />
+                        <TableColumn fx:id="contactColumn" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Contact" />
+                        <TableColumn fx:id="typeColumn" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Type" />
                         <TableColumn fx:id="startColumn" prefWidth="150.0" text="Start" />
                         <TableColumn fx:id="endColumn" prefWidth="150.0" text="End" />
-                        <TableColumn fx:id="customerIdColumn" maxWidth="125.0" minWidth="100.0" text="Customer Id" />
+                        <TableColumn fx:id="customerIdColumn" maxWidth="125.0" minWidth="95.0" prefWidth="95.0" text="Customer Id" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

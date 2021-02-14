@@ -66,7 +66,7 @@ public class AppointmentsViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm:ss a");
 
         // Setup Appointments Table View Columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));

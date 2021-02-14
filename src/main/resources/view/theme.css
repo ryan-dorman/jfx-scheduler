@@ -111,17 +111,22 @@
   -fx-font-weight: bold;
 }
 
+.text-area,
 .text-field {
-  -fx-background-color: -fx-control-inner-background;
+  -fx-background-color: -fx-text-box-border, -fx-control-inner-background;
   -fx-background-insets: 0;
   -fx-padding: 10px;
-  -fx-background-radius: 0;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-border-radius: 0;
   -fx-border-width: 2px;
   -fx-border-color: transparent;
+  -fx-text-box-border: -fx-control-inner-background;
+  -fx-faint-focus-color: -fx-control-inner-background;
+  -fx-focus-color: -fx-control-inner-background;
   -fx-effect: dropshadow(one-pass-box, default-primary-color, 2px, 0, 1px, 1px);
 }
 
+.text-area:focused,
 .text-field:focused {
   -fx-border-width: 2px;
   -fx-border-color: transparent transparent accent-color transparent;
@@ -136,6 +141,18 @@
   -fx-border-width: 2px;
   -fx-border-color: transparent;
   -fx-effect: dropshadow(one-pass-box, default-primary-color, 2px, 0, 1px, 1px);
+}
+
+.date-picker > .arrow-button,
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: accent-color;
+}
+
+.date-picker > .arrow-button > .arrow,
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: -fx-control-inner-background;
 }
 
 .radio-button .radio {
