@@ -163,8 +163,12 @@ public class AppointmentDaoImpl implements AppointmentDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(appointment.getId() + ":" + appointment.getTitle()
-                + " returned from database by AppointmentDao.getById=" + id);
+        if (appointment != null) {
+            sysLogger.info(appointment.getId() + ":" + appointment.getTitle()
+                    + " returned from database by AppointmentDao.getById=" + id);
+        } else {
+            sysLogger.warning("No appointment returned from database by AppointmentDao.getById=" + id);
+        }
         return appointment;
     }
 

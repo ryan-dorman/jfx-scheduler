@@ -80,14 +80,22 @@ public class CustomersViewController implements Initializable {
 
     @FXML
     public void onSearch() {
-        String input = searchField.getText().trim().toLowerCase(Locale.ROOT);
+        String input = searchField.getText().trim();
 
         // If no search input was given reset search filter and display all customers
         if (input.isEmpty() && isFiltered) {
             loadCustomers();
             isFiltered = false;
         } else {
-            ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getByNameLike(input));
+            ObservableList<Customer> customers = FXCollections.observableArrayList();
+            try {
+                int id = Integer.parseInt(input);
+                customers.add(customerDao.getById(id));
+
+            } catch (NumberFormatException e) {
+                String name = input.toLowerCase(Locale.ROOT);
+                customers.setAll(customerDao.getByNameLike(name));
+            }
             customersTable.setItems(customers);
             isFiltered = true;
         }
