@@ -3,31 +3,22 @@ package info.ryandorman.simplescheduler.controller;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.*;
-import info.ryandorman.simplescheduler.model.*;
+import info.ryandorman.simplescheduler.model.Appointment;
+import info.ryandorman.simplescheduler.model.Contact;
+import info.ryandorman.simplescheduler.model.Customer;
+import info.ryandorman.simplescheduler.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import javafx.util.converter.LocalTimeStringConverter;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -129,10 +120,12 @@ public class AppointmentViewController implements Initializable {
     }
 
     @FXML
-    public void onSave() {}
+    public void onSave() {
+    }
 
     @FXML
-    public void onCancel() {}
+    public void onCancel() {
+    }
 
     private void setupCustomerComboBox() {
         ObservableList<ComboBoxOption> customerOptions = customerDao.getAll()
@@ -169,13 +162,16 @@ public class AppointmentViewController implements Initializable {
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
 
         ZonedDateTime openingEastern = eastern.withHour(8).withMinute(0).withSecond(0); // 7:00 am
-        LocalTime opening = openingEastern.toLocalTime();
+        LocalTime opening = openingEastern.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
 
         ZonedDateTime closingEaster = eastern.withHour(22).withMinute(0).withSecond(0); // 9:00 pm
-        LocalTime closing = closingEaster.toLocalTime();
+        LocalTime closing = closingEaster.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
         startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, opening, closing));
+        startTimeSpinner.getValueFactory().setValue(opening);
+
         endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, opening, closing));
+        endTimeSpinner.getValueFactory().setValue(opening.plusMinutes(30));
     }
 }
