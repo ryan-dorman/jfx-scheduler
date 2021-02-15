@@ -1,6 +1,7 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.CalendarUtil;
+import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.AppointmentDao;
 import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
@@ -15,7 +16,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -67,7 +71,7 @@ public class AppointmentsViewController implements Initializable {
     private RadioButton allRadioButton;
 
     @FXML
-    private  RadioButton thisWeekRadioButton;
+    private RadioButton thisWeekRadioButton;
 
     @FXML
     private RadioButton thisMonthRadioButton;
@@ -94,7 +98,27 @@ public class AppointmentsViewController implements Initializable {
 
     @FXML
     public void onDelete() {
-        System.out.println("Delete Clicked");
+        Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
+
+        if (selectedAppointment != null) {
+            boolean userConfirmed = JavaFXUtil.confirmation("Delete", selectedAppointment.getId()
+                    + " - " + selectedAppointment.getType(), "Are you sure you want to delete this Appointment?");
+
+            if (userConfirmed) {
+                int deleted;
+                deleted = appointmentDao.delete(selectedAppointment.getId());
+
+                if (deleted == 0) {
+                    JavaFXUtil.warning("Failed", "Failed to Delete",
+                            "Something went wrong. Please try to delete the Appointment again.");
+                } else {
+                    JavaFXUtil.inform("Success", "Delete Successful",
+                            "Appointment " + selectedAppointment.getId() + " - " + selectedAppointment.getType() +
+                                    " has been deleted.");
+                    loadAppointments();
+                }
+            }
+        }
     }
 
     private void loadAppointments() {

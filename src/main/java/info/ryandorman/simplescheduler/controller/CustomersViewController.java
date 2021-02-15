@@ -1,6 +1,8 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.dao.AppointmentDao;
+import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.dao.CustomerDao;
 import info.ryandorman.simplescheduler.dao.CustomerDaoImpl;
 import info.ryandorman.simplescheduler.model.Customer;
@@ -28,6 +30,7 @@ import java.util.ResourceBundle;
 
 public class CustomersViewController implements Initializable {
 
+    private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
     private final CustomerDao customerDao = new CustomerDaoImpl();
 
     private boolean isFiltered = false;
@@ -114,12 +117,12 @@ public class CustomersViewController implements Initializable {
 
             if (userConfirmed) {
                 int deleted;
-                // TODO: Handle foreign key constraint on a customer's appointments (delete all appointments for customer_id)
+                appointmentDao.deleteByCustomerId(selectedCustomer.getId());
                 deleted = customerDao.delete(selectedCustomer.getId());
 
                 if (deleted == 0) {
-                    JavaFXUtil.warning("Failed", "Failed to Save Changes",
-                            "Something went wrong. Please try to save the Customer again.");
+                    JavaFXUtil.warning("Failed", "Failed to Delete",
+                            "Something went wrong. Please try to delete the Customer again.");
                 } else {
                     JavaFXUtil.inform("Success", "Delete Successful",
                             "Customer " + selectedCustomer.getId() + " - " + selectedCustomer.getName() +

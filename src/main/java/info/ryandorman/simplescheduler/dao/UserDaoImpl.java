@@ -2,7 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ResultColumnIterator;
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.User;
 
 import java.io.IOException;
@@ -22,11 +22,11 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
     private User mapResult(ResultSet rs) throws SQLException {
-        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
-    public static User mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
+    public static User mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         return new User(
                 rs.getInt(resultColumn.next()),
                 rs.getString(resultColumn.next()),

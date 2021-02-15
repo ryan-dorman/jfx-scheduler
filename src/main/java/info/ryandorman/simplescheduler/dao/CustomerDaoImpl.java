@@ -2,7 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ResultColumnIterator;
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
@@ -41,11 +41,11 @@ public class CustomerDaoImpl implements CustomerDao {
     private static final String DELETE_CUSTOMER = "DELETE FROM customers WHERE customer_id = ?;";
 
     public static Customer mapResult(ResultSet rs) throws SQLException {
-        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
-    public static Customer mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
+    public static Customer mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         FirstLevelDivision division = FirstLevelDivisionDaoImpl.mapResult(rs, resultColumn);
 
         Customer customer = new Customer(
@@ -167,15 +167,15 @@ public class CustomerDaoImpl implements CustomerDao {
         try {
             conn = DBConnection.getConnection();
             stmt = conn.prepareStatement(CREATE_CUSTOMER);
-            int i = 1;
+            ColumnIterator columnIterator = new ColumnIterator(1);
 
-            stmt.setString(i++, customer.getName());
-            stmt.setString(i++, customer.getAddress());
-            stmt.setString(i++, customer.getPostalCode());
-            stmt.setString(i++, customer.getPhone());
-            stmt.setInt(i++, customer.getDivision().getId());
-            stmt.setString(i++, customer.getCreatedBy());
-            stmt.setString(i++, customer.getUpdatedBy());
+            stmt.setString(columnIterator.next(), customer.getName());
+            stmt.setString(columnIterator.next(), customer.getAddress());
+            stmt.setString(columnIterator.next(), customer.getPostalCode());
+            stmt.setString(columnIterator.next(), customer.getPhone());
+            stmt.setInt(columnIterator.next(), customer.getDivision().getId());
+            stmt.setString(columnIterator.next(), customer.getCreatedBy());
+            stmt.setString(columnIterator.next(), customer.getUpdatedBy());
             stmt.execute();
 
             created = stmt.getUpdateCount();
@@ -201,15 +201,15 @@ public class CustomerDaoImpl implements CustomerDao {
         try {
             conn = DBConnection.getConnection();
             stmt = conn.prepareStatement(UPDATE_CUSTOMER);
-            int i = 1;
+            ColumnIterator columnIterator = new ColumnIterator(1);
 
-            stmt.setString(i++, customer.getName());
-            stmt.setString(i++, customer.getAddress());
-            stmt.setString(i++, customer.getPostalCode());
-            stmt.setString(i++, customer.getPhone());
-            stmt.setInt(i++, customer.getDivision().getId());
-            stmt.setString(i++, customer.getUpdatedBy());
-            stmt.setInt(i++, customer.getId());
+            stmt.setString(columnIterator.next(), customer.getName());
+            stmt.setString(columnIterator.next(), customer.getAddress());
+            stmt.setString(columnIterator.next(), customer.getPostalCode());
+            stmt.setString(columnIterator.next(), customer.getPhone());
+            stmt.setInt(columnIterator.next(), customer.getDivision().getId());
+            stmt.setString(columnIterator.next(), customer.getUpdatedBy());
+            stmt.setInt(columnIterator.next(), customer.getId());
             stmt.execute();
 
             updated = stmt.getUpdateCount();

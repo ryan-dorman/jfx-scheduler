@@ -93,7 +93,7 @@ public class LoginViewController implements Initializable {
             userLogger.info("User: " + user.getName() + " - Successful Login (try=" + loginAttempts + ")");
             loadMainView(actionEvent, user);
         } else {
-            userLogger.info("User: " + user.getName() + " - Invalid Login (try=" + loginAttempts + ")");
+            userLogger.info("User: " + username + " - Invalid Login (try=" + loginAttempts + ")");
             JavaFXUtil.warning(L10nUtil.getLanguage("alert.invalidLogin.title"),
                     L10nUtil.getLanguage("alert.invalidLogin.header"),
                     L10nUtil.getLanguage("alert.invalidLogin.content"));

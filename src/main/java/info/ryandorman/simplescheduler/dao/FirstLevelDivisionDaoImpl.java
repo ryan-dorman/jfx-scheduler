@@ -2,7 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ResultColumnIterator;
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
@@ -23,11 +23,11 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
             "WHERE fld.country_id = ?;";
 
     public static FirstLevelDivision mapResult(ResultSet rs) throws SQLException {
-        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
-    public static FirstLevelDivision mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
+    public static FirstLevelDivision mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         Country country = CountryDaoImpl.mapResult(rs, resultColumn);
         FirstLevelDivision division = new FirstLevelDivision(
                 rs.getInt(resultColumn.next()),

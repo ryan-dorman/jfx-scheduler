@@ -1,9 +1,9 @@
 package info.ryandorman.simplescheduler.common;
 
 public class ComboBoxOption {
-    private int id;
-    private String label;
-    private Object value;
+    private final int id;
+    private final String label;
+    private final Object value;
 
     public ComboBoxOption(int id, String label, Object value) {
         this.id = id;

@@ -2,7 +2,7 @@ package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ResultColumnIterator;
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.Country;
 
 import java.io.IOException;
@@ -20,11 +20,11 @@ public class CountryDaoImpl implements CountryDao {
     private static final String GET_ALL = "SELECT * FROM countries;";
 
     public static Country mapResult(ResultSet rs) throws SQLException {
-        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
-    public static Country mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
+    public static Country mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         return new Country(
                 rs.getInt(resultColumn.next()),
                 rs.getString(resultColumn.next()),

@@ -28,8 +28,8 @@ public class JavaFXUtil {
      * @param options Reference to the list of ComboBox options that will be used with the converter
      * @return StringConverter to use with ComboBoxes made up of <code>ComboBoxOption</code>s
      */
-    public static StringConverter getComboBoxConverter(List<ComboBoxOption> options) {
-        return new StringConverter<ComboBoxOption>() {
+    public static StringConverter<ComboBoxOption> getComboBoxConverter(List<ComboBoxOption> options) {
+        return new StringConverter<>() {
             @Override
             public String toString(ComboBoxOption option) {
                 return option.getLabel();
@@ -52,7 +52,7 @@ public class JavaFXUtil {
      * @param maxTime The upper bounds of LocalTime the Spinner can reach
      * @return SpinnerValueFactory to be used as a Spinner's value factory
      */
-    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner spinner, String format,
+    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner<LocalTime> spinner, String format,
                                                                             LocalTime minTime, LocalTime maxTime) {
         return new SpinnerValueFactory<>() {
             {
@@ -130,8 +130,7 @@ public class JavaFXUtil {
             @Override
             public LocalTime fromString(String s) {
                 try {
-                    LocalTime inputTime = LocalTime.parse(s, formatter);
-                    return inputTime;
+                    return LocalTime.parse(s, formatter);
                 } catch (DateTimeParseException e) {
                     return defaultValue;
                 }
@@ -178,10 +177,9 @@ public class JavaFXUtil {
      * @param title Title of the window
      * @param header Header in the window
      * @param content Content in main body of window
-     * @return A boolean that indicates the user has accepted the information
      */
-    public static boolean inform(String title, String header, String content) {
-        return alert(Alert.AlertType.INFORMATION, title, header, content);
+    public static void inform(String title, String header, String content) {
+        alert(Alert.AlertType.INFORMATION, title, header, content);
     }
 
     /**

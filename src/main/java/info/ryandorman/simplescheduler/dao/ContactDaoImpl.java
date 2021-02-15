@@ -1,10 +1,8 @@
 package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
-import info.ryandorman.simplescheduler.common.ResultColumnIterator;
-import info.ryandorman.simplescheduler.model.Appointment;
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.Contact;
-import info.ryandorman.simplescheduler.model.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -21,11 +19,11 @@ public class ContactDaoImpl implements ContactDao{
     private final String GET_ALL = "SELECT * FROM contacts;";
 
     public static Contact mapResult(ResultSet rs) throws SQLException {
-        ResultColumnIterator resultColumn = new ResultColumnIterator(1);
+        ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
-    public static Contact mapResult(ResultSet rs, ResultColumnIterator resultColumn) throws SQLException {
+    public static Contact mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         return new Contact(
                 rs.getInt(resultColumn.next()),
                 rs.getString(resultColumn.next()),

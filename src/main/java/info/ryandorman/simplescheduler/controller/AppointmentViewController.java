@@ -3,22 +3,19 @@ package info.ryandorman.simplescheduler.controller;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.*;
-import info.ryandorman.simplescheduler.model.Appointment;
-import info.ryandorman.simplescheduler.model.Contact;
-import info.ryandorman.simplescheduler.model.Customer;
-import info.ryandorman.simplescheduler.model.User;
+import info.ryandorman.simplescheduler.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -120,11 +117,60 @@ public class AppointmentViewController implements Initializable {
     }
 
     @FXML
-    public void onSave() {
+    public void onSave(ActionEvent actionEvent) {
+        int saved;
+
+        // Get Appointment fields updated in form
+        String title = titleTextField.getText().trim();
+        String description = descriptionTextArea.getText().trim();
+        String location = locationTextField.getText().trim();
+        String type = typeTextField.getText().trim();
+        ZonedDateTime start = startDatePicker.getValue().atTime(startTimeSpinner.getValue()).atZone(ZoneId.systemDefault());
+        ZonedDateTime end = endDatePicker.getValue().atTime(endTimeSpinner.getValue()).atZone(ZoneId.systemDefault());
+        Customer customer = (Customer) customerComboBox.valueProperty().getValue().getValue();
+        User user = (User) userComboBox.valueProperty().getValue().getValue();
+        Contact contact = (Contact) contactComboBox.valueProperty().getValue().getValue();
+
+        // Update Appointment object
+        currentAppointment.setTitle(title);
+        currentAppointment.setDescription(description);
+        currentAppointment.setLocation(location);
+        currentAppointment.setType(type);
+        currentAppointment.setStart(start);
+        currentAppointment.setEnd(end);
+        currentAppointment.setCustomer(customer);
+        currentAppointment.setUser(user);
+        currentAppointment.setContact(contact);
+        currentAppointment.setUpdatedBy(MainViewController.currentUser.getName());
+
+        if (isUpdating) {
+            saved = appointmentDao.update(currentAppointment);
+        } else {
+            currentAppointment.setCreatedBy(MainViewController.currentUser.getName());
+            saved = appointmentDao.create(currentAppointment);
+        }
+
+        if (saved == 0) {
+            JavaFXUtil.warning("Failed", "Failed to Save Changes",
+                    "Something went wrong. Please try to save the Appointment again.");
+            return;
+        }
+
+        // Close the Modal and reload customers to view create/update
+        Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML
-    public void onCancel() {
+    public void onCancel(ActionEvent actionEvent) {
+        // Confirm cancel before closing the associated Modal
+        boolean userConfirmed = JavaFXUtil.confirmation("Cancel", "Cancel Changes",
+                "Are you sure you want to return to the Appointments?");
+
+        if (userConfirmed) {
+            Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            currentStage.close();
+        }
     }
 
     private void setupCustomerComboBox() {

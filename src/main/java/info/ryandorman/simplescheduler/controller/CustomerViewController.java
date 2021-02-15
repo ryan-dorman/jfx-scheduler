@@ -17,10 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.StringConverter;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -144,7 +142,7 @@ public class CustomerViewController implements Initializable {
 
     private void setupCountryComboBox() {
         // Load Countries for ComboBox
-        ObservableList<ComboBoxOption> countryOptions  = countryDao.getAll()
+        ObservableList<ComboBoxOption> countryOptions = countryDao.getAll()
                 .stream()
                 .map(co -> new ComboBoxOption(co.getId(), co.getName(), co))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
