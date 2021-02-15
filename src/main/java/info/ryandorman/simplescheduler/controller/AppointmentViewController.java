@@ -157,7 +157,7 @@ public class AppointmentViewController implements Initializable {
     private void setupLocalTimeSpinners() {
         //        https://www.reddit.com/r/javahelp/comments/79cocp/javafx_time_spinner_hhmm_24_hour_format/
         //        https://howtodoinjava.com/java/date-time/localdatetime-to-zoneddatetime/
-
+        String format = "h:mm a";
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
 
@@ -168,10 +168,12 @@ public class AppointmentViewController implements Initializable {
         ZonedDateTime closingEaster = eastern.withHour(22).withMinute(0).withSecond(0); // 9:00 pm
         LocalTime closing = closingEaster.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
-        startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, opening, closing));
+        startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, format, opening, closing));
+        startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getSpinnerLocalTimeFormatter(format, opening));
         startTimeSpinner.getValueFactory().setValue(opening);
 
-        endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, opening, closing));
+        endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, format, opening, closing));
+        endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getSpinnerLocalTimeFormatter(format, opening.plusMinutes(45)));
         endTimeSpinner.getValueFactory().setValue(opening.plusMinutes(30));
     }
 }

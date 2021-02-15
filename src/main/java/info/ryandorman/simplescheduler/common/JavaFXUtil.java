@@ -11,6 +11,7 @@ import javafx.util.converter.LocalTimeStringConverter;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +36,9 @@ public class JavaFXUtil {
         };
     }
 
-    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner spinner, LocalTime minTime,
-                                                                            LocalTime maxTime) {
+    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner spinner, String format,
+                                                                            LocalTime minTime, LocalTime maxTime) {
         return new SpinnerValueFactory<>() {
-            private final String format = "h:mm a";
-
             {
                 setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern(format),
                         DateTimeFormatter.ofPattern(format)));
@@ -54,7 +53,7 @@ public class JavaFXUtil {
                     int caretPos = spinner.getEditor().getCaretPosition();
                     int delimiterPos = spinner.getEditor().getText().indexOf(':');
 
-                    if (caretPos < delimiterPos) {
+                    if (caretPos <= delimiterPos) {
                         setValue(validateTime(time.minusHours(i)));
                     } else {
                         setValue(validateTime(time.minusMinutes(i)));
@@ -72,7 +71,7 @@ public class JavaFXUtil {
                     int caretPos = spinner.getEditor().getCaretPosition();
                     int delimiterPos = spinner.getEditor().getText().indexOf(':');
 
-                    if (caretPos < delimiterPos) {
+                    if (caretPos <= delimiterPos) {
                         setValue(validateTime(time.plusHours(i)));
                     } else {
                         setValue(validateTime(time.plusMinutes(i)));
@@ -93,25 +92,36 @@ public class JavaFXUtil {
         };
     }
 
-    public static TextFormatter<LocalTime> getSpinnerLocalTimeFormatter(LocalTime defaultValue) {
-        StringConverter<LocalTime> converter = new StringConverter<LocalTime>() {
-            private final String format = "h:mm a";
-
+    public static TextFormatter<LocalTime> getSpinnerLocalTimeFormatter(String format, LocalTime defaultValue) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        StringConverter<LocalTime> converter = new StringConverter<>() {
             @Override
             public String toString(LocalTime time) {
-                return DateTimeFormatter.ofPattern(format).format(time);
+                try {
+                    return formatter.format(time);
+                } catch (DateTimeParseException e) {
+                    return formatter.format(defaultValue);
+                }
             }
 
             @Override
             public LocalTime fromString(String s) {
-                return null;
+                try {
+                    LocalTime inputTime = LocalTime.parse(s, formatter);
+                    return inputTime;
+                } catch (DateTimeParseException e) {
+                    return defaultValue;
+                }
             }
         };
 
-        return new TextFormatter<LocalTime>(converter, defaultValue, text -> {
-            // determine if text matches expected value
-            // if not return default
-            return null;
+        return new TextFormatter<>(converter, defaultValue, text -> {
+            try {
+                LocalTime.parse(text.getControlNewText(), formatter);
+                return text;
+            } catch (DateTimeParseException e) {
+                return null;
+            }
         });
     }
 
