@@ -201,8 +201,7 @@ public class AppointmentViewController implements Initializable {
     }
 
     private void setupLocalTimeSpinners() {
-        //        https://www.reddit.com/r/javahelp/comments/79cocp/javafx_time_spinner_hhmm_24_hour_format/
-        //        https://howtodoinjava.com/java/date-time/localdatetime-to-zoneddatetime/
+        // TODO: Prevent weekends!
         String format = "h:mm a";
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
