@@ -63,18 +63,7 @@ public class LoginViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set label and button text with correct language
-        usernameLabel.setText(L10nUtil.getLanguage("label.username"));
-        passwordLabel.setText(L10nUtil.getLanguage("label.password"));
-        userZoneLabel.setText(L10nUtil.getLanguage("label.userZone"));
-        loginButton.setText(L10nUtil.getLanguage("btn.login"));
-        closeButton.setText(L10nUtil.getLanguage("btn.close"));
-
-        // Fire 'onLogin' on 'Enter' key
-        loginButton.setDefaultButton(true);
-
-        // Set Timezone Value
-        userZone.setText(ZoneId.systemDefault().toString());
+        setupLoginForm();
     }
 
     @FXML
@@ -131,5 +120,20 @@ public class LoginViewController implements Initializable {
         stage.setScene(new Scene(parent, 1200, 800));
         stage.centerOnScreen();
         stage.show();
+    }
+
+    private void setupLoginForm() {
+        // Set label and button text with correct language
+        usernameLabel.setText(L10nUtil.getLanguage("label.username"));
+        passwordLabel.setText(L10nUtil.getLanguage("label.password"));
+        userZoneLabel.setText(L10nUtil.getLanguage("label.userZone"));
+        loginButton.setText(L10nUtil.getLanguage("btn.login"));
+        closeButton.setText(L10nUtil.getLanguage("btn.close"));
+
+        // Fire 'onLogin' on 'Enter' key
+        loginButton.setDefaultButton(true);
+
+        // Set Timezone Value
+        userZone.setText(ZoneId.systemDefault().toString());
     }
 }

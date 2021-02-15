@@ -5,13 +5,12 @@ package info.ryandorman.simplescheduler.common;
  *   ID: 001002824
  */
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
+import javafx.util.converter.LocalTimeStringConverter;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +19,7 @@ import java.util.Optional;
  */
 public class JavaFXUtil {
 
+    // TODO: comments
     public static StringConverter getComboBoxConverter(List<ComboBoxOption> options) {
         return new StringConverter<ComboBoxOption>() {
             @Override
@@ -29,8 +29,59 @@ public class JavaFXUtil {
 
             @Override
             public ComboBoxOption fromString(String string) {
-                return options.stream().filter(co ->
-                        co.getLabel().equals(string)).findFirst().orElse(null);
+                return options.stream().filter(option ->
+                        option.getLabel().equals(string)).findFirst().orElse(null);
+            }
+        };
+    }
+
+    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner spinner, LocalTime minTime,
+                                                                            LocalTime maxTime) {
+
+        return new SpinnerValueFactory<>() {
+            private final String format = "h:mm a";
+
+            {
+                setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern(format),
+                        DateTimeFormatter.ofPattern(format)));
+            }
+
+            @Override
+            public void decrement(int i) {
+                if (getValue() == null) {
+                    setValue(validateTime(LocalTime.now()));
+                } else {
+                    LocalTime time  = getValue();
+                    if (spinner.getEditor().getCaretPosition() < format.indexOf(':')) {
+                        setValue(validateTime(time.minusHours(i)));
+                    } else {
+                        setValue(validateTime(time.minusMinutes(i)));
+                    }
+                }
+            }
+
+            @Override
+            public void increment(int i) {
+                if (getValue() == null) {
+                    setValue(validateTime(LocalTime.now()));
+                } else {
+                    LocalTime time  = getValue();
+                    if (spinner.getEditor().getCaretPosition() < format.indexOf(':')) {
+                        setValue(validateTime(time.plusHours(i)));
+                    } else {
+                        setValue(validateTime(time.plusMinutes(i)));
+                    }
+                }
+            }
+
+            private LocalTime validateTime(LocalTime time) {
+                if (time.compareTo(minTime) >= 0 && time.compareTo(maxTime) <= 0) {
+                    return time;
+                } else if (time.compareTo(minTime) < 0) {
+                    return minTime;
+                } else {
+                    return maxTime;
+                }
             }
         };
     }

@@ -52,7 +52,7 @@
                      <children>
                         <Label styleClass="text-label" text="Id" />
                         <TextField fx:id="idTextField" disable="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Auto Gen - Disabled" GridPane.columnIndex="1" />
-                        <Label fx:id="titleTextField" styleClass="text-label" text="Title" GridPane.rowIndex="1" />
+                        <Label styleClass="text-label" text="Title" GridPane.rowIndex="1" />
                         <TextField fx:id="titleTextField" maxWidth="-Infinity" prefWidth="300.0" promptText="Title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label styleClass="text-label" text="Description" GridPane.rowIndex="2" />
                         <TextArea fx:id="descriptionTextArea" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="130.0" prefWidth="300.0" promptText="Description" GridPane.columnIndex="1" GridPane.rowIndex="2" />

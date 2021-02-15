@@ -61,26 +61,13 @@ public class CustomerViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Load Countries for ComboBox
-        ObservableList<ComboBoxOption> countryOptions  = countryDao.getAll()
-                .stream()
-                .map(co -> new ComboBoxOption(co.getId(), co.getName(), co))
-                .collect(Collectors.toCollection(FXCollections::observableArrayList));
-
-        // Configure how ComboBox formats the options update divisions on selection
-        countryComboBox.setConverter(JavaFXUtil.getComboBoxConverter(countryOptions));
-        countryComboBox.valueProperty().addListener((obs, oldVale, newValue) -> {
-            if (newValue != null) {
-                setupDivisionComboBox(newValue.getId());
-            }
-        });
-        countryComboBox.setItems(countryOptions);
+        setupCountryComboBox();
     }
 
     public void initData(Stage currentStage, int selectedCustomerId) {
         // Setup modal for editing
         isUpdating = true;
-        header.setText("Edit Customer");
+        header.setText("Update Customer");
 
         // Get latest version of customer
         currentCustomer = customerDao.getById(selectedCustomerId);
@@ -153,6 +140,23 @@ public class CustomerViewController implements Initializable {
             Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             currentStage.close();
         }
+    }
+
+    private void setupCountryComboBox() {
+        // Load Countries for ComboBox
+        ObservableList<ComboBoxOption> countryOptions  = countryDao.getAll()
+                .stream()
+                .map(co -> new ComboBoxOption(co.getId(), co.getName(), co))
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        // Configure how ComboBox formats the options update divisions on selection
+        countryComboBox.setConverter(JavaFXUtil.getComboBoxConverter(countryOptions));
+        countryComboBox.valueProperty().addListener((obs, oldVale, newValue) -> {
+            if (newValue != null) {
+                setupDivisionComboBox(newValue.getId());
+            }
+        });
+        countryComboBox.setItems(countryOptions);
     }
 
     private void setupDivisionComboBox(int countryId) {

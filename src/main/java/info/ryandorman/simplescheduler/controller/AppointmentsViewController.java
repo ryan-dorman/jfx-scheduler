@@ -8,11 +8,19 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -66,6 +74,41 @@ public class AppointmentsViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setupAppointmentsTableView();
+        setupFilterRadioButtons();
+    }
+
+    @FXML
+    public void onCreate(ActionEvent actionEvent) throws IOException {
+        loadAppointmentView(actionEvent, "Create Appointment", -1);
+    }
+
+    @FXML
+    public void onUpdate(ActionEvent actionEvent) throws IOException {
+        Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
+
+        if (selectedAppointment != null) {
+            loadAppointmentView(actionEvent, "Update Appointment", selectedAppointment.getId());
+        }
+    }
+
+    @FXML
+    public void onDelete() {
+        System.out.println("Delete Clicked");
+    }
+
+    private void loadAppointments() {
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList(appointmentDao.getAll());
+        appointmentsTable.setItems(appointments);
+    }
+
+    private void filterAppointments(ZonedDateTime start, ZonedDateTime end) {
+        List<Appointment> filteredAppointments = appointmentDao.getByDateTimeWindow(start, end);
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList(filteredAppointments);
+        appointmentsTable.setItems(appointments);
+    }
+
+    private void setupAppointmentsTableView() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm:ss a");
 
         // Setup Appointments Table View Columns
@@ -86,7 +129,9 @@ public class AppointmentsViewController implements Initializable {
         // Set default sort
         startColumn.setSortType(TableColumn.SortType.ASCENDING);
         appointmentsTable.getSortOrder().add(startColumn);
+    }
 
+    private void setupFilterRadioButtons() {
         // Setup radio buttons, default to all appointments shown
         ToggleGroup filters = new ToggleGroup();
         filters.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
@@ -104,29 +149,34 @@ public class AppointmentsViewController implements Initializable {
                 }
             }
         });
+
         allRadioButton.setToggleGroup(filters);
         thisWeekRadioButton.setToggleGroup(filters);
         thisMonthRadioButton.setToggleGroup(filters);
+
         allRadioButton.setSelected(true);
     }
 
-    @FXML
-    public void onCreate() {}
+    private void loadAppointmentView(ActionEvent actionEvent, String title, int selectAppointmentId) throws IOException {
+        Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-    @FXML
-    public void onUpdate() {}
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/AppointmentView.fxml"));
+        Parent parent = loader.load();
+        Stage stage = new Stage();
+        AppointmentViewController controller = loader.getController();
 
-    @FXML
-    public void onDelete() {}
+        // A valid customer id indicates a record is being updated
+        if (selectAppointmentId > 0) {
+            controller.initData(stage, selectAppointmentId);
+        }
 
-    private void loadAppointments() {
-        ObservableList<Appointment> appointments = FXCollections.observableArrayList(appointmentDao.getAll());
-        appointmentsTable.setItems(appointments);
-    }
-
-    private void filterAppointments(ZonedDateTime start, ZonedDateTime end) {
-        List<Appointment> filteredAppointments = appointmentDao.getByDateTimeWindow(start, end);
-        ObservableList<Appointment> appointments = FXCollections.observableArrayList(filteredAppointments);
-        appointmentsTable.setItems(appointments);
+        // Init View
+        stage.setTitle(title);
+        stage.setScene(new Scene(parent, 800, 500));
+        stage.initOwner(customerStage);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setOnCloseRequest(we -> loadAppointments());
+        stage.showAndWait();
     }
 }

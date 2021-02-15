@@ -3,27 +3,43 @@ package info.ryandorman.simplescheduler.controller;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.*;
-import info.ryandorman.simplescheduler.model.Contact;
-import info.ryandorman.simplescheduler.model.Country;
-import info.ryandorman.simplescheduler.model.Customer;
-import info.ryandorman.simplescheduler.model.User;
+import info.ryandorman.simplescheduler.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javafx.util.converter.LocalTimeStringConverter;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AppointmentViewController implements Initializable {
 
+    private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
     private final CustomerDao customerDao = new CustomerDaoImpl();
     private final ContactDao contactDao = new ContactDaoImpl();
     private final UserDao userDao = new UserDaoImpl();
+
+    private Appointment currentAppointment = new Appointment();
+    private boolean isUpdating = false;
 
     // Modal Header
     @FXML
@@ -68,33 +84,98 @@ public class AppointmentViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Load customers, contacts, users to be comboBox options
+        setupCustomerComboBox();
+        setupContactComboBox();
+        setupUserComboBox();
+        setupLocalTimeSpinners();
+    }
+
+    public void initData(Stage currentStage, int selectedAppointmentId) {
+        // Setup modal for editing
+        isUpdating = true;
+        header.setText("Update Appointment");
+
+        // Get latest version of customer
+        currentAppointment = appointmentDao.getById(selectedAppointmentId);
+
+        if (currentAppointment != null) {
+            // Set up form with selected appointment for updating
+            // populate text fields
+            idTextField.setText(String.valueOf(currentAppointment.getId()));
+            titleTextField.setText(currentAppointment.getTitle());
+            descriptionTextArea.setText(currentAppointment.getDescription());
+            locationTextField.setText(currentAppointment.getLocation());
+            typeTextField.setText(currentAppointment.getType());
+
+            // Set up date and time fields
+            startDatePicker.setValue(currentAppointment.getStart().toLocalDate());
+            startTimeSpinner.getValueFactory().setValue(currentAppointment.getStart().toLocalTime());
+            endDatePicker.setValue(currentAppointment.getEnd().toLocalDate());
+            endTimeSpinner.getValueFactory().setValue(currentAppointment.getEnd().toLocalTime());
+
+            // Set ComboBoxes
+            Customer customer = currentAppointment.getCustomer();
+            Contact contact = currentAppointment.getContact();
+            User user = currentAppointment.getUser();
+
+            customerComboBox.valueProperty().setValue(new ComboBoxOption(customer.getId(), customer.getName(), customer));
+            contactComboBox.valueProperty().setValue(new ComboBoxOption(contact.getId(), contact.getName(), contact));
+            userComboBox.valueProperty().setValue(new ComboBoxOption(user.getId(), user.getName(), user));
+        } else {
+            // Display warning and close
+            JavaFXUtil.warning("Not Found", "Invalid Id", "Appointment specified no longer exists.");
+            currentStage.close();
+        }
+    }
+
+    @FXML
+    public void onSave() {}
+
+    @FXML
+    public void onCancel() {}
+
+    private void setupCustomerComboBox() {
         ObservableList<ComboBoxOption> customerOptions = customerDao.getAll()
                 .stream()
                 .map(c -> new ComboBoxOption(c.getId(), c.getId() + " - " + c.getName(), c))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        customerComboBox.setConverter(JavaFXUtil.getComboBoxConverter(customerOptions));
+        customerComboBox.setItems(customerOptions);
+    }
 
+    private void setupContactComboBox() {
         ObservableList<ComboBoxOption> contactOptions = contactDao.getAll()
                 .stream()
                 .map(con -> new ComboBoxOption(con.getId(), con.getName(), con))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        contactComboBox.setConverter(JavaFXUtil.getComboBoxConverter(contactOptions));
+        contactComboBox.setItems(contactOptions);
+    }
 
+    private void setupUserComboBox() {
         ObservableList<ComboBoxOption> userOptions = userDao.getAll()
                 .stream()
                 .map(u -> new ComboBoxOption(u.getId(), u.getId() + " - " + u.getName(), u))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
-
-        // Configure how ComboBox formats the options
-        customerComboBox.setConverter(JavaFXUtil.getComboBoxConverter(customerOptions));
-        contactComboBox.setConverter(JavaFXUtil.getComboBoxConverter(contactOptions));
         userComboBox.setConverter(JavaFXUtil.getComboBoxConverter(userOptions));
-
-        customerComboBox.setItems(customerOptions);
-        contactComboBox.setItems(contactOptions);
         userComboBox.setItems(userOptions);
+    }
 
-        // Setup Spinners to handle time input
-//        https://www.reddit.com/r/javahelp/comments/79cocp/javafx_time_spinner_hhmm_24_hour_format/
+    private void setupLocalTimeSpinners() {
+        //        https://www.reddit.com/r/javahelp/comments/79cocp/javafx_time_spinner_hhmm_24_hour_format/
+        //        https://howtodoinjava.com/java/date-time/localdatetime-to-zoneddatetime/
 
+        Instant now = Instant.now();
+        ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
+
+        eastern.withHour(8).withMinute(0).withSecond(0); // 7:00 am
+        LocalTime opening = eastern.toLocalTime();
+
+
+        eastern.withHour(22).withMinute(0).withSecond(0); // 9:00 pm
+        LocalTime closing = eastern.toLocalTime();
+
+        startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, opening, closing));
+        endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, opening, closing));
     }
 }

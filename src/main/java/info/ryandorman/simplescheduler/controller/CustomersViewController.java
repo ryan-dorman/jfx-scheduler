@@ -63,18 +63,7 @@ public class CustomersViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Setup Customers Table View Columns
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        divisionColumn.setCellValueFactory(customerData ->
-                new SimpleStringProperty(customerData.getValue().getDivision().getName()));
-        countryColumn.setCellValueFactory(customerData ->
-                new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
-
-        // Populate the TableView
+        setupCustomersTableView();
         loadCustomers();
     }
 
@@ -139,6 +128,19 @@ public class CustomersViewController implements Initializable {
                 }
             }
         }
+    }
+
+    private void setupCustomersTableView() {
+        // Setup Customers Table View Columns
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        divisionColumn.setCellValueFactory(customerData ->
+                new SimpleStringProperty(customerData.getValue().getDivision().getName()));
+        countryColumn.setCellValueFactory(customerData ->
+                new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
     }
 
     private void loadCustomers() {
