@@ -169,11 +169,11 @@ public class AppointmentViewController implements Initializable {
         LocalTime closing = closingEaster.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
         startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, format, opening, closing));
-        startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getSpinnerLocalTimeFormatter(format, opening));
+        startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, opening));
         startTimeSpinner.getValueFactory().setValue(opening);
 
         endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, format, opening, closing));
-        endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getSpinnerLocalTimeFormatter(format, opening.plusMinutes(45)));
+        endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, opening.plusMinutes(45)));
         endTimeSpinner.getValueFactory().setValue(opening.plusMinutes(30));
     }
 }

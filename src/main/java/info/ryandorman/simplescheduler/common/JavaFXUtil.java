@@ -16,11 +16,18 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A utility class that allow easy creation and manipulation of various JavaFx components such as ComboBoxes and Alerts.
+ * A utility class that allow easy creation and manipulation of various JavaFx components such as ComboBoxes, Spinners,
+ * and Alerts.
  */
 public class JavaFXUtil {
 
-    // TODO: comments
+    /**
+     * Get a <code>StringConverter</code> that can handle the allows easy conversion between options used in a JavaFX.
+     *
+     * ComboBox and the option wrapper class <code>ComboBoxOption</code>.
+     * @param options Reference to the list of ComboBox options that will be used with the converter
+     * @return StringConverter to use with ComboBoxes made up of <code>ComboBoxOption</code>s
+     */
     public static StringConverter getComboBoxConverter(List<ComboBoxOption> options) {
         return new StringConverter<ComboBoxOption>() {
             @Override
@@ -36,6 +43,15 @@ public class JavaFXUtil {
         };
     }
 
+    /**
+     * Get a <code>SpinnerValueFactory</code> that allow LocalTime input into the JavaFX Spinner.
+     *
+     * @param spinner Reference to the Spinner that will be used to accept LocalTime
+     * @param format String representing the DateTimeFormat to display LocalTime in
+     * @param minTime The lower bounds of LocalTime the Spinner can reach
+     * @param maxTime The upper bounds of LocalTime the Spinner can reach
+     * @return SpinnerValueFactory to be used as a Spinner's value factory
+     */
     public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner spinner, String format,
                                                                             LocalTime minTime, LocalTime maxTime) {
         return new SpinnerValueFactory<>() {
@@ -92,7 +108,14 @@ public class JavaFXUtil {
         };
     }
 
-    public static TextFormatter<LocalTime> getSpinnerLocalTimeFormatter(String format, LocalTime defaultValue) {
+    /**
+     * Get a <code>TextFormatter</code> that can parse LocalTime to and from string input.
+     *
+     * @param format String representing the DateTimeFormat to display LocalTime in
+     * @param defaultValue The LocalTime value to return if an invalid string format is encountered
+     * @return TextFormatter to manage the string formatting of LocalTime input
+     */
+    public static TextFormatter<LocalTime> getLocalTimeFormatter(String format, LocalTime defaultValue) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         StringConverter<LocalTime> converter = new StringConverter<>() {
             @Override
