@@ -168,12 +168,12 @@ public class AppointmentViewController implements Initializable {
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
 
-        eastern.withHour(8).withMinute(0).withSecond(0); // 7:00 am
-        LocalTime opening = eastern.toLocalTime();
+        ZonedDateTime openingEastern = eastern.withHour(8).withMinute(0).withSecond(0); // 7:00 am
+        LocalTime opening = openingEastern.toLocalTime();
 
 
-        eastern.withHour(22).withMinute(0).withSecond(0); // 9:00 pm
-        LocalTime closing = eastern.toLocalTime();
+        ZonedDateTime closingEaster = eastern.withHour(22).withMinute(0).withSecond(0); // 9:00 pm
+        LocalTime closing = closingEaster.toLocalTime();
 
         startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, opening, closing));
         endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, opening, closing));
