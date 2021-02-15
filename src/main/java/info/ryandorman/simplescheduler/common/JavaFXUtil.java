@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalTimeStringConverter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -145,6 +146,26 @@ public class JavaFXUtil {
                 return null;
             }
         });
+    }
+
+    /**
+     * Get a <code>DateCell</code> to supply to a <code>DatePicker.setDayCellFactory</code> callback that disables
+     * cells that occur in the past and on weekends.
+     *
+     * @return DateCell that is set to disabled for prior dates and weekends.
+     */
+    public static DateCell getDisabledPastAndWeekendDateCell() {
+        return new DateCell() {
+            @Override
+            public void updateItem(LocalDate localDate, boolean b) {
+                super.updateItem(localDate, b);
+                boolean past = localDate.compareTo(LocalDate.now()) < 0;
+                boolean weekend = CalendarUtil.isWeekend(localDate.getDayOfWeek());
+
+                setDisable(b || past || weekend);
+                setStyle("-fx-background-color: #cccccc;");
+            }
+        };
     }
 
     /**

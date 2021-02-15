@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
+import java.util.EnumSet;
 
 public class CalendarUtil {
     public static ZonedDateTime getFirstDayOfWeek() {
@@ -25,5 +26,9 @@ public class CalendarUtil {
     public static ZonedDateTime getLastDayOfMonth() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.lastDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
+    }
+
+    public static boolean isWeekend(DayOfWeek dayOfWeek) {
+        return EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(dayOfWeek);
     }
 }

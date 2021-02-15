@@ -1,5 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
+import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.*;
@@ -16,6 +17,7 @@ import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.time.*;
+import java.util.EnumSet;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -75,6 +77,7 @@ public class AppointmentViewController implements Initializable {
         setupCustomerComboBox();
         setupContactComboBox();
         setupUserComboBox();
+        setupDatePickers();
         setupLocalTimeSpinners();
     }
 
@@ -200,8 +203,12 @@ public class AppointmentViewController implements Initializable {
         userComboBox.setItems(userOptions);
     }
 
+    private void setupDatePickers() {
+        startDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
+        endDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
+    }
+
     private void setupLocalTimeSpinners() {
-        // TODO: Prevent weekends!
         String format = "h:mm a";
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));

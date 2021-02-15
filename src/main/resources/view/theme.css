@@ -156,6 +156,10 @@
     -fx-background-color: -fx-control-inner-background;
 }
 
+.date-picker-popup > * > .spinner > .button {
+  -fx-padding: 5px;
+}
+
 .radio-button .radio {
   -fx-background-color: default-primary-color;
 }
