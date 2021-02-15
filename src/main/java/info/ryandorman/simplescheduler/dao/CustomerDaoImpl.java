@@ -38,8 +38,7 @@ public class CustomerDaoImpl implements CustomerDao {
             "division_id = ?, last_update = NOW(), last_updated_by = ? " +
             "WHERE customer_id = ?;";
 
-    private static final String DELETE_CUSTOMER = "DELETE FROM customers " +
-            "WHERE customer_id = ?;";
+    private static final String DELETE_CUSTOMER = "DELETE FROM customers WHERE customer_id = ?;";
 
     public static Customer mapResult(ResultSet rs) throws SQLException {
         ResultColumnIterator resultColumn = new ResultColumnIterator(1);
@@ -167,7 +166,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
         try {
             conn = DBConnection.getConnection();
-            stmt = conn.prepareStatement(CREATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement(CREATE_CUSTOMER);
             int i = 1;
 
             stmt.setString(i++, customer.getName());
@@ -201,7 +200,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
         try {
             conn = DBConnection.getConnection();
-            stmt = conn.prepareStatement(UPDATE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement(UPDATE_CUSTOMER);
             int i = 1;
 
             stmt.setString(i++, customer.getName());
@@ -235,7 +234,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
         try {
             conn = DBConnection.getConnection();
-            stmt = conn.prepareStatement(DELETE_CUSTOMER, Statement.RETURN_GENERATED_KEYS);
+            stmt = conn.prepareStatement(DELETE_CUSTOMER);
 
             stmt.setInt(1, id);
             stmt.execute();

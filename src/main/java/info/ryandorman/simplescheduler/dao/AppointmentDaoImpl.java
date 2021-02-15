@@ -1,6 +1,7 @@
 package info.ryandorman.simplescheduler.dao;
 
 import info.ryandorman.simplescheduler.common.DBConnection;
+import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.common.ResultColumnIterator;
 import info.ryandorman.simplescheduler.model.*;
@@ -51,6 +52,20 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "WHERE app.customer_id = ? " +
             "AND ? BETWEEN app.start AND app.end;";
+
+    private final String CREATE_APPOINTMENT = "INSERT appointments " +
+            "(title, description, location, type, start, end, customer_id, user_id, contact_id, created_by, " +
+            "last_updated_by) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+    private final String UPDATE_APPOINTMENT = "UPDATE appointments " +
+            "SET title = ?, description = ?, location = ?, type = ?, start = ?, end = ?, customer_id = ?, " +
+            "user_id = ?, contact_id = ?, last_update = NOW(), last_updated_by = ? " +
+            "WHERE appointment_id = ?;";
+
+    private final String DELETE_APPOINTMENT = "DELETE FROM appointments WHERE appointment_id = ?;";
+
+    private final String DELETE_APPOINTMENT_BY_CUSTOMER_ID = "DELETE FROM appointments WHERE customer_id = ?;";
 
     private Appointment mapResult(ResultSet rs) throws SQLException {
         ResultColumnIterator resultColumn = new ResultColumnIterator(1);
@@ -197,24 +212,146 @@ public class AppointmentDaoImpl implements AppointmentDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(appointment.getId() + ":" + appointment.getTitle()
-                + " returned from database by AppointmentDao.getByCustomerIdAndDateTime=" + customerId + ", "
-                + appointmentTime);
+        if (appointment != null) {
+            sysLogger.info(appointment.getId() + ":" + appointment.getTitle()
+                    + " returned from database by AppointmentDao.getByCustomerIdAndDateTime=" + customerId + ", "
+                    + appointmentTime);
+        } else {
+            sysLogger.warning("No appointment returned from database by AppointmentDao.getByCustomerIdAndDateTime="
+                    +  customerId + ", " + appointmentTime);
+        }
+
         return appointment;
     }
 
     @Override
-    public int create() {
-        return 0;
+    public int create(Appointment appointment) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int created = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(CREATE_APPOINTMENT);
+            int i = 1;
+
+            stmt.setString(i++, appointment.getTitle());
+            stmt.setString(i++, appointment.getDescription());
+            stmt.setString(i++, appointment.getLocation());
+            stmt.setString(i++, appointment.getType());
+            stmt.setTimestamp(i++, L10nUtil.LocalToUtc(appointment.getStart()));
+            stmt.setTimestamp(i++, L10nUtil.LocalToUtc(appointment.getEnd()));
+            stmt.setInt(i++, appointment.getCustomer().getId());
+            stmt.setInt(i++, appointment.getUser().getId());
+            stmt.setInt(i++, appointment.getContact().getId());
+            stmt.setString(i++, appointment.getCreatedBy());
+            stmt.setString(i++, appointment.getUpdatedBy());
+            stmt.execute();
+
+            created = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Appointment created in the database by AppointmentDao.create");
+        return created;
     }
 
     @Override
-    public int update() {
-        return 0;
+    public int update(Appointment appointment) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int updated = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(UPDATE_APPOINTMENT);
+            int i = 1;
+
+            stmt.setString(i++, appointment.getTitle());
+            stmt.setString(i++, appointment.getDescription());
+            stmt.setString(i++, appointment.getLocation());
+            stmt.setString(i++, appointment.getType());
+            stmt.setTimestamp(i++, L10nUtil.LocalToUtc(appointment.getStart()));
+            stmt.setTimestamp(i++, L10nUtil.LocalToUtc(appointment.getEnd()));
+            stmt.setInt(i++, appointment.getCustomer().getId());
+            stmt.setInt(i++, appointment.getUser().getId());
+            stmt.setInt(i++, appointment.getContact().getId());
+            stmt.setString(i++, appointment.getUpdatedBy());
+            stmt.setInt(i++, appointment.getId());
+            stmt.execute();
+
+            updated = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Appointment updated in the database by AppointmentDao.update");
+        return updated;
     }
 
     @Override
-    public int delete() {
-        return 0;
+    public int delete(int id) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int deleted = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(DELETE_APPOINTMENT);
+
+            stmt.setInt(1, id);
+            stmt.execute();
+
+            deleted = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Appointment deleted from the database by AppointmentDao.delete");
+        return deleted;
+    }
+
+    @Override
+    public int deleteByCustomerId(int customerId) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        int deleted = 0;
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(DELETE_APPOINTMENT_BY_CUSTOMER_ID);
+
+            stmt.setInt(1, customerId);
+            stmt.execute();
+
+            deleted = stmt.getUpdateCount();
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.commit();
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info("Appointment(s) deleted from the database by AppointmentDao.deleteByCustomerId="
+                + customerId);
+        return deleted;
     }
 }
