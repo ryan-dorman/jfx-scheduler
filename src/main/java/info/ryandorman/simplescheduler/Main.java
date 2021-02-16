@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.ZoneId;
 import java.util.logging.FileHandler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -57,6 +58,7 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
 //        Locale.setDefault(new Locale("fr")); // For testing
+
         launch(args);
     }
 

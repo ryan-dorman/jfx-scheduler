@@ -10,9 +10,9 @@ public interface AppointmentDao {
 
     List<Appointment> getByDateTimeWindow(ZonedDateTime start, ZonedDateTime end);
 
-    Appointment getById(int id);
+    List<Appointment> getByCustomerIdAndDateTimeWindow(int customerId, ZonedDateTime start, ZonedDateTime end);
 
-    Appointment getByCustomerIdAndDateTime(int customerId, ZonedDateTime appointmentTime);
+    Appointment getById(int id);
 
     int create(Appointment appointment);
 

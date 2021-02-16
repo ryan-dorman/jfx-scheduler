@@ -49,12 +49,9 @@ public class JavaFXUtil {
      *
      * @param spinner Reference to the Spinner that will be used to accept LocalTime
      * @param format String representing the DateTimeFormat to display LocalTime in
-     * @param minTime The lower bounds of LocalTime the Spinner can reach
-     * @param maxTime The upper bounds of LocalTime the Spinner can reach
      * @return SpinnerValueFactory to be used as a Spinner's value factory
      */
-    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner<LocalTime> spinner, String format,
-                                                                            LocalTime minTime, LocalTime maxTime) {
+    public static SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(Spinner<LocalTime> spinner, String format) {
         return new SpinnerValueFactory<>() {
             {
                 setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern(format),
@@ -64,16 +61,16 @@ public class JavaFXUtil {
             @Override
             public void decrement(int i) {
                 if (getValue() == null) {
-                    setValue(validateTime(LocalTime.now()));
+                    setValue(LocalTime.now());
                 } else {
                     LocalTime time  = getValue();
                     int caretPos = spinner.getEditor().getCaretPosition();
                     int delimiterPos = spinner.getEditor().getText().indexOf(':');
 
                     if (caretPos <= delimiterPos) {
-                        setValue(validateTime(time.minusHours(i)));
+                        setValue(time.minusHours(i));
                     } else {
-                        setValue(validateTime(time.minusMinutes(i)));
+                        setValue(time.minusMinutes(i));
                     }
                     spinner.getEditor().positionCaret(caretPos);
                 }
@@ -82,28 +79,18 @@ public class JavaFXUtil {
             @Override
             public void increment(int i) {
                 if (getValue() == null) {
-                    setValue(validateTime(LocalTime.now()));
+                    setValue(LocalTime.now());
                 } else {
                     LocalTime time  = getValue();
                     int caretPos = spinner.getEditor().getCaretPosition();
                     int delimiterPos = spinner.getEditor().getText().indexOf(':');
 
                     if (caretPos <= delimiterPos) {
-                        setValue(validateTime(time.plusHours(i)));
+                        setValue(time.plusHours(i));
                     } else {
-                        setValue(validateTime(time.plusMinutes(i)));
+                        setValue(time.plusMinutes(i));
                     }
                     spinner.getEditor().positionCaret(caretPos);
-                }
-            }
-
-            private LocalTime validateTime(LocalTime time) {
-                if (time.compareTo(minTime) >= 0 && time.compareTo(maxTime) <= 0) {
-                    return time;
-                } else if (time.compareTo(minTime) < 0) {
-                    return minTime;
-                } else {
-                    return maxTime;
                 }
             }
         };

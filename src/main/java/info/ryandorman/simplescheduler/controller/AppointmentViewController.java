@@ -4,7 +4,10 @@ import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.common.JavaFXUtil;
 import info.ryandorman.simplescheduler.dao.*;
-import info.ryandorman.simplescheduler.model.*;
+import info.ryandorman.simplescheduler.model.Appointment;
+import info.ryandorman.simplescheduler.model.Contact;
+import info.ryandorman.simplescheduler.model.Customer;
+import info.ryandorman.simplescheduler.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +20,7 @@ import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.time.*;
-import java.util.EnumSet;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -128,11 +131,20 @@ public class AppointmentViewController implements Initializable {
         String description = descriptionTextArea.getText().trim();
         String location = locationTextField.getText().trim();
         String type = typeTextField.getText().trim();
-        ZonedDateTime start = startDatePicker.getValue().atTime(startTimeSpinner.getValue()).atZone(ZoneId.systemDefault());
-        ZonedDateTime end = endDatePicker.getValue().atTime(endTimeSpinner.getValue()).atZone(ZoneId.systemDefault());
+        ZonedDateTime start = startDatePicker.getValue().atTime(startTimeSpinner.getValue().withSecond(0))
+                .atZone(ZoneId.systemDefault());
+        ZonedDateTime end = endDatePicker.getValue().atTime(endTimeSpinner.getValue().withSecond(0))
+                .atZone(ZoneId.systemDefault());
         Customer customer = (Customer) customerComboBox.valueProperty().getValue().getValue();
         User user = (User) userComboBox.valueProperty().getValue().getValue();
         Contact contact = (Contact) contactComboBox.valueProperty().getValue().getValue();
+
+        try {
+            validateAppointment(customer, start, end);
+        } catch (DateTimeException e) {
+            JavaFXUtil.warning("Invalid", "Invalid Appointment Window", e.getMessage());
+            return;
+        }
 
         // Update Appointment object
         currentAppointment.setTitle(title);
@@ -204,8 +216,15 @@ public class AppointmentViewController implements Initializable {
     }
 
     private void setupDatePickers() {
+        LocalDate defaultDate = LocalDate.now();
+        while (CalendarUtil.isWeekend(defaultDate.getDayOfWeek())) {
+            defaultDate.plusDays(1);
+        }
+
         startDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
+        startDatePicker.setValue(defaultDate);
         endDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
+        endDatePicker.setValue(defaultDate);
     }
 
     private void setupLocalTimeSpinners() {
@@ -213,19 +232,41 @@ public class AppointmentViewController implements Initializable {
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
 
-        ZonedDateTime openingEastern = eastern.withHour(8).withMinute(0).withSecond(0); // 7:00 am
-        LocalTime opening = openingEastern.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
+        ZonedDateTime openingEastern = eastern.withHour(8).withMinute(0).withSecond(0);
+        LocalTime openingTime = openingEastern.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
+        startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, format));
+        startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, openingTime));
+        startTimeSpinner.getValueFactory().setValue(openingTime);
 
-        ZonedDateTime closingEaster = eastern.withHour(22).withMinute(0).withSecond(0); // 9:00 pm
-        LocalTime closing = closingEaster.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
+        endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, format));
+        endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, openingTime.plusMinutes(30)));
+        endTimeSpinner.getValueFactory().setValue(openingTime.plusMinutes(30));
+    }
 
-        startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, format, opening, closing));
-        startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, opening));
-        startTimeSpinner.getValueFactory().setValue(opening);
+    private void validateAppointment(Customer customer, ZonedDateTime start, ZonedDateTime end) throws DateTimeException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd h:mm a");
 
-        endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, format, opening, closing));
-        endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, opening.plusMinutes(45)));
-        endTimeSpinner.getValueFactory().setValue(opening.plusMinutes(30));
+        ZonedDateTime easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York"));
+        ZonedDateTime easternOpening = easternStart.withHour(8).withMinute(0).withSecond(0);
+        ZonedDateTime localOpening = easternOpening.withZoneSameInstant(ZoneId.systemDefault());
+
+        ZonedDateTime easternEnd = end.withZoneSameInstant(ZoneId.of("America/New_York"));
+        ZonedDateTime easternClosing = easternEnd.withHour(22).withMinute(0).withSecond(0);
+        ZonedDateTime localClosing = easternClosing.withZoneSameInstant(ZoneId.systemDefault());
+
+        String message = "";
+
+        if (start.compareTo(end) > 0) {
+            message = "Make sure your appointment is set to Start before the End.";
+        } else if (easternStart.compareTo(easternOpening) < 0 || easternEnd.compareTo(easternClosing) > 0) {
+            message = "Appointments must fall between business hours: \n" + localOpening.format(formatter) + " and " +
+            localClosing.format(formatter);
+        } else if (appointmentDao.getByCustomerIdAndDateTimeWindow(customer.getId(), start, end).size() > 0) {
+            message = "Customer " + customer.getId() + " - " + customer.getName() +
+                    " already has at least one appointment during this time.";
+        }
+        // check no other for this customer
+        if (!message.isEmpty()) throw new DateTimeException(message);
     }
 }

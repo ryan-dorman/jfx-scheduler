@@ -42,7 +42,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "WHERE app.appointment_id = ?;";
 
-    private static final String GET_BY_CUSTOMER_ID_AND_DATE_TIME = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
+    private static final String GET_BY_CUSTOMER_ID_AND_DATE_TIME_WINDOW = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
             "FROM appointments app " +
             "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
@@ -50,7 +50,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN users u ON app.user_id = u.user_id " +
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "WHERE app.customer_id = ? " +
-            "AND ? BETWEEN app.start AND app.end;";
+            "AND (? BETWEEN app.start AND app.end OR ? BETWEEN app.start AND app.end);";
 
     private static final String CREATE_APPOINTMENT = "INSERT appointments " +
             "(title, description, location, type, start, end, customer_id, user_id, contact_id, created_by, " +
@@ -154,6 +154,38 @@ public class AppointmentDaoImpl implements AppointmentDao {
     }
 
     @Override
+    public List<Appointment> getByCustomerIdAndDateTimeWindow(int customerId, ZonedDateTime start, ZonedDateTime end) {
+        Connection conn;
+        PreparedStatement stmt = null;
+        List<Appointment> appointments = new ArrayList<>();
+
+        try {
+            conn = DBConnection.getConnection();
+            stmt = conn.prepareStatement(GET_BY_CUSTOMER_ID_AND_DATE_TIME_WINDOW);
+
+            stmt.setInt(1, customerId);
+            stmt.setTimestamp(2, L10nUtil.LocalToUtc(start));
+            stmt.setTimestamp(3, L10nUtil.LocalToUtc(end));
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Appointment appointment = mapResult(rs);
+                appointments.add(appointment);
+            }
+
+        } catch (SQLException | IOException e) {
+            sysLogger.severe(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            DBConnection.close(stmt);
+        }
+
+        sysLogger.info(appointments.size() + "Appointments returned from database by " +
+                "AppointmentDao.getByCustomerIdAndDateTime=" + customerId + ", " + start + ", " + end);
+        return appointments;
+    }
+
+    @Override
     public Appointment getById(int id) {
         Connection conn;
         PreparedStatement stmt = null;
@@ -183,43 +215,6 @@ public class AppointmentDaoImpl implements AppointmentDao {
         } else {
             sysLogger.warning("No appointment returned from database by AppointmentDao.getById=" + id);
         }
-        return appointment;
-    }
-
-    @Override
-    public Appointment getByCustomerIdAndDateTime(int customerId, ZonedDateTime appointmentTime) {
-        Connection conn;
-        PreparedStatement stmt = null;
-        Appointment appointment = null;
-
-        try {
-            conn = DBConnection.getConnection();
-            stmt = conn.prepareStatement(GET_BY_CUSTOMER_ID_AND_DATE_TIME);
-
-            stmt.setInt(1, customerId);
-            stmt.setTimestamp(2, L10nUtil.LocalToUtc(appointmentTime));
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                appointment = mapResult(rs);
-            }
-
-        } catch (SQLException | IOException e) {
-            sysLogger.severe(e.getMessage());
-            e.printStackTrace();
-        } finally {
-            DBConnection.close(stmt);
-        }
-
-        if (appointment != null) {
-            sysLogger.info(appointment.getId() + ":" + appointment.getTitle()
-                    + " returned from database by AppointmentDao.getByCustomerIdAndDateTime=" + customerId + ", "
-                    + appointmentTime);
-        } else {
-            sysLogger.warning("No appointment returned from database by AppointmentDao.getByCustomerIdAndDateTime="
-                    +  customerId + ", " + appointmentTime);
-        }
-
         return appointment;
     }
 
