@@ -24,25 +24,14 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "ORDER BY app.start;";
 
-    private static final String GET_BY_DATE_TIME_WINDOW = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
+    private static final String GET_BY_START_DATE_TIME_WINDOW = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
             "FROM appointments app " +
             "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "LEFT JOIN users u ON app.user_id = u.user_id " +
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
-            "WHERE app.start >= ? " +
-            "AND app.end <= ? " +
-            "ORDER BY app.start;";
-
-    private static final String GET_BY_ID = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
-            "FROM appointments app " +
-            "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
-            "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
-            "LEFT JOIN countries co ON fld.country_id = co.country_id " +
-            "LEFT JOIN users u ON app.user_id = u.user_id " +
-            "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
-            "WHERE app.appointment_id = ? " +
+            "WHERE app.start BETWEEN ? AND ? " +
             "ORDER BY app.start;";
 
     private static final String GET_BY_CUSTOMER_ID_AND_DATE_TIME_WINDOW = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
@@ -53,7 +42,17 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN users u ON app.user_id = u.user_id " +
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "WHERE app.customer_id = ? " +
-            "AND (? BETWEEN app.start AND app.end OR ? BETWEEN app.start AND app.end) " +
+            "AND (? BETWEEN app.start AND app.end OR ? BETWEEN app.start AND app.end OR app.start BETWEEN ? AND ?) " +
+            "ORDER BY app.start;";
+
+    private static final String GET_BY_ID = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
+            "FROM appointments app " +
+            "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
+            "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
+            "LEFT JOIN countries co ON fld.country_id = co.country_id " +
+            "LEFT JOIN users u ON app.user_id = u.user_id " +
+            "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
+            "WHERE app.appointment_id = ? " +
             "ORDER BY app.start;";
 
     private static final String CREATE_APPOINTMENT = "INSERT appointments " +
@@ -127,7 +126,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
     }
 
     @Override
-    public List<Appointment> getByDateTimeWindow(ZonedDateTime start, ZonedDateTime end) {
+    public List<Appointment> getByStartDateTimeWindow(ZonedDateTime start, ZonedDateTime end) {
         Connection conn;
         PreparedStatement stmt = null;
         List<Appointment> appointments = new ArrayList<>();
@@ -136,7 +135,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
         try {
             conn = DBConnection.getConnection();
-            stmt = conn.prepareStatement(GET_BY_DATE_TIME_WINDOW);
+            stmt = conn.prepareStatement(GET_BY_START_DATE_TIME_WINDOW);
 
             stmt.setTimestamp(1, utcStart);
             stmt.setTimestamp(2, utcEnd);
@@ -174,6 +173,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
             stmt.setInt(1, customerId);
             stmt.setTimestamp(2, utcStart);
             stmt.setTimestamp(3, utcEnd);
+            stmt.setTimestamp(4, utcStart);
+            stmt.setTimestamp(5, utcEnd);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

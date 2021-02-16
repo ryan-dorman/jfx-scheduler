@@ -34,8 +34,6 @@ public class CustomersViewController implements Initializable {
     private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
     private final CustomerDao customerDao = new CustomerDaoImpl();
 
-    private boolean isFiltered = false;
-
     // Customers Table
     @FXML
     private TableView<Customer> customersTable;
@@ -92,7 +90,6 @@ public class CustomersViewController implements Initializable {
                 customers.setAll(customerDao.getByNameLike(name));
             }
             customersTable.setItems(customers);
-            isFiltered = true;
             clearSearchButton.setVisible(true);
         }
     }
@@ -101,7 +98,6 @@ public class CustomersViewController implements Initializable {
     public void onClearSearch() {
         searchField.clear();
         loadCustomers();
-        isFiltered = false;
         clearSearchButton.setVisible(false);
     }
 

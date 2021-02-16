@@ -113,10 +113,10 @@ public class MainViewController implements Initializable {
     }
 
     private void checkForUpcomingAppointments() {
-        ZonedDateTime loginTime = Instant.now().atZone(ZoneId.systemDefault()).withSecond(0);
+        ZonedDateTime loginTime = Instant.now().atZone(ZoneId.systemDefault());
 
         List<Appointment> upcomingUserAppointments = appointmentDao
-                .getByDateTimeWindow(loginTime, loginTime.plusMinutes(15))
+                .getByStartDateTimeWindow(loginTime, loginTime.plusMinutes(15))
                 .stream()
                 .filter(app -> app.getUser().getId() == currentUser.getId())
                 .collect(Collectors.toList());
@@ -126,12 +126,12 @@ public class MainViewController implements Initializable {
             String appointmentSummary = "";
 
             for (Appointment app : upcomingUserAppointments) {
-                appointmentSummary += "\n" + app.getId() + " - " + app.getType() + "  " +
+                appointmentSummary += "\n" + app.getId() + "\t" + app.getType() + "\t" +
                         app.getStart().format(formatter);
             }
 
             JavaFXUtil.inform("Your Appointments", "Upcoming Appointments",
-                    "Welcome Back! You have appointments starting in the next 15 minutes:" + appointmentSummary);
+                    "Welcome Back! You have appointments starting in the next 15 minutes:\n" + appointmentSummary);
         } else {
             JavaFXUtil.inform("Your Appointments", "No Appointments",
                     "Welcome Back! You have no appointments starting in the next 15 minutes.");

@@ -11,7 +11,6 @@ import info.ryandorman.simplescheduler.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -117,7 +116,7 @@ public class AppointmentViewController implements Initializable {
 
             customerComboBox.valueProperty().setValue(new ComboBoxOption(customer.getId(), customer.getId() +
                     " - " + customer.getName(), customer));
-            contactComboBox.valueProperty().setValue(new ComboBoxOption(contact.getId(),  contact.getName(), contact));
+            contactComboBox.valueProperty().setValue(new ComboBoxOption(contact.getId(), contact.getName(), contact));
             userComboBox.valueProperty().setValue(new ComboBoxOption(user.getId(), user.getId() + " - " +
                     user.getName(), user));
         } else {
@@ -136,9 +135,9 @@ public class AppointmentViewController implements Initializable {
         String description = descriptionTextArea.getText().trim();
         String location = locationTextField.getText().trim();
         String type = typeTextField.getText().trim();
-        ZonedDateTime start = startDatePicker.getValue().atTime(startTimeSpinner.getValue().withSecond(0))
+        ZonedDateTime start = startDatePicker.getValue().atTime(startTimeSpinner.getValue().withSecond(0).withNano(0))
                 .atZone(ZoneId.systemDefault());
-        ZonedDateTime end = endDatePicker.getValue().atTime(endTimeSpinner.getValue().withSecond(0))
+        ZonedDateTime end = endDatePicker.getValue().atTime(endTimeSpinner.getValue().withSecond(0).withNano(0))
                 .atZone(ZoneId.systemDefault());
         Customer customer = (Customer) customerComboBox.valueProperty().getValue().getValue();
         User user = (User) userComboBox.valueProperty().getValue().getValue();
@@ -224,13 +223,15 @@ public class AppointmentViewController implements Initializable {
     private void setupDatePickers() {
         LocalDate defaultDate = LocalDate.now();
         while (CalendarUtil.isWeekend(defaultDate.getDayOfWeek())) {
-            defaultDate.plusDays(1);
+            defaultDate = defaultDate.plusDays(1);
         }
 
         startDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
         startDatePicker.setValue(defaultDate);
         endDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
         endDatePicker.setValue(defaultDate);
+
+        startDatePicker.valueProperty().addListener((ovVal, oldVal, newVal) -> endDatePicker.setValue(newVal));
     }
 
     private void setupLocalTimeSpinners() {
@@ -267,7 +268,7 @@ public class AppointmentViewController implements Initializable {
                 CalendarUtil.isWeekend(easternEnd.getDayOfWeek());
         boolean notBusinessHours = easternStart.compareTo(easternOpening) < 0 ||
                 easternEnd.compareTo(easternClosing) > 0;
-        boolean  conflictingAppointment = false;
+        boolean conflictingAppointment = false;
 
         List<Appointment> conflictingCustomerAppointments = appointmentDao
                 .getByCustomerIdAndDateTimeWindow(customer.getId(), start, end);

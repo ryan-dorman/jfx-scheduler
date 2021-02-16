@@ -8,7 +8,7 @@ import java.util.List;
 public interface AppointmentDao {
     List<Appointment> getAll();
 
-    List<Appointment> getByDateTimeWindow(ZonedDateTime start, ZonedDateTime end);
+    List<Appointment> getByStartDateTimeWindow(ZonedDateTime start, ZonedDateTime end);
 
     List<Appointment> getByCustomerIdAndDateTimeWindow(int customerId, ZonedDateTime start, ZonedDateTime end);
 

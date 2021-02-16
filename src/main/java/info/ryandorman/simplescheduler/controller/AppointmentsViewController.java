@@ -127,13 +127,13 @@ public class AppointmentsViewController implements Initializable {
     }
 
     private void filterAppointments(ZonedDateTime start, ZonedDateTime end) {
-        List<Appointment> filteredAppointments = appointmentDao.getByDateTimeWindow(start, end);
+        List<Appointment> filteredAppointments = appointmentDao.getByStartDateTimeWindow(start, end);
         ObservableList<Appointment> appointments = FXCollections.observableArrayList(filteredAppointments);
         appointmentsTable.setItems(appointments);
     }
 
     private void setupAppointmentsTableView() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm:ss a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm a");
 
         // Setup Appointments Table View Columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
