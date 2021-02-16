@@ -255,19 +255,20 @@ public class AppointmentViewController implements Initializable {
 
         ZonedDateTime easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York"));
         ZonedDateTime easternOpening = easternStart.withHour(8).withMinute(0).withSecond(0);
-        ZonedDateTime localOpening = easternOpening.withZoneSameInstant(ZoneId.systemDefault());
-
         ZonedDateTime easternEnd = end.withZoneSameInstant(ZoneId.of("America/New_York"));
         ZonedDateTime easternClosing = easternEnd.withHour(22).withMinute(0).withSecond(0);
-        ZonedDateTime localClosing = easternClosing.withZoneSameInstant(ZoneId.systemDefault());
+
+        boolean weekendAppointment = CalendarUtil.isWeekend(easternStart.getDayOfWeek()) ||
+                CalendarUtil.isWeekend(easternEnd.getDayOfWeek());
+        boolean notBusinessHours = easternStart.compareTo(easternOpening) < 0 ||
+                easternEnd.compareTo(easternClosing) > 0;
 
         String message = "";
-
         if (start.compareTo(end) > 0) {
             message = "Make sure your appointment is set to Start before the End.";
-        } else if (easternStart.compareTo(easternOpening) < 0 || easternEnd.compareTo(easternClosing) > 0) {
-            message = "Appointments must fall between business hours: \n" + localOpening.format(formatter) + " and " +
-            localClosing.format(formatter);
+        } else if (weekendAppointment || notBusinessHours) {
+            message = "Appointments must fall between business hours:\nMonday - Friday " + easternOpening.format(formatter) + " to " +
+                    easternClosing.format(formatter) + " EST";
         } else if (appointmentDao.getByCustomerIdAndDateTimeWindow(customer.getId(), start, end).size() > 0) {
             message = "Customer " + customer.getId() + " - " + customer.getName() +
                     " already has at least one appointment during this time.";
