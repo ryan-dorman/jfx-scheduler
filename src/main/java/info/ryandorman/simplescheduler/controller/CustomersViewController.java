@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -60,9 +61,12 @@ public class CustomersViewController implements Initializable {
     @FXML
     private TableColumn<Customer, String> countryColumn;
 
-    // Field
+    // Filter
     @FXML
     private TextField searchField;
+
+    @FXML
+    private Button clearSearchButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -74,23 +78,31 @@ public class CustomersViewController implements Initializable {
     public void onSearch() {
         String input = searchField.getText().trim();
 
-        // If no search input was given reset search filter and display all customers
-        if (input.isEmpty() && isFiltered) {
-            loadCustomers();
-            isFiltered = false;
-        } else {
+        if (!input.isEmpty()) {
             ObservableList<Customer> customers = FXCollections.observableArrayList();
             try {
                 int id = Integer.parseInt(input);
-                customers.add(customerDao.getById(id));
+                Customer customer = customerDao.getById(id);
 
+                if (customer != null) {
+                    customers.add(customer);
+                }
             } catch (NumberFormatException e) {
                 String name = input.toLowerCase(Locale.ROOT);
                 customers.setAll(customerDao.getByNameLike(name));
             }
             customersTable.setItems(customers);
             isFiltered = true;
+            clearSearchButton.setVisible(true);
         }
+    }
+
+    @FXML
+    public void onClearSearch() {
+        searchField.clear();
+        loadCustomers();
+        isFiltered = false;
+        clearSearchButton.setVisible(false);
     }
 
     @FXML
@@ -134,6 +146,8 @@ public class CustomersViewController implements Initializable {
     }
 
     private void setupCustomersTableView() {
+        // Hide clear for filter
+        clearSearchButton.setVisible(false);
         // Setup Customers Table View Columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));

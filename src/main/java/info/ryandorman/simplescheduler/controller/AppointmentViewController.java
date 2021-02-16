@@ -114,9 +114,11 @@ public class AppointmentViewController implements Initializable {
             Contact contact = currentAppointment.getContact();
             User user = currentAppointment.getUser();
 
-            customerComboBox.valueProperty().setValue(new ComboBoxOption(customer.getId(), customer.getName(), customer));
-            contactComboBox.valueProperty().setValue(new ComboBoxOption(contact.getId(), contact.getName(), contact));
-            userComboBox.valueProperty().setValue(new ComboBoxOption(user.getId(), user.getName(), user));
+            customerComboBox.valueProperty().setValue(new ComboBoxOption(customer.getId(), customer.getId() +
+                    " - " + customer.getName(), customer));
+            contactComboBox.valueProperty().setValue(new ComboBoxOption(contact.getId(),  contact.getName(), contact));
+            userComboBox.valueProperty().setValue(new ComboBoxOption(user.getId(), user.getId() + " - " +
+                    user.getName(), user));
         } else {
             // Display warning and close
             JavaFXUtil.warning("Not Found", "Invalid Id", "Appointment specified no longer exists.");
@@ -251,7 +253,7 @@ public class AppointmentViewController implements Initializable {
     }
 
     private void validateAppointment(Customer customer, ZonedDateTime start, ZonedDateTime end) throws DateTimeException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd h:mm a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
 
         ZonedDateTime easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York"));
         ZonedDateTime easternOpening = easternStart.withHour(8).withMinute(0).withSecond(0);
@@ -267,8 +269,8 @@ public class AppointmentViewController implements Initializable {
         if (start.compareTo(end) > 0) {
             message = "Make sure your appointment is set to Start before the End.";
         } else if (weekendAppointment || notBusinessHours) {
-            message = "Appointments must fall between business hours:\nMonday - Friday " + easternOpening.format(formatter) + " to " +
-                    easternClosing.format(formatter) + " EST";
+            message = "Appointments must fall between business hours:\nMonday - Friday " +
+                    easternOpening.format(formatter) + " to " + easternClosing.format(formatter) + " EST";
         } else if (appointmentDao.getByCustomerIdAndDateTimeWindow(customer.getId(), start, end).size() > 0) {
             message = "Customer " + customer.getId() + " - " + customer.getName() +
                     " already has at least one appointment during this time.";

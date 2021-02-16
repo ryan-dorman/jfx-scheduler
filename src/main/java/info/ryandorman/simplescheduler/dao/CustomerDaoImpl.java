@@ -121,7 +121,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
         if (customer != null) {
             sysLogger.info(customer.getId() + ":" + customer.getName()
-                    + " returned from database by CustomerDao.getById");
+                    + " returned from database by CustomerDao.getById=" + id);
         } else {
             sysLogger.warning("No customer returned from database by CustomerDao.getById=" + id);
         }
