@@ -266,7 +266,7 @@ public class AppointmentViewController implements Initializable {
             message = "Customer " + customer.getId() + " - " + customer.getName() +
                     " already has at least one appointment during this time.";
         }
-        // check no other for this customer
+
         if (!message.isEmpty()) throw new DateTimeException(message);
     }
 }
