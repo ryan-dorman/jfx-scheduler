@@ -5,7 +5,9 @@ package info.ryandorman.simplescheduler.common;
  *   ID: 001002824
  */
 
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalTimeStringConverter;
 
@@ -133,6 +135,24 @@ public class JavaFXUtil {
                 return null;
             }
         });
+    }
+
+    public static EventHandler<MouseEvent> getTimeSpinnerSelectionRules(Spinner<LocalTime> spinner) {
+        return mouseEvent -> {
+            int caretPos = spinner.getEditor().getCaretPosition();
+            int delimiterPos = spinner.getEditor().getText().indexOf(':');
+            int emptyPos = spinner.getEditor().getText().indexOf(' ');
+            int startSelect = caretPos;
+
+            if (caretPos == delimiterPos) {
+                // if we are before the : the then select hours
+                startSelect = caretPos - 1;
+            } else if (caretPos >= emptyPos) {
+                // if we are near the AM/PM then start at the beginning of this text
+                startSelect = emptyPos + 1;
+            }
+            spinner.getEditor().selectRange(startSelect, startSelect + 1);
+        };
     }
 
     /**

@@ -89,7 +89,11 @@ public class UserDaoImpl implements UserDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getById=" + id);
+        if (user != null) {
+            sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getById=" + id);
+        } else {
+            sysLogger.warning("No User returned from database by UserDao.getById=" + id);
+        }
         return user;
     }
 
@@ -118,7 +122,11 @@ public class UserDaoImpl implements UserDao {
             DBConnection.close(stmt);
         }
 
-        sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getByName=" + name);
+        if (user != null) {
+            sysLogger.info(user.getId() + ":" + user.getName() + " returned from database by UserDao.getByName=" + name);
+        } else {
+            sysLogger.warning("No User returned from database by UserDao.getByName=" + name);
+        }
         return user;
     }
 }

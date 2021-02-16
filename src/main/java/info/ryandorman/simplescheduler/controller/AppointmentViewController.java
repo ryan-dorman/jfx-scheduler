@@ -11,10 +11,12 @@ import info.ryandorman.simplescheduler.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -236,10 +238,14 @@ public class AppointmentViewController implements Initializable {
         LocalTime openingTime = openingEastern.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
         startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, format));
+        startTimeSpinner.getEditor().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                JavaFXUtil.getTimeSpinnerSelectionRules(startTimeSpinner));
         startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, openingTime));
         startTimeSpinner.getValueFactory().setValue(openingTime);
 
         endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, format));
+        endTimeSpinner.getEditor().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                JavaFXUtil.getTimeSpinnerSelectionRules(endTimeSpinner));
         endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, openingTime.plusMinutes(30)));
         endTimeSpinner.getValueFactory().setValue(openingTime.plusMinutes(30));
     }
