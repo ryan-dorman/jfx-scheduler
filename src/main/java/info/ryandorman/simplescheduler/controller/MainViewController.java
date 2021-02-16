@@ -50,6 +50,7 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         onDashboardClick();
+        checkForUpcomingAppointments();
     }
 
     public void initData(User currentUser) {
@@ -99,4 +100,10 @@ public class MainViewController implements Initializable {
         selectedTab.getStyleClass().add("tab--active");
     }
 
+    private void checkForUpcomingAppointments() {
+        // TODO
+        // Get a list of appointments starting in next 15
+        // check if currentUser is linked to any
+        // alert user if any found
+    }
 }
