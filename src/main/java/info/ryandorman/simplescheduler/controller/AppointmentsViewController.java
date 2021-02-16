@@ -149,10 +149,6 @@ public class AppointmentsViewController implements Initializable {
                 new SimpleStringProperty(appointmentData.getValue().getEnd().format(formatter)));
         customerIdColumn.setCellValueFactory(appointmentData ->
                 new SimpleObjectProperty<>(appointmentData.getValue().getCustomer().getId()));
-
-        // Set default sort
-        startColumn.setSortType(TableColumn.SortType.ASCENDING);
-        appointmentsTable.getSortOrder().add(startColumn);
     }
 
     private void setupFilterRadioButtons() {

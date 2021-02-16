@@ -5,6 +5,10 @@ package info.ryandorman.simplescheduler.controller;
  *   ID: 001002824
  */
 
+import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.dao.AppointmentDao;
+import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
+import info.ryandorman.simplescheduler.model.Appointment;
 import info.ryandorman.simplescheduler.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +19,14 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the the MainView of the application. Handles the logic associated with the navigation items
@@ -25,6 +35,8 @@ import java.util.logging.Logger;
 public class MainViewController implements Initializable {
 
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+    private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
 
     public static User currentUser;
 
@@ -50,11 +62,11 @@ public class MainViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         onDashboardClick();
-        checkForUpcomingAppointments();
     }
 
     public void initData(User currentUser) {
         MainViewController.currentUser = currentUser;
+        checkForUpcomingAppointments();
         sysLogger.info("Main view loaded for " + currentUser.toString());
     }
 
@@ -101,9 +113,29 @@ public class MainViewController implements Initializable {
     }
 
     private void checkForUpcomingAppointments() {
-        // TODO
-        // Get a list of appointments starting in next 15
-        // check if currentUser is linked to any
-        // alert user if any found
+        ZonedDateTime loginTime = Instant.now().atZone(ZoneId.systemDefault()).withSecond(0);
+
+        List<Appointment> upcomingUserAppointments = appointmentDao
+                .getByDateTimeWindow(loginTime, loginTime.plusMinutes(15))
+                .stream()
+                .filter(app -> app.getUser().getId() == currentUser.getId())
+                .collect(Collectors.toList());
+
+        if (upcomingUserAppointments.size() > 0) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yy h:mm a");
+            String appointmentSummary = "";
+
+            for (Appointment app : upcomingUserAppointments) {
+                appointmentSummary += "\n" + app.getId() + " - " + app.getType() + "  " +
+                        app.getStart().format(formatter);
+            }
+
+            JavaFXUtil.inform("Your Appointments", "Upcoming Appointments",
+                    "Welcome Back! You have appointments starting in the next 15 minutes:" + appointmentSummary);
+        } else {
+            JavaFXUtil.inform("Your Appointments", "No Appointments",
+                    "Welcome Back! You have no appointments starting in the next 15 minutes.");
+        }
+
     }
 }

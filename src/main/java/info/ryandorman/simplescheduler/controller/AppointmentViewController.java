@@ -23,6 +23,7 @@ import javafx.stage.WindowEvent;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -144,7 +145,8 @@ public class AppointmentViewController implements Initializable {
         Contact contact = (Contact) contactComboBox.valueProperty().getValue().getValue();
 
         try {
-            validateAppointment(customer, start, end);
+            int appointmentId = isUpdating ? currentAppointment.getId() : -1;
+            validateAppointment(appointmentId, customer, start, end);
         } catch (DateTimeException e) {
             JavaFXUtil.warning("Invalid", "Invalid Appointment Window", e.getMessage());
             return;
@@ -252,7 +254,8 @@ public class AppointmentViewController implements Initializable {
         endTimeSpinner.getValueFactory().setValue(openingTime.plusMinutes(30));
     }
 
-    private void validateAppointment(Customer customer, ZonedDateTime start, ZonedDateTime end) throws DateTimeException {
+    private void validateAppointment(int appointmentId, Customer customer, ZonedDateTime start,
+                                     ZonedDateTime end) throws DateTimeException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
 
         ZonedDateTime easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York"));
@@ -264,6 +267,15 @@ public class AppointmentViewController implements Initializable {
                 CalendarUtil.isWeekend(easternEnd.getDayOfWeek());
         boolean notBusinessHours = easternStart.compareTo(easternOpening) < 0 ||
                 easternEnd.compareTo(easternClosing) > 0;
+        boolean  conflictingAppointment = false;
+
+        List<Appointment> conflictingCustomerAppointments = appointmentDao
+                .getByCustomerIdAndDateTimeWindow(customer.getId(), start, end);
+
+        for (Appointment app : conflictingCustomerAppointments) {
+            conflictingAppointment = app.getId() != appointmentId;
+            break;
+        }
 
         String message = "";
         if (start.compareTo(end) > 0) {
@@ -271,7 +283,7 @@ public class AppointmentViewController implements Initializable {
         } else if (weekendAppointment || notBusinessHours) {
             message = "Appointments must fall between business hours:\nMonday - Friday " +
                     easternOpening.format(formatter) + " to " + easternClosing.format(formatter) + " EST";
-        } else if (appointmentDao.getByCustomerIdAndDateTimeWindow(customer.getId(), start, end).size() > 0) {
+        } else if (conflictingAppointment) {
             message = "Customer " + customer.getId() + " - " + customer.getName() +
                     " already has at least one appointment during this time.";
         }
