@@ -13,6 +13,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * A customer JavaFx component that handles LocalTime input into the Spinner.
+ * Design inspired by https://stackoverflow.com/questions/32613619/how-to-make-a-timespinner-in-javafx
+ */
 public class LocalTimeSpinner extends Spinner<LocalTime> {
 
     private static final String format = "h:mm a";
