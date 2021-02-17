@@ -15,36 +15,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Optional;
 
 /**
- * A utility class that allow easy creation and manipulation of various JavaFx components such as ComboBoxes, Spinners,
- * and Alerts.
+ * A utility class that allow easy creation and setup of various JavaFx components.
  */
 public class JavaFXUtil {
-
-    /**
-     * Get a <code>StringConverter</code> that can handle the allows easy conversion between options used in a JavaFX.
-     *
-     * ComboBox and the option wrapper class <code>ComboBoxOption</code>.
-     * @param options Reference to the list of ComboBox options that will be used with the converter
-     * @return StringConverter to use with ComboBoxes made up of <code>ComboBoxOption</code>s
-     */
-    public static StringConverter<ComboBoxOption> getComboBoxConverter(List<ComboBoxOption> options) {
-        return new StringConverter<>() {
-            @Override
-            public String toString(ComboBoxOption option) {
-                return option.getLabel();
-            }
-
-            @Override
-            public ComboBoxOption fromString(String string) {
-                return options.stream().filter(option ->
-                        option.getLabel().equals(string)).findFirst().orElse(null);
-            }
-        };
-    }
 
     /**
      * Get a <code>SpinnerValueFactory</code> that allow LocalTime input into the JavaFX Spinner.

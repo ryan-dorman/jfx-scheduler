@@ -148,7 +148,7 @@ public class CustomerViewController implements Initializable {
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
         // Configure how ComboBox formats the options update divisions on selection
-        countryComboBox.setConverter(JavaFXUtil.getComboBoxConverter(countryOptions));
+        countryComboBox.setConverter(ComboBoxOption.getComboBoxConverter(countryOptions));
         countryComboBox.valueProperty().addListener((obs, oldVale, newValue) -> {
             if (newValue != null) {
                 setupDivisionComboBox(newValue.getId());
@@ -163,7 +163,7 @@ public class CustomerViewController implements Initializable {
                 .map(fld -> new ComboBoxOption(fld.getId(), fld.getName(), fld))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
-        divisionComboBox.setConverter(JavaFXUtil.getComboBoxConverter(divisionOptions));
+        divisionComboBox.setConverter(ComboBoxOption.getComboBoxConverter(divisionOptions));
         divisionComboBox.setItems(divisionOptions);
         divisionComboBox.setValue(null);
     }

@@ -28,6 +28,16 @@ public class CalendarUtil {
         return today.with(TemporalAdjusters.lastDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
     }
 
+    public static ZonedDateTime getFirstDayOfYear() {
+        ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
+        return today.with(TemporalAdjusters.firstDayOfYear()).truncatedTo(ChronoUnit.DAYS);
+    }
+
+    public static ZonedDateTime getLastDayOfYear() {
+        ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
+        return today.with(TemporalAdjusters.lastDayOfYear()).truncatedTo(ChronoUnit.DAYS);
+    }
+
     public static boolean isWeekend(DayOfWeek dayOfWeek) {
         return EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(dayOfWeek);
     }

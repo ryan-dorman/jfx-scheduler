@@ -198,7 +198,7 @@ public class AppointmentViewController implements Initializable {
                 .stream()
                 .map(c -> new ComboBoxOption(c.getId(), c.getId() + " - " + c.getName(), c))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        customerComboBox.setConverter(JavaFXUtil.getComboBoxConverter(customerOptions));
+        customerComboBox.setConverter(ComboBoxOption.getComboBoxConverter(customerOptions));
         customerComboBox.setItems(customerOptions);
     }
 
@@ -207,7 +207,7 @@ public class AppointmentViewController implements Initializable {
                 .stream()
                 .map(con -> new ComboBoxOption(con.getId(), con.getName(), con))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        contactComboBox.setConverter(JavaFXUtil.getComboBoxConverter(contactOptions));
+        contactComboBox.setConverter(ComboBoxOption.getComboBoxConverter(contactOptions));
         contactComboBox.setItems(contactOptions);
     }
 
@@ -216,7 +216,7 @@ public class AppointmentViewController implements Initializable {
                 .stream()
                 .map(u -> new ComboBoxOption(u.getId(), u.getId() + " - " + u.getName(), u))
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        userComboBox.setConverter(JavaFXUtil.getComboBoxConverter(userOptions));
+        userComboBox.setConverter(ComboBoxOption.getComboBoxConverter(userOptions));
         userComboBox.setItems(userOptions);
     }
 
