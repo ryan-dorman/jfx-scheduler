@@ -122,7 +122,7 @@ public class MainViewController implements Initializable {
                 .collect(Collectors.toList());
 
         if (upcomingUserAppointments.size() > 0) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yy h:mm a");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm a");
             String appointmentSummary = "";
 
             for (Appointment app : upcomingUserAppointments) {
