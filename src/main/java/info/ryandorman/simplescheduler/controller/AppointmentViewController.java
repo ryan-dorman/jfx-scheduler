@@ -1,9 +1,6 @@
 package info.ryandorman.simplescheduler.controller;
 
-import info.ryandorman.simplescheduler.common.CalendarUtil;
-import info.ryandorman.simplescheduler.common.ComboBoxOption;
-import info.ryandorman.simplescheduler.common.AlertUtil;
-import info.ryandorman.simplescheduler.common.LocalTimeSpinner;
+import info.ryandorman.simplescheduler.common.*;
 import info.ryandorman.simplescheduler.dao.*;
 import info.ryandorman.simplescheduler.model.Appointment;
 import info.ryandorman.simplescheduler.model.Contact;
@@ -57,13 +54,13 @@ public class AppointmentViewController implements Initializable {
     private TextField typeTextField;
 
     @FXML
-    private DatePicker startDatePicker;
+    private DatePickerInput startDatePicker;
 
     @FXML
     private LocalTimeSpinner startTimeSpinner;
 
     @FXML
-    private DatePicker endDatePicker;
+    private DatePickerInput endDatePicker;
 
     @FXML
     private LocalTimeSpinner endTimeSpinner;
@@ -135,10 +132,10 @@ public class AppointmentViewController implements Initializable {
         String description = descriptionTextArea.getText().trim();
         String location = locationTextField.getText().trim();
         String type = typeTextField.getText().trim();
-        ZonedDateTime start = startDatePicker.getValue().atTime(startTimeSpinner.getValue().withSecond(0).withNano(0))
-                .atZone(ZoneId.systemDefault());
-        ZonedDateTime end = endDatePicker.getValue().atTime(endTimeSpinner.getValue().withSecond(0).withNano(0))
-                .atZone(ZoneId.systemDefault());
+        ZonedDateTime start = startDatePicker.valueProperty().getValue()
+                .atTime(startTimeSpinner.getValue().withSecond(0).withNano(0)).atZone(ZoneId.systemDefault());
+        ZonedDateTime end = endDatePicker.valueProperty().getValue()
+                .atTime(endTimeSpinner.getValue().withSecond(0).withNano(0)).atZone(ZoneId.systemDefault());
         Customer customer = (Customer) customerComboBox.valueProperty().getValue().getValue();
         User user = (User) userComboBox.valueProperty().getValue().getValue();
         Contact contact = (Contact) contactComboBox.valueProperty().getValue().getValue();
@@ -226,33 +223,15 @@ public class AppointmentViewController implements Initializable {
             defaultDate = defaultDate.plusDays(1);
         }
 
-        startDatePicker.setDayCellFactory(picker -> getDisabledPastAndWeekendDateCell());
+        startDatePicker.setRestrictBusinessDays();
         startDatePicker.setValue(defaultDate);
-        endDatePicker.setDayCellFactory(picker -> getDisabledPastAndWeekendDateCell());
+        endDatePicker.setRestrictBusinessDays();
         endDatePicker.setValue(defaultDate);
 
         startDatePicker.valueProperty().addListener((ovVal, oldVal, newVal) -> endDatePicker.setValue(newVal));
     }
 
-    /**
-     * Get a <code>DateCell</code> to supply to a <code>DatePicker.setDayCellFactory</code> callback that disables
-     * cells that occur in the past and on weekends.
-     *
-     * @return DateCell that is set to disabled for prior dates and weekends.
-     */
-    private DateCell getDisabledPastAndWeekendDateCell() {
-        return new DateCell() {
-            @Override
-            public void updateItem(LocalDate localDate, boolean b) {
-                super.updateItem(localDate, b);
-                boolean past = localDate.compareTo(LocalDate.now()) < 0;
-                boolean weekend = CalendarUtil.isWeekend(localDate.getDayOfWeek());
 
-                setDisable(b || past || weekend);
-                setStyle("-fx-background-color: #cccccc;");
-            }
-        };
-    }
 
     private void setupLocalTimeSpinners() {
         Instant now = Instant.now();

@@ -16,15 +16,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import info.ryandorman.simplescheduler.common.DatePickerInput?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1200.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.DashboardViewController">
    <children>
       <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1200.0" spacing="10.0">
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <DatePicker fx:id="startDatePicker" />
-                  <DatePicker fx:id="endDatePicker" />
-                  <Button mnemonicParsing="false" onAction="#onDateFilter" styleClass="sm-button" text="Filter" />
+                  <DatePickerInput fx:id="startDatePicker" />
+                  <DatePickerInput fx:id="endDatePicker" />
+                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#onDateFilter" styleClass="sm-button" text="Filter" />
                </children>
                <padding>
                   <Insets bottom="10.0" />
@@ -47,12 +48,12 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                         </HBox>
-                        <BarChart maxHeight="-Infinity" prefHeight="255.0" prefWidth="306.0">
+                        <BarChart fx:id="appointmentBarChart" maxHeight="-Infinity" prefHeight="255.0" prefWidth="306.0">
                           <xAxis>
-                            <CategoryAxis side="BOTTOM" />
+                            <CategoryAxis fx:id="appointmentXAxis" side="BOTTOM" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis side="LEFT" />
+                            <NumberAxis fx:id="appointmentYAxis" side="LEFT" />
                           </yAxis>
                         </BarChart>
                      </children>
