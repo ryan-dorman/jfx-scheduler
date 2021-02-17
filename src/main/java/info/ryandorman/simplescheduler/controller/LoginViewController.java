@@ -5,7 +5,7 @@ package info.ryandorman.simplescheduler.controller;
  *   ID: 001002824
  */
 
-import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.dao.UserDao;
 import info.ryandorman.simplescheduler.dao.UserDaoImpl;
@@ -73,12 +73,12 @@ public class LoginViewController implements Initializable {
 
         // Validate fields and show errors for missing values
         if (username.isBlank() || username.length() > 50) {
-            JavaFXUtil.warning(L10nUtil.getLanguage("alert.invalidUsername.title"),
+            AlertUtil.warning(L10nUtil.getLanguage("alert.invalidUsername.title"),
                     L10nUtil.getLanguage("alert.invalidUsername.header"),
                     L10nUtil.getLanguage("alert.invalidUsername.content"));
             return;
         } else if (password.isBlank()) {
-            JavaFXUtil.warning(L10nUtil.getLanguage("alert.invalidPassword.title"),
+            AlertUtil.warning(L10nUtil.getLanguage("alert.invalidPassword.title"),
                     L10nUtil.getLanguage("alert.invalidPassword.header"),
                     L10nUtil.getLanguage("alert.invalidPassword.content"));
             return;
@@ -94,7 +94,7 @@ public class LoginViewController implements Initializable {
             loadMainView(actionEvent, user);
         } else {
             userLogger.info("User: " + username + " - Invalid Login (try=" + loginAttempts + ")");
-            JavaFXUtil.warning(L10nUtil.getLanguage("alert.invalidLogin.title"),
+            AlertUtil.warning(L10nUtil.getLanguage("alert.invalidLogin.title"),
                     L10nUtil.getLanguage("alert.invalidLogin.header"),
                     L10nUtil.getLanguage("alert.invalidLogin.content"));
         }

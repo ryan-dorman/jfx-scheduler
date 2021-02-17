@@ -20,6 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import info.ryandorman.simplescheduler.common.LocalTimeSpinner?>
 <AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.AppointmentViewController">
     <children>
         <VBox prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -79,10 +80,10 @@
                      <children>
                         <Label layoutX="10.0" layoutY="125.0" styleClass="text-label" text="Start" />
                         <DatePicker fx:id="startDatePicker" promptText="YYYY-MM-DD" GridPane.columnIndex="1" />
-                        <Spinner fx:id="startTimeSpinner" editable="true" prefHeight="40.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <LocalTimeSpinner fx:id="startTimeSpinner" editable="true" prefHeight="40.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label layoutX="10.0" layoutY="25.0" styleClass="text-label" text="End" GridPane.rowIndex="2" />
                         <DatePicker fx:id="endDatePicker" promptText="YYYY-MM-DD" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Spinner fx:id="endTimeSpinner" editable="true" layoutX="121.0" layoutY="65.0" prefHeight="40.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <LocalTimeSpinner fx:id="endTimeSpinner" editable="true" layoutX="121.0" layoutY="65.0" prefHeight="40.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label styleClass="text-label" text="Customer" GridPane.rowIndex="4" />
                         <ComboBox fx:id="customerComboBox" prefHeight="40.0" prefWidth="242.0" promptText="Customer" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label layoutX="10.0" layoutY="25.0" styleClass="text-label" text="User" GridPane.rowIndex="5" />

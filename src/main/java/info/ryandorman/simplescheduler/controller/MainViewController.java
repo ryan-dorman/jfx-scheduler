@@ -5,7 +5,7 @@ package info.ryandorman.simplescheduler.controller;
  *   ID: 001002824
  */
 
-import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.dao.AppointmentDao;
 import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
@@ -130,10 +130,10 @@ public class MainViewController implements Initializable {
                         app.getStart().format(formatter);
             }
 
-            JavaFXUtil.inform("Your Appointments", "Upcoming Appointments",
+            AlertUtil.inform("Your Appointments", "Upcoming Appointments",
                     "Welcome Back! You have appointments starting in the next 15 minutes:\n" + appointmentSummary);
         } else {
-            JavaFXUtil.inform("Your Appointments", "No Appointments",
+            AlertUtil.inform("Your Appointments", "No Appointments",
                     "Welcome Back! You have no appointments starting in the next 15 minutes.");
         }
 

@@ -1,7 +1,7 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
-import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.dao.*;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
@@ -86,7 +86,7 @@ public class CustomerViewController implements Initializable {
             divisionComboBox.valueProperty().setValue(new ComboBoxOption(fld.getId(), fld.getName(), fld));
         } else {
             // Display warning and close
-            JavaFXUtil.warning("Not Found", "Invalid Id", "Customer specified no longer exists.");
+            AlertUtil.warning("Not Found", "Invalid Id", "Customer specified no longer exists.");
             currentStage.close();
         }
     }
@@ -118,7 +118,7 @@ public class CustomerViewController implements Initializable {
         }
 
         if (saved == 0) {
-            JavaFXUtil.warning("Failed", "Failed to Save Changes",
+            AlertUtil.warning("Failed", "Failed to Save Changes",
                     "Something went wrong. Please try to save the Customer again.");
             return;
         }
@@ -131,7 +131,7 @@ public class CustomerViewController implements Initializable {
     @FXML
     public void onCancel(ActionEvent actionEvent) {
         // Confirm cancel before closing the associated Modal
-        boolean userConfirmed = JavaFXUtil.confirmation("Cancel", "Cancel Changes",
+        boolean userConfirmed = AlertUtil.confirmation("Cancel", "Cancel Changes",
                 "Are you sure you want to return to the Customers?");
 
         if (userConfirmed) {

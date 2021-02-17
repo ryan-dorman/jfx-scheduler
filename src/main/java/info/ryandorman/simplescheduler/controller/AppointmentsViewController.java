@@ -1,7 +1,7 @@
 package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.CalendarUtil;
-import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.dao.AppointmentDao;
 import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
@@ -101,7 +101,7 @@ public class AppointmentsViewController implements Initializable {
         Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
 
         if (selectedAppointment != null) {
-            boolean userConfirmed = JavaFXUtil.confirmation("Delete", selectedAppointment.getId()
+            boolean userConfirmed = AlertUtil.confirmation("Delete", selectedAppointment.getId()
                     + " - " + selectedAppointment.getType(), "Are you sure you want to delete this Appointment?");
 
             if (userConfirmed) {
@@ -109,10 +109,10 @@ public class AppointmentsViewController implements Initializable {
                 deleted = appointmentDao.delete(selectedAppointment.getId());
 
                 if (deleted == 0) {
-                    JavaFXUtil.warning("Failed", "Failed to Delete",
+                    AlertUtil.warning("Failed", "Failed to Delete",
                             "Something went wrong. Please try to delete the Appointment again.");
                 } else {
-                    JavaFXUtil.inform("Success", "Delete Successful",
+                    AlertUtil.inform("Success", "Delete Successful",
                             "Appointment " + selectedAppointment.getId() + " - " + selectedAppointment.getType() +
                                     " has been deleted.");
                     loadAppointments();

@@ -2,13 +2,12 @@ package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
-import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.dao.AppointmentDao;
 import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.dao.ContactDao;
 import info.ryandorman.simplescheduler.dao.ContactDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
-import info.ryandorman.simplescheduler.model.Contact;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -92,7 +91,7 @@ public class DashboardViewController implements Initializable {
             // populateCustomerAppointments();
             // populateUserWorkload();
         } else {
-            JavaFXUtil.warning("Date Input", "Invalid Filter Range",
+            AlertUtil.warning("Date Input", "Invalid Filter Range",
                     "Make sure your start date occurs at least one day before your end date.");
         }
 

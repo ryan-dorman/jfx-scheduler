@@ -2,7 +2,8 @@ package info.ryandorman.simplescheduler.controller;
 
 import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.common.ComboBoxOption;
-import info.ryandorman.simplescheduler.common.JavaFXUtil;
+import info.ryandorman.simplescheduler.common.AlertUtil;
+import info.ryandorman.simplescheduler.common.LocalTimeSpinner;
 import info.ryandorman.simplescheduler.dao.*;
 import info.ryandorman.simplescheduler.model.Appointment;
 import info.ryandorman.simplescheduler.model.Contact;
@@ -15,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -60,13 +60,13 @@ public class AppointmentViewController implements Initializable {
     private DatePicker startDatePicker;
 
     @FXML
-    private Spinner<LocalTime> startTimeSpinner;
+    private LocalTimeSpinner startTimeSpinner;
 
     @FXML
     private DatePicker endDatePicker;
 
     @FXML
-    private Spinner<LocalTime> endTimeSpinner;
+    private LocalTimeSpinner endTimeSpinner;
 
     @FXML
     private ComboBox<ComboBoxOption> customerComboBox;
@@ -121,7 +121,7 @@ public class AppointmentViewController implements Initializable {
                     user.getName(), user));
         } else {
             // Display warning and close
-            JavaFXUtil.warning("Not Found", "Invalid Id", "Appointment specified no longer exists.");
+            AlertUtil.warning("Not Found", "Invalid Id", "Appointment specified no longer exists.");
             currentStage.close();
         }
     }
@@ -147,7 +147,7 @@ public class AppointmentViewController implements Initializable {
             int appointmentId = isUpdating ? currentAppointment.getId() : -1;
             validateAppointment(appointmentId, customer, start, end);
         } catch (DateTimeException e) {
-            JavaFXUtil.warning("Invalid", "Invalid Appointment Window", e.getMessage());
+            AlertUtil.warning("Invalid", "Invalid Appointment Window", e.getMessage());
             return;
         }
 
@@ -171,7 +171,7 @@ public class AppointmentViewController implements Initializable {
         }
 
         if (saved == 0) {
-            JavaFXUtil.warning("Failed", "Failed to Save Changes",
+            AlertUtil.warning("Failed", "Failed to Save Changes",
                     "Something went wrong. Please try to save the Appointment again.");
             return;
         }
@@ -184,7 +184,7 @@ public class AppointmentViewController implements Initializable {
     @FXML
     public void onCancel(ActionEvent actionEvent) {
         // Confirm cancel before closing the associated Modal
-        boolean userConfirmed = JavaFXUtil.confirmation("Cancel", "Cancel Changes",
+        boolean userConfirmed = AlertUtil.confirmation("Cancel", "Cancel Changes",
                 "Are you sure you want to return to the Appointments?");
 
         if (userConfirmed) {
@@ -226,32 +226,45 @@ public class AppointmentViewController implements Initializable {
             defaultDate = defaultDate.plusDays(1);
         }
 
-        startDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
+        startDatePicker.setDayCellFactory(picker -> getDisabledPastAndWeekendDateCell());
         startDatePicker.setValue(defaultDate);
-        endDatePicker.setDayCellFactory(picker -> JavaFXUtil.getDisabledPastAndWeekendDateCell());
+        endDatePicker.setDayCellFactory(picker -> getDisabledPastAndWeekendDateCell());
         endDatePicker.setValue(defaultDate);
 
         startDatePicker.valueProperty().addListener((ovVal, oldVal, newVal) -> endDatePicker.setValue(newVal));
     }
 
+    /**
+     * Get a <code>DateCell</code> to supply to a <code>DatePicker.setDayCellFactory</code> callback that disables
+     * cells that occur in the past and on weekends.
+     *
+     * @return DateCell that is set to disabled for prior dates and weekends.
+     */
+    private DateCell getDisabledPastAndWeekendDateCell() {
+        return new DateCell() {
+            @Override
+            public void updateItem(LocalDate localDate, boolean b) {
+                super.updateItem(localDate, b);
+                boolean past = localDate.compareTo(LocalDate.now()) < 0;
+                boolean weekend = CalendarUtil.isWeekend(localDate.getDayOfWeek());
+
+                setDisable(b || past || weekend);
+                setStyle("-fx-background-color: #cccccc;");
+            }
+        };
+    }
+
     private void setupLocalTimeSpinners() {
-        String format = "h:mm a";
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
 
         ZonedDateTime openingEastern = eastern.withHour(8).withMinute(0).withSecond(0);
         LocalTime openingTime = openingEastern.withZoneSameInstant(ZoneId.systemDefault()).toLocalTime();
 
-        startTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(startTimeSpinner, format));
-        startTimeSpinner.getEditor().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                JavaFXUtil.getTimeSpinnerSelectionRules(startTimeSpinner));
-        startTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, openingTime));
+        startTimeSpinner.setDefaultValue(openingTime);
         startTimeSpinner.getValueFactory().setValue(openingTime);
 
-        endTimeSpinner.setValueFactory(JavaFXUtil.getSpinnerLocalTimeFactory(endTimeSpinner, format));
-        endTimeSpinner.getEditor().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                JavaFXUtil.getTimeSpinnerSelectionRules(endTimeSpinner));
-        endTimeSpinner.getEditor().setTextFormatter(JavaFXUtil.getLocalTimeFormatter(format, openingTime.plusMinutes(30)));
+        endTimeSpinner.setDefaultValue(openingTime.plusMinutes(30));
         endTimeSpinner.getValueFactory().setValue(openingTime.plusMinutes(30));
     }
 
