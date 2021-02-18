@@ -111,6 +111,12 @@
   -fx-font-weight: bold;
 }
 
+.axis-label {
+  -fx-font-size: 14px;
+  -fx-text-fill: secondary-text-color;
+  -fx-font-weight: bold;
+}
+
 .text-area,
 .text-area .content,
 .text-field {

@@ -118,9 +118,11 @@ public class DashboardViewController implements Initializable {
         ObservableList<ComboBoxOption> aggregationOptions = FXCollections.observableArrayList();
         ComboBoxOption type = new ComboBoxOption(1, "Type", "type");
         ComboBoxOption month = new ComboBoxOption(2, "Month", "month");
+        ComboBoxOption typeAndMonth = new ComboBoxOption(3, "Type by Month", "typeByMonth");
 
         aggregationOptions.add(type);
         aggregationOptions.add(month);
+        aggregationOptions.add(typeAndMonth);
 
         aggregationComboBox.setConverter(ComboBoxOption.getComboBoxConverter(aggregationOptions));
         aggregationComboBox.valueProperty().addListener((obs, oldVale, newValue) -> {
@@ -177,9 +179,9 @@ public class DashboardViewController implements Initializable {
 
             appointmentBarChart.setLegendVisible(false);
             appointmentXAxis.setLabel(aggregation.getLabel());
+            appointmentYAxis.setLabel("Appointments");
             appointmentYAxis.setMinorTickVisible(false);
             appointmentYAxis.setMinorTickCount(0);
-            appointmentYAxis.setUpperBound(5);
 
             switch ((String) aggregation.getValue()) {
                 case "type":
@@ -190,6 +192,12 @@ public class DashboardViewController implements Initializable {
                 case "month":
                     counts = appointments.stream().collect(Collectors.groupingBy(a ->
                                     a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                            Collectors.counting()));
+                    break;
+                case "typeByMonth":
+                    counts = appointments.stream().collect(Collectors.groupingBy(a ->
+                                    a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()) + "=" +
+                                            a.getType(),
                             Collectors.counting()));
                     break;
             }
@@ -212,15 +220,42 @@ public class DashboardViewController implements Initializable {
             appointmentYAxis.setLowerBound(0);
             appointmentYAxis.setUpperBound(upperBound);
             appointmentYAxis.setTickUnit(1);
-            appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
+
             List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
-            counts.forEach((key, value) -> {
-                XYChart.Series<String, Number> series = new XYChart.Series<>();
-                series.setName(key);
-                series.getData().add(new XYChart.Data<>(key, value));
-                seriesList.add(series);
-            });
+
+            if (aggregation.getValue().equals("typeByMonth")) {
+                appointmentBarChart.setLegendVisible(true);
+
+                Set<String> months = counts.keySet().stream()
+                        .map(key -> key.split("=")[0]).collect(Collectors.toSet());
+                Set<String> types = counts.keySet().stream()
+                        .map(key -> key.split("=")[1]).collect(Collectors.toSet());
+
+                appointmentXAxis.setCategories(FXCollections.observableArrayList(months));
+                Map<String, Long> finalCounts = counts;
+
+                types.forEach(type -> {
+                    XYChart.Series<String, Number> series = new XYChart.Series<>();
+                    series.setName(type);
+                    finalCounts.forEach((key, value) -> {
+                        String[] typeAndMonth = key.split("=");
+                        if (typeAndMonth[1].equals(type)) {
+                            series.getData().add(new XYChart.Data<>(typeAndMonth[0], value));
+                        }
+                    });
+                    seriesList.add(series);
+                });
+            } else {
+                appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
+
+                counts.forEach((key, value) -> {
+                    XYChart.Series<String, Number> series = new XYChart.Series<>();
+                    series.setName(key);
+                    series.getData().add(new XYChart.Data<>(key, value));
+                    seriesList.add(series);
+                });
+            }
 
             seriesList.forEach(appointmentBarChart.getData()::add);
         }
