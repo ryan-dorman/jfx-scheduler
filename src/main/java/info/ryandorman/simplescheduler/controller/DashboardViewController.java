@@ -9,7 +9,6 @@ import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.dao.ContactDao;
 import info.ryandorman.simplescheduler.dao.ContactDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
-import info.ryandorman.simplescheduler.model.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -23,7 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -180,13 +179,11 @@ public class DashboardViewController implements Initializable {
     }
 
     private void populateCustomerAppointments() {
-        // TODO: fix month sort order :(
-        // Maintain Date longer to allow for sort before setting data into map then convert to string for display?
         ComboBoxOption aggregation = aggregationComboBox.getValue();
 
         if (aggregation != null) {
             final String CATEGORY_DELIMITER = "&&";
-            Map<String, Long> counts = new HashMap<>();
+            Map<String, Long> counts = new LinkedHashMap<>();
 
             // Setup BarChart
             appointmentBarChart.setLegendVisible(false);
@@ -198,21 +195,32 @@ public class DashboardViewController implements Initializable {
             // Tally up counts in a map (i.e., bag) for the aggregation category chosen
             switch ((String) aggregation.getValue()) {
                 case "type":
-                    counts = appointments.stream()
+                    counts.putAll(appointments.stream()
                             .collect(Collectors.groupingBy(a -> a.getType().toUpperCase(Locale.ROOT),
-                                    Collectors.counting()));
+                                    Collectors.counting())));
                     break;
                 case "month":
-                    counts = appointments.stream()
+                    Map<Month, Long> unsortedCounts = appointments.stream()
                             .collect(Collectors.groupingBy(a ->
-                                    a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                            Collectors.counting()));
+                                    a.getStart().getMonth(), Collectors.counting()));
+                    // Sort by month and set in counts
+                    counts.putAll((Map<String, Long>) unsortedCounts.entrySet().stream()
+                            .sorted(Comparator.comparing(entry -> entry.getKey()))
+                            .collect(Collectors.toMap(
+                                    entry -> entry.getKey().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                                    Map.Entry::getValue,
+                                    (e1, e2) -> e1,
+                                    LinkedHashMap::new)
+                            )
+                    );
                     break;
                 case "typeByMonth":
-                    counts = appointments.stream()
+                    // TODO: fix month sort order :(
+                    counts.putAll(appointments.stream()
+                            .sorted(Comparator.comparing(Appointment::getStart))
                             .collect(Collectors.groupingBy(a ->
                                     a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()) +
-                                            CATEGORY_DELIMITER + a.getType(),Collectors.counting()));
+                                            CATEGORY_DELIMITER + a.getType(), Collectors.counting())));
                     break;
             }
 
