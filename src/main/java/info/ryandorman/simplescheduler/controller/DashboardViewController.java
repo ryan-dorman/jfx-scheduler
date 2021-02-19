@@ -203,9 +203,9 @@ public class DashboardViewController implements Initializable {
                     Map<Month, Long> unsortedCounts = appointments.stream()
                             .collect(Collectors.groupingBy(a ->
                                     a.getStart().getMonth(), Collectors.counting()));
-                    // Sort by month and set in counts
+                    // Sort by month and convert month to String for display then set in counts
                     counts.putAll((Map<String, Long>) unsortedCounts.entrySet().stream()
-                            .sorted(Comparator.comparing(entry -> entry.getKey()))
+                            .sorted(Map.Entry.comparingByKey())
                             .collect(Collectors.toMap(
                                     entry -> entry.getKey().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                                     Map.Entry::getValue,
@@ -229,6 +229,7 @@ public class DashboardViewController implements Initializable {
             appointmentBarChart.getData().clear();
 
             // Set new data
+            // Determine upper bounds of Y axis range
             Optional<Map.Entry<String, Long>> maxEntry = counts.entrySet().stream()
                     .max(Map.Entry.comparingByValue());
             long upperBound = 5L;
@@ -256,14 +257,13 @@ public class DashboardViewController implements Initializable {
                         .map(key -> key.split(CATEGORY_DELIMITER)[1]).collect(Collectors.toSet());
 
                 appointmentXAxis.setCategories(FXCollections.observableArrayList(months));
-                Map<String, Long> finalCounts = counts;
 
                 // For each type create a series
                 types.forEach(type -> {
                     XYChart.Series<String, Number> series = new XYChart.Series<>();
                     series.setName(type);
                     //  Add the counts of that type to the series by month
-                    finalCounts.forEach((key, value) -> {
+                    counts.forEach((key, value) -> {
                         String[] monthAndType = key.split(CATEGORY_DELIMITER);
                         if (monthAndType[1].equals(type)) {
                             series.getData().add(new XYChart.Data<>(monthAndType[0], value));
@@ -300,7 +300,7 @@ public class DashboardViewController implements Initializable {
 
         // Flatten list into a sub-map (i.e, bag) of user appointment counts by month and year
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yyyy");
 
         userAppointments.forEach((userName, apps) -> {
             XYChart.Series<String, Number> series = new XYChart.Series<>();
