@@ -181,6 +181,7 @@ public class DashboardViewController implements Initializable {
 
     private void populateCustomerAppointments() {
         // TODO: fix month sort order :(
+        // Maintain Date longer to allow for sort before setting data into map then convert to string for display?
         ComboBoxOption aggregation = aggregationComboBox.getValue();
 
         if (aggregation != null) {
@@ -202,12 +203,14 @@ public class DashboardViewController implements Initializable {
                                     Collectors.counting()));
                     break;
                 case "month":
-                    counts = appointments.stream().collect(Collectors.groupingBy(a ->
+                    counts = appointments.stream()
+                            .collect(Collectors.groupingBy(a ->
                                     a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                             Collectors.counting()));
                     break;
                 case "typeByMonth":
-                    counts = appointments.stream().collect(Collectors.groupingBy(a ->
+                    counts = appointments.stream()
+                            .collect(Collectors.groupingBy(a ->
                                     a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()) +
                                             CATEGORY_DELIMITER + a.getType(),Collectors.counting()));
                     break;
@@ -285,7 +288,7 @@ public class DashboardViewController implements Initializable {
 
         // Transform appointments into a map of user lists
         Map<String, List<Appointment>> userAppointments = appointments.stream()
-                .collect(Collectors.groupingBy(app -> app.getUser().getName().toUpperCase(Locale.ROOT)));
+                .collect(Collectors.groupingBy(app -> app.getUser().getName()));
 
         // Flatten list into a sub-map (i.e, bag) of user appointment counts by month and year
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
