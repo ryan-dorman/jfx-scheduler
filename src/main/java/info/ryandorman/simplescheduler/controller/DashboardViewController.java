@@ -9,22 +9,21 @@ import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.dao.ContactDao;
 import info.ryandorman.simplescheduler.dao.ContactDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
+import info.ryandorman.simplescheduler.model.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -56,6 +55,15 @@ public class DashboardViewController implements Initializable {
 
     @FXML
     private NumberAxis appointmentYAxis;
+
+    @FXML
+    private LineChart<String, Number> userLineChart;
+
+    @FXML
+    private CategoryAxis userXAxis;
+
+    @FXML
+    private NumberAxis userYAxis;
 
     @FXML
     private ComboBox<ComboBoxOption> contactComboBox;
@@ -172,17 +180,21 @@ public class DashboardViewController implements Initializable {
     }
 
     private void populateCustomerAppointments() {
+        // TODO: fix month sort order :(
         ComboBoxOption aggregation = aggregationComboBox.getValue();
 
         if (aggregation != null) {
+            final String CATEGORY_DELIMITER = "&&";
             Map<String, Long> counts = new HashMap<>();
 
+            // Setup BarChart
             appointmentBarChart.setLegendVisible(false);
             appointmentXAxis.setLabel(aggregation.getLabel());
             appointmentYAxis.setLabel("Appointments");
             appointmentYAxis.setMinorTickVisible(false);
             appointmentYAxis.setMinorTickCount(0);
 
+            // Tally up counts in a map (i.e., bag) for the aggregation category chosen
             switch ((String) aggregation.getValue()) {
                 case "type":
                     counts = appointments.stream()
@@ -196,17 +208,16 @@ public class DashboardViewController implements Initializable {
                     break;
                 case "typeByMonth":
                     counts = appointments.stream().collect(Collectors.groupingBy(a ->
-                                    a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()) + "=" +
-                                            a.getType(),
-                            Collectors.counting()));
+                                    a.getStart().getMonth().getDisplayName(TextStyle.SHORT, Locale.getDefault()) +
+                                            CATEGORY_DELIMITER + a.getType(),Collectors.counting()));
                     break;
             }
 
-            // Clear old
+            // Clear old data
             appointmentXAxis.getCategories().clear();
             appointmentBarChart.getData().clear();
 
-            // Set new
+            // Set new data
             Optional<Map.Entry<String, Long>> maxEntry = counts.entrySet().stream()
                     .max(Map.Entry.comparingByValue());
             long upperBound = 5L;
@@ -223,30 +234,34 @@ public class DashboardViewController implements Initializable {
 
             List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
-
             if (aggregation.getValue().equals("typeByMonth")) {
+                // If using 2 categories set one to a series and one to category groups.
                 appointmentBarChart.setLegendVisible(true);
 
+                // Get a list of months and one of types
                 Set<String> months = counts.keySet().stream()
-                        .map(key -> key.split("=")[0]).collect(Collectors.toSet());
+                        .map(key -> key.split(CATEGORY_DELIMITER)[0]).collect(Collectors.toSet());
                 Set<String> types = counts.keySet().stream()
-                        .map(key -> key.split("=")[1]).collect(Collectors.toSet());
+                        .map(key -> key.split(CATEGORY_DELIMITER)[1]).collect(Collectors.toSet());
 
                 appointmentXAxis.setCategories(FXCollections.observableArrayList(months));
                 Map<String, Long> finalCounts = counts;
 
+                // For each type create a series
                 types.forEach(type -> {
                     XYChart.Series<String, Number> series = new XYChart.Series<>();
                     series.setName(type);
+                    //  Add the counts of that type to the series by month
                     finalCounts.forEach((key, value) -> {
-                        String[] typeAndMonth = key.split("=");
-                        if (typeAndMonth[1].equals(type)) {
-                            series.getData().add(new XYChart.Data<>(typeAndMonth[0], value));
+                        String[] monthAndType = key.split(CATEGORY_DELIMITER);
+                        if (monthAndType[1].equals(type)) {
+                            series.getData().add(new XYChart.Data<>(monthAndType[0], value));
                         }
                     });
                     seriesList.add(series);
                 });
             } else {
+                // If using a 1 category create a series for each data point
                 appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
 
                 counts.forEach((key, value) -> {
@@ -256,13 +271,38 @@ public class DashboardViewController implements Initializable {
                     seriesList.add(series);
                 });
             }
-
+            // Add each new series created to the BarChart
             seriesList.forEach(appointmentBarChart.getData()::add);
         }
     }
 
     private void populateUserWorkload() {
+        // Determine date range (days, weeks, months, years) ?? Maybe can autoranging solve this ??
 
+        // Setup LineChart
+        userXAxis.setLabel("Time");
+        userYAxis.setLabel("Appointments");
+
+        // Transform appointments into a map of user lists
+        Map<String, List<Appointment>> userAppointments = appointments.stream()
+                .collect(Collectors.groupingBy(app -> app.getUser().getName().toUpperCase(Locale.ROOT)));
+
+        // Flatten list into a sub-map (i.e, bag) of user appointment counts by month and year
+        List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yy");
+
+        userAppointments.forEach((userName, apps) -> {
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName(userName);
+            apps.stream()
+                    .collect(Collectors.groupingBy(app -> app.getStart().format(formatter), Collectors.counting()))
+                    .forEach((month, count) -> series.getData().add(new XYChart.Data<>(month, count)));
+            seriesList.add(series);
+        });
+
+        // Add each new series created to the LineChart
+        userLineChart.getData().clear();
+        seriesList.forEach(userLineChart.getData()::add);
     }
 
     private void populateContactSchedule() {
