@@ -182,7 +182,6 @@ public class DashboardViewController implements Initializable {
         ComboBoxOption aggregation = aggregationComboBox.getValue();
 
         if (aggregation != null) {
-            final String CATEGORY_DELIMITER = "&&";
             Map<String, Long> counts = new LinkedHashMap<>();
             List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
@@ -196,80 +195,13 @@ public class DashboardViewController implements Initializable {
             // Tally up counts in a map (i.e., bag) for the aggregation category chosen
             switch ((String) aggregation.getValue()) {
                 case "type":
-                    counts.putAll(appointments.stream()
-                            .collect(Collectors.groupingBy(a -> a.getType().toUpperCase(Locale.ROOT),
-                                    Collectors.counting())));
-
-                    appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
-
-                    counts.forEach((key, value) -> {
-                        XYChart.Series<String, Number> series = new XYChart.Series<>();
-                        series.setName(key);
-                        series.getData().add(new XYChart.Data<>(key, value));
-                        seriesList.add(series);
-                    });
+                    seriesList = getCustomerAppointmentsByType();
                     break;
                 case "month":
-                    Map<Month, Long> unsortedCounts = appointments.stream()
-                            .collect(Collectors.groupingBy(a ->
-                                    a.getStart().getMonth(), Collectors.counting()));
-                    // Sort by month and convert month to String for display then set in counts
-                    counts.putAll((Map<String, Long>) unsortedCounts.entrySet().stream()
-                            .sorted(Map.Entry.comparingByKey())
-                            .collect(Collectors.toMap(
-                                    entry -> entry.getKey().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                                    Map.Entry::getValue,
-                                    (e1, e2) -> e1,
-                                    LinkedHashMap::new)
-                            )
-                    );
-
-                    appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
-
-                    counts.forEach((key, value) -> {
-                        XYChart.Series<String, Number> series = new XYChart.Series<>();
-                        series.setName(key);
-                        series.getData().add(new XYChart.Data<>(key, value));
-                        seriesList.add(series);
-                    });
+                    seriesList = getCustomerAppointmentsByMonth();
                     break;
                 case "typeByMonth":
-                    counts.putAll(appointments.stream()
-                            .sorted(Comparator.comparing(Appointment::getStart))
-                            .collect(Collectors.groupingBy(a ->
-                                    a.getStart().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) +
-                                            CATEGORY_DELIMITER + a.getType(), Collectors.counting())));
-
-                    // type to a series and months to category groups.
-                    appointmentBarChart.setLegendVisible(true);
-
-                    // Get a list of ordered months and one of the types
-                    Set<String> months = counts.keySet().stream()
-                            .map(key -> key.split(CATEGORY_DELIMITER)[0]).collect(Collectors.toSet())
-                            .stream().sorted((str1, str2) -> {
-                                Month month1 = Month.valueOf(str1.toUpperCase(Locale.ROOT));
-                                Month month2 = Month.valueOf(str2.toUpperCase(Locale.ROOT));
-                                return month1.compareTo(month2);
-                            })
-                            .collect(Collectors.toCollection(LinkedHashSet::new));
-                    Set<String> types = counts.keySet().stream()
-                            .map(key -> key.split(CATEGORY_DELIMITER)[1]).collect(Collectors.toSet());
-
-                    appointmentXAxis.setCategories(FXCollections.observableArrayList(months));
-
-                    // For each type create a series
-                    types.forEach(type -> {
-                        XYChart.Series<String, Number> series = new XYChart.Series<>();
-                        series.setName(type);
-                        //  Add the counts of that type to the series by month
-                        counts.forEach((key, value) -> {
-                            String[] monthAndType = key.split(CATEGORY_DELIMITER);
-                            if (monthAndType[1].equals(type)) {
-                                series.getData().add(new XYChart.Data<>(monthAndType[0], value));
-                            }
-                        });
-                        seriesList.add(series);
-                    });
+                    seriesList = getCustomerAppointmentsByTypeAndMonth();
                     break;
             }
 
@@ -277,7 +209,7 @@ public class DashboardViewController implements Initializable {
             appointmentXAxis.getCategories().clear();
             appointmentBarChart.getData().clear();
 
-            // Set new data
+            // TODO; how to get counts to set range with eveything in own method??
             // Determine upper bounds of Y axis range
             Optional<Map.Entry<String, Long>> maxEntry = counts.entrySet().stream()
                     .max(Map.Entry.comparingByValue());
@@ -296,6 +228,105 @@ public class DashboardViewController implements Initializable {
             // Add each new series created to the BarChart
             seriesList.forEach(appointmentBarChart.getData()::add);
         }
+    }
+
+    private List<XYChart.Series<String, Number>> getCustomerAppointmentsByType() {
+        // Tally up counts in a map (i.e., bag) for appointments by type
+        Map<String, Long> counts = new LinkedHashMap<>();
+        List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+
+        counts.putAll(appointments.stream()
+                .collect(Collectors.groupingBy(a -> a.getType().toUpperCase(Locale.ROOT),
+                        Collectors.counting())));
+
+        // Set categories and counts in BarChart
+        appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
+
+        counts.forEach((key, value) -> {
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName(key);
+            series.getData().add(new XYChart.Data<>(key, value));
+            seriesList.add(series);
+        });
+
+        return seriesList;
+    }
+
+    private List<XYChart.Series<String, Number>> getCustomerAppointmentsByMonth() {
+        // Tally up counts in a map (i.e., bag) for appointments by month
+        Map<String, Long> counts = new LinkedHashMap<>();
+        List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+
+        Map<Month, Long> unsortedCounts = appointments.stream()
+                .collect(Collectors.groupingBy(a ->
+                        a.getStart().getMonth(), Collectors.counting()));
+        // Sort counts by month and convert month to String for display
+        counts.putAll((Map<String, Long>) unsortedCounts.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new)
+                )
+        );
+
+        // Set categories and counts in BarChart
+        appointmentXAxis.setCategories(FXCollections.observableArrayList(counts.keySet()));
+
+        counts.forEach((key, value) -> {
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName(key);
+            series.getData().add(new XYChart.Data<>(key, value));
+            seriesList.add(series);
+        });
+
+        return seriesList;
+    }
+
+    private List<XYChart.Series<String, Number>> getCustomerAppointmentsByTypeAndMonth() {
+        // Tally up counts in a map (i.e., bag) for appointments by type & month
+        final String CATEGORY_DELIMITER = "&&";
+        Map<String, Long> counts = new LinkedHashMap<>();
+        List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+
+        counts.putAll(appointments.stream()
+                .collect(Collectors.groupingBy(a ->
+                        a.getStart().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) +
+                                CATEGORY_DELIMITER + a.getType(), Collectors.counting())));
+
+        // Type will be defined by series in the legend and months to category groups
+        appointmentBarChart.setLegendVisible(true);
+
+        // Get a list of ordered months and one of the types
+        Set<String> months = counts.keySet().stream()
+                .map(key -> key.split(CATEGORY_DELIMITER)[0]).collect(Collectors.toSet())
+                .stream().sorted((str1, str2) -> {
+                    Month month1 = Month.valueOf(str1.toUpperCase(Locale.ROOT));
+                    Month month2 = Month.valueOf(str2.toUpperCase(Locale.ROOT));
+                    return month1.compareTo(month2);
+                })
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<String> types = counts.keySet().stream()
+                .map(key -> key.split(CATEGORY_DELIMITER)[1]).collect(Collectors.toSet());
+
+        appointmentXAxis.setCategories(FXCollections.observableArrayList(months));
+
+        // For each type create a series
+        types.forEach(type -> {
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName(type);
+            //  Add the counts of that type to the series by month
+            counts.forEach((key, value) -> {
+                String[] monthAndType = key.split(CATEGORY_DELIMITER);
+                if (monthAndType[1].equals(type)) {
+                    series.getData().add(new XYChart.Data<>(monthAndType[0], value));
+                }
+            });
+            seriesList.add(series);
+        });
+
+        return seriesList;
     }
 
     private void populateUserWorkload() {
