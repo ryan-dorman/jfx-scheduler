@@ -215,7 +215,6 @@ public class DashboardViewController implements Initializable {
                     );
                     break;
                 case "typeByMonth":
-                    // TODO: fix month sort order :(
                     counts.putAll(appointments.stream()
                             .sorted(Comparator.comparing(Appointment::getStart))
                             .collect(Collectors.groupingBy(a ->
@@ -250,9 +249,16 @@ public class DashboardViewController implements Initializable {
                 // If using 2 categories set one to a series and one to category groups.
                 appointmentBarChart.setLegendVisible(true);
 
+                // TODO: fix category sort and set
                 // Get a list of months and one of types
                 Set<String> months = counts.keySet().stream()
-                        .map(key -> key.split(CATEGORY_DELIMITER)[0]).collect(Collectors.toSet());
+                        .map(key -> key.split(CATEGORY_DELIMITER)[0]).collect(Collectors.toSet())
+                        .stream().sorted((str1, str2) -> {
+                            Month month1 = Month.valueOf(str1.toUpperCase(Locale.ROOT));
+                            Month month2 = Month.valueOf(str2.toUpperCase(Locale.ROOT));
+                            return month1.compareTo(month2);
+                        })
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
                 Set<String> types = counts.keySet().stream()
                         .map(key -> key.split(CATEGORY_DELIMITER)[1]).collect(Collectors.toSet());
 
@@ -288,7 +294,7 @@ public class DashboardViewController implements Initializable {
     }
 
     private void populateUserWorkload() {
-        // Determine date range (days, weeks, months, years) ?? Maybe can autoranging solve this ??
+        // Get a list of all Month-Years to display on LineChart
 
         // Setup LineChart
         userXAxis.setLabel("Time");
@@ -306,8 +312,13 @@ public class DashboardViewController implements Initializable {
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.setName(userName);
             apps.stream()
-                    .collect(Collectors.groupingBy(app -> app.getStart().format(formatter), Collectors.counting()))
-                    .forEach((month, count) -> series.getData().add(new XYChart.Data<>(month, count)));
+                    .collect(Collectors.groupingBy(app -> app.getStart().withDayOfMonth(1).toLocalDate(),
+                            Collectors.counting()))
+                    .entrySet().stream().sorted(Map.Entry.comparingByKey())
+                    .forEach(entry ->
+                            series.getData().add(new XYChart.Data<>(entry.getKey().format(formatter), entry.getValue()))
+                    );
+
             seriesList.add(series);
         });
 
