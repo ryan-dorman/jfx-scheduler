@@ -7,7 +7,7 @@ import info.ryandorman.simplescheduler.model.Contact;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.User;
 import info.ryandorman.simplescheduler.common.DatePickerInput;
-import info.ryandorman.simplescheduler.common.LocalTimeSpinner;
+import info.ryandorman.simplescheduler.common.TimeSpinner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,13 +59,13 @@ public class AppointmentViewController implements Initializable {
     private DatePickerInput startDatePicker;
 
     @FXML
-    private LocalTimeSpinner startTimeSpinner;
+    private TimeSpinner startTimeSpinner;
 
     @FXML
     private DatePickerInput endDatePicker;
 
     @FXML
-    private LocalTimeSpinner endTimeSpinner;
+    private TimeSpinner endTimeSpinner;
 
     @FXML
     private ComboBox<ComboBoxOption> customerComboBox;

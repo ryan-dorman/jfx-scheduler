@@ -12,7 +12,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 /**
- * Improved version of the JavaFx DatePicker that ensures user text input causes the proper value updates.
+ * Improved version of <code>javafx.scene.control.DatePicker</code> that ensures user text input causes the proper value
+ * updates.
  */
 public class DatePickerInput extends DatePicker {
 
@@ -21,7 +22,9 @@ public class DatePickerInput extends DatePicker {
     }
 
     /**
-     * Set dates available to select from in picker window to only weekdays in the present and future.
+     * Sets dates available for selection in the <code>javafx.scene.control.DatePicker</code> window to only weekdays in
+     * the present and future. A Java 8 Lambda is used to easily set up the callback to override
+     * <code>DateCell::updateItem</code>
      */
     public void setRestrictBusinessDays() {
         this.setDayCellFactory(picker -> new DateCell() {
@@ -38,8 +41,9 @@ public class DatePickerInput extends DatePicker {
     }
 
     /**
-     * Makes sure the value set via text input by user results in the DatePicker's value being updated. The JavaFx
-     * default DatePicker behavior does not accomplish this reliably.
+     * Makes sure the value set via text input by user results in the <code>javafx.scene.control.DatePicker</code>'s
+     * value being updated. The default <code>javafx.scene.control.DatePicker</code> behavior does not accomplish this
+     * reliably.
      */
     private void setPickerValueBasedOnInput() {
         this.getEditor().focusedProperty().addListener((object, wasFocused, isFocused) -> {

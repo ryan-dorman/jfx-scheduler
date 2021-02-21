@@ -19,22 +19,32 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * A customer JavaFx component that handles LocalTime input into the Spinner.
- * Design inspired by https://stackoverflow.com/questions/32613619/how-to-make-a-timespinner-in-javafx
+ * A customer JavaFx component that extends <code>javafx.scene.control.Spinner</code> to handle time input. Design
+ * inspired by <a href="https://stackoverflow.com/questions/32613619/how-to-make-a-timespinner-in-javafx.">How to make a
+ * TimeSpinner in JavaFx</a>.
  */
-public class LocalTimeSpinner extends Spinner<LocalTime> {
+public class TimeSpinner extends Spinner<LocalTime> {
 
     private static final String format = "h:mm a";
 
-    public LocalTimeSpinner() {
+    /**
+     * Creates a new class instance that sets the default input value to the current time. Allows auto-instantiation
+     * through .fxml files.
+     */
+    public TimeSpinner() {
         this(LocalTime.now(ZoneId.systemDefault()));
     }
 
-    public LocalTimeSpinner(LocalTime defaultValue) {
+    /**
+     *  Creates a new class instance that sets the default input value to the user defined <code>java.time.LocalTime
+     *  </code> parameter.
+     * @param defaultValue Default input value (e.g., time) to display.
+     */
+    public TimeSpinner(LocalTime defaultValue) {
         this(format, defaultValue);
     }
 
-    public LocalTimeSpinner(String format, LocalTime defaultValue) {
+    public TimeSpinner(String format, LocalTime defaultValue) {
         this.setValueFactory(getSpinnerLocalTimeFactory(format));
         this.getEditor().addEventHandler(MouseEvent.MOUSE_CLICKED, getTimeSpinnerSelectionRules());
         setDefaultValue(defaultValue);
@@ -63,15 +73,15 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
                     setValue(LocalTime.now());
                 } else {
                     LocalTime time  = getValue();
-                    int caretPos = LocalTimeSpinner.this.getEditor().getCaretPosition();
-                    int delimiterPos = LocalTimeSpinner.this.getEditor().getText().indexOf(':');
+                    int caretPos = TimeSpinner.this.getEditor().getCaretPosition();
+                    int delimiterPos = TimeSpinner.this.getEditor().getText().indexOf(':');
 
                     if (caretPos <= delimiterPos) {
                         setValue(time.minusHours(i));
                     } else {
                         setValue(time.minusMinutes(i));
                     }
-                    LocalTimeSpinner.this.getEditor().positionCaret(caretPos);
+                    TimeSpinner.this.getEditor().positionCaret(caretPos);
                 }
             }
 
@@ -81,15 +91,15 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
                     setValue(LocalTime.now());
                 } else {
                     LocalTime time  = getValue();
-                    int caretPos = LocalTimeSpinner.this.getEditor().getCaretPosition();
-                    int delimiterPos = LocalTimeSpinner.this.getEditor().getText().indexOf(':');
+                    int caretPos = TimeSpinner.this.getEditor().getCaretPosition();
+                    int delimiterPos = TimeSpinner.this.getEditor().getText().indexOf(':');
 
                     if (caretPos <= delimiterPos) {
                         setValue(time.plusHours(i));
                     } else {
                         setValue(time.plusMinutes(i));
                     }
-                    LocalTimeSpinner.this.getEditor().positionCaret(caretPos);
+                    TimeSpinner.this.getEditor().positionCaret(caretPos);
                 }
             }
         };
@@ -102,7 +112,7 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
      * @return TextFormatter to manage the string formatting of LocalTime input
      */
     private TextFormatter<LocalTime> getLocalTimeFormatter(LocalTime defaultValue) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalTimeSpinner.format);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TimeSpinner.format);
         StringConverter<LocalTime> converter = new StringConverter<>() {
             @Override
             public String toString(LocalTime time) {
@@ -139,9 +149,9 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
      */
     private EventHandler<MouseEvent> getTimeSpinnerSelectionRules() {
         return mouseEvent -> {
-            int caretPos = LocalTimeSpinner.this.getEditor().getCaretPosition();
-            int delimiterPos = LocalTimeSpinner.this.getEditor().getText().indexOf(':');
-            int emptyPos = LocalTimeSpinner.this.getEditor().getText().indexOf(' ');
+            int caretPos = TimeSpinner.this.getEditor().getCaretPosition();
+            int delimiterPos = TimeSpinner.this.getEditor().getText().indexOf(':');
+            int emptyPos = TimeSpinner.this.getEditor().getText().indexOf(' ');
             int startSelect = caretPos;
 
             if (caretPos == delimiterPos) {
@@ -151,7 +161,7 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
                 // if we are near the AM/PM then start at the beginning of this text
                 startSelect = emptyPos + 1;
             }
-            LocalTimeSpinner.this.getEditor().selectRange(startSelect, startSelect + 1);
+            TimeSpinner.this.getEditor().selectRange(startSelect, startSelect + 1);
         };
     }
 }

@@ -13,7 +13,8 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.EnumSet;
 
 /**
- * A utility class that allows easy retrieval ad information of days relative to the week, month, and year.
+ * A utility class that allows easy retrieval of and information on days relative to the week, month, and year of the
+ * current date.
  */
 public class CalendarUtil {
     /**
@@ -71,9 +72,9 @@ public class CalendarUtil {
     }
 
     /**
-     * Test to determine if a day of the week falls on a weekend day (i.e., Saturday or Sunday)
+     * Tests to determine if a day of the week falls on a weekend (i.e., Saturday or Sunday)
      * @param dayOfWeek Day of the week to test
-     * @return True if the day is a weekend else False
+     * @return Boolean indicating if the given day is on a weekend
      */
     public static boolean isWeekend(DayOfWeek dayOfWeek) {
         return EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(dayOfWeek);

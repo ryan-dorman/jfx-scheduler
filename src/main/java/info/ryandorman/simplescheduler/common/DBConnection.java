@@ -15,10 +15,10 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * A wrapper around a database that allows straight forward access to a connection with it. The connection
- * properties are read from the file <code>connection.properties</code>. Allows only one open DB connection to be
- * obtained throughout the application. <em>Close the connection before the application exits.</em> Auto-commit is
- * turned off by default on connections.
+ * A wrapper around a database that allows straight forward access to a connection. The connection properties are read
+ * from the file <code>connection.properties</code>. Allows only one open DB connection to be obtained throughout the
+ * application.  Auto-commit is turned off by default on connections. <em>Close the connection before the application
+ * exits.</em>
  */
 public class DBConnection {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -26,7 +26,7 @@ public class DBConnection {
     private static Connection conn;
 
     /**
-     * Constructor is private to prevent class creation.
+     * Constructor is private to direct prevent class instantiation.
      */
     private DBConnection() {
     }
@@ -48,8 +48,8 @@ public class DBConnection {
     }
 
     /**
-     * Provides a database connection. The connection <code>should not</code> be obtained in a try-with-resources
-     * to avoid closing the connection due to its extension of AutoClosable.
+     * Provides a database connection. The connection <em>should not</em> be obtained in a try-with-resources
+     * to avoid closing the connection due to its extension of <code>AutoClosable</code>.
      *
      * @return Connection Reference to the application's current database connection
      * @throws SQLException If there is an issue establishing the connection
@@ -73,7 +73,7 @@ public class DBConnection {
     }
 
     /**
-     * Commit any open transactions to the database.
+     * Commits any open transactions to the database.
      */
     public static void commit() {
         try {
@@ -89,7 +89,7 @@ public class DBConnection {
     }
 
     /**
-     * Close the existing connection to the database. Log the outcome and capture any errors.
+     * Closes the existing connection to the database.
      */
     public static void close() {
         try {
@@ -106,9 +106,9 @@ public class DBConnection {
     }
 
     /**
-     * Close an existing PreparedStatement associated with a connection. Captures any errors
+     * Closes an existing <code>PreparedStatement</code> associated with a connection.
      *
-     * @param stmt PreparedStatement to be closed
+     * @param stmt <code>PreparedStatement</code> to be closed
      */
     public static void close(PreparedStatement stmt) {
         try {

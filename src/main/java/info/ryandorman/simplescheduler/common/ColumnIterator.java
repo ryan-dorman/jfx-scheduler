@@ -6,14 +6,14 @@ package info.ryandorman.simplescheduler.common;
  */
 
 /**
- * Helps keep track of the current column being read from a result set <code>ResultSet</code> or into a <code>Prepared
- * Statement</code>.
+ * Iterator to cleanly keep track of the current data being read from a <code>java.sql.ResultSet</code> or into a
+ * <code>java.sql.PreparedStatement</code>.
  */
 public class ColumnIterator {
     private int current;
 
     /**
-     * Create a new class instance
+     * Creates a new class instance
      * @param initialIndex Value to start iterating from
      */
     public ColumnIterator(int initialIndex) {
@@ -21,7 +21,7 @@ public class ColumnIterator {
     }
 
     /**
-     * Easily read the current iterator value and increment to the next value to be used
+     * Reads the current iterator value and increments to the next value to be used
      * @return Current value of iterator
      */
     public int next() {
