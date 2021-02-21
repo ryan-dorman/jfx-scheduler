@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -108,7 +109,7 @@ public class DashboardViewController implements Initializable {
         if (startDate.compareTo(endDate) < 0) {
             loadAppointmentsInWindow(startDate, endDate);
             populateCustomerAppointments();
-            populateUserWorkload();
+            populateUserWorkload(startDate, endDate);
             populateContactSchedule();
         } else {
             AlertUtil.warning("Date Input", "Invalid Filter Range",
@@ -182,8 +183,11 @@ public class DashboardViewController implements Initializable {
         ComboBoxOption aggregation = aggregationComboBox.getValue();
 
         if (aggregation != null) {
-            Map<String, Long> counts = new LinkedHashMap<>();
             List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+
+            // Clear old data
+            appointmentXAxis.getCategories().clear();
+            appointmentBarChart.getData().clear();
 
             // Setup BarChart
             appointmentBarChart.setLegendVisible(false);
@@ -205,24 +209,9 @@ public class DashboardViewController implements Initializable {
                     break;
             }
 
-            // Clear old data
-            appointmentXAxis.getCategories().clear();
-            appointmentBarChart.getData().clear();
-
-            // TODO; how to get counts to set range with eveything in own method??
-            // Determine upper bounds of Y axis range
-            Optional<Map.Entry<String, Long>> maxEntry = counts.entrySet().stream()
-                    .max(Map.Entry.comparingByValue());
-            long upperBound = 5L;
-
-            if (maxEntry.isPresent()) {
-                Long maxCount = maxEntry.get().getValue();
-                if (maxCount >= 5L) upperBound = maxCount + 1L;
-            }
-
             appointmentYAxis.setAutoRanging(false);
             appointmentYAxis.setLowerBound(0);
-            appointmentYAxis.setUpperBound(upperBound);
+            appointmentYAxis.setUpperBound(getChartUpperBounds(seriesList));
             appointmentYAxis.setTickUnit(1);
 
             // Add each new series created to the BarChart
@@ -232,10 +221,9 @@ public class DashboardViewController implements Initializable {
 
     private List<XYChart.Series<String, Number>> getCustomerAppointmentsByType() {
         // Tally up counts in a map (i.e., bag) for appointments by type
-        Map<String, Long> counts = new LinkedHashMap<>();
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
-        counts.putAll(appointments.stream()
+        Map<String, Long> counts = new LinkedHashMap<>(appointments.stream()
                 .collect(Collectors.groupingBy(a -> a.getType().toUpperCase(Locale.ROOT),
                         Collectors.counting())));
 
@@ -287,10 +275,9 @@ public class DashboardViewController implements Initializable {
     private List<XYChart.Series<String, Number>> getCustomerAppointmentsByTypeAndMonth() {
         // Tally up counts in a map (i.e., bag) for appointments by type & month
         final String CATEGORY_DELIMITER = "&&";
-        Map<String, Long> counts = new LinkedHashMap<>();
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
-        counts.putAll(appointments.stream()
+        Map<String, Long> counts = new LinkedHashMap<>(appointments.stream()
                 .collect(Collectors.groupingBy(a ->
                         a.getStart().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) +
                                 CATEGORY_DELIMITER + a.getType(), Collectors.counting())));
@@ -300,8 +287,8 @@ public class DashboardViewController implements Initializable {
 
         // Get a list of ordered months and one of the types
         Set<String> months = counts.keySet().stream()
-                .map(key -> key.split(CATEGORY_DELIMITER)[0]).collect(Collectors.toSet())
-                .stream().sorted((str1, str2) -> {
+                .map(key -> key.split(CATEGORY_DELIMITER)[0])
+                .sorted((str1, str2) -> {
                     Month month1 = Month.valueOf(str1.toUpperCase(Locale.ROOT));
                     Month month2 = Month.valueOf(str2.toUpperCase(Locale.ROOT));
                     return month1.compareTo(month2);
@@ -329,38 +316,78 @@ public class DashboardViewController implements Initializable {
         return seriesList;
     }
 
-    private void populateUserWorkload() {
-        // Get a list of all Month-Years to display on LineChart
+    private void populateUserWorkload(ZonedDateTime startDate, ZonedDateTime endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM yy");
+        List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
+
+        // Build a list of all Month-Years to display on LineChart
+        LocalDate minDate = startDate.withDayOfMonth(1).toLocalDate();
+        LocalDate maxDate = endDate.withDayOfMonth(1).toLocalDate();
+        Set<String> monthYears = new LinkedHashSet<>();
+
+        do {
+            monthYears.add(minDate.format(formatter));
+            minDate = minDate.plusMonths(1);
+        } while (minDate.isBefore(maxDate));
+
+        // Reset Chart
+        userLineChart.getData().clear();
+        userXAxis.getCategories().clear();
 
         // Setup LineChart
         userXAxis.setLabel("Time");
         userYAxis.setLabel("Appointments");
+        userXAxis.setCategories(FXCollections.observableArrayList(monthYears));
 
         // Transform appointments into a map of user lists
         Map<String, List<Appointment>> userAppointments = appointments.stream()
                 .collect(Collectors.groupingBy(app -> app.getUser().getName()));
 
         // Flatten list into a sub-map (i.e, bag) of user appointment counts by month and year
-        List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM yyyy");
-
         userAppointments.forEach((userName, apps) -> {
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.setName(userName);
-            apps.stream()
-                    .collect(Collectors.groupingBy(app -> app.getStart().withDayOfMonth(1).toLocalDate(),
-                            Collectors.counting()))
-                    .entrySet().stream().sorted(Map.Entry.comparingByKey())
-                    .forEach(entry ->
-                            series.getData().add(new XYChart.Data<>(entry.getKey().format(formatter), entry.getValue()))
-                    );
+            Map<String,Long> workloadCounts = apps.stream()
+                    .collect(Collectors.groupingBy(app -> app.getStart().format(formatter), Collectors.counting()));
+
+            // For each month-year set user counts or 0 if none
+            monthYears.forEach(monthYear -> {
+                Long userCount = workloadCounts.get(monthYear);
+                series.getData().add(new XYChart.Data<>(monthYear, userCount != null ? userCount : 0));
+            });
 
             seriesList.add(series);
         });
 
+        userYAxis.setAutoRanging(false);
+        userYAxis.setLowerBound(0);
+        userYAxis.setUpperBound(getChartUpperBounds(seriesList));
+        userYAxis.setTickUnit(1);
+
         // Add each new series created to the LineChart
-        userLineChart.getData().clear();
         seriesList.forEach(userLineChart.getData()::add);
+    }
+
+    private long getChartUpperBounds(List<XYChart.Series<String, Number>> seriesList) {
+        // Determine upper bounds of Y axis range
+
+        long upperBound = 5L;
+        // Get max for each series list then find the max of that
+        long maxCount = seriesList.stream()
+                // Map each series to the entry with the max Y value
+                .map(series -> series.getData().stream()
+                        .max(Comparator.comparing(XYChart.Data<String, Number>::getYValue,
+                                Comparator.comparingLong(Number::longValue))))
+                // Get the Max Y value of all series
+                .max(Comparator.comparing(data -> data.isPresent() ? data.get().getYValue() : 0L,
+                        Comparator.comparingLong(Number::longValue)))
+                // The the Y value as long
+                .flatMap(max -> max.map(entry -> entry.getYValue().longValue()))
+                .orElse(0L);
+
+        if (maxCount >= 5L) upperBound = maxCount + 1L;
+
+        return upperBound;
     }
 
     private void populateContactSchedule() {
