@@ -317,7 +317,7 @@ public class DashboardViewController implements Initializable {
     }
 
     private void populateUserWorkload(ZonedDateTime startDate, ZonedDateTime endDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM yy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M-yy");
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
         // Build a list of all Month-Years to display on LineChart
