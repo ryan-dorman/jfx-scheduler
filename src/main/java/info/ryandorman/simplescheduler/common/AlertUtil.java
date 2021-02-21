@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import java.util.Optional;
 
 /**
- * A utility class that allow easy creation and setup of JavaFx Alert components.
+ * A utility class that allows easy creation and setup of JavaFx Alert components.
  */
 public class AlertUtil {
 

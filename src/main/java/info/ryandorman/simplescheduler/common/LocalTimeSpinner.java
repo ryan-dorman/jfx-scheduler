@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler.common;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import javafx.event.EventHandler;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -36,7 +41,7 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
     }
 
     public void setDefaultValue(LocalTime defaultValue) {
-        this.getEditor().setTextFormatter(getLocalTimeFormatter(format, defaultValue));
+        this.getEditor().setTextFormatter(getLocalTimeFormatter(defaultValue));
     }
 
     /**
@@ -93,12 +98,11 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
     /**
      * Get a <code>TextFormatter</code> that can parse LocalTime to and from string input.
      *
-     * @param format String representing the DateTimeFormat to display LocalTime in
      * @param defaultValue The LocalTime value to return if an invalid string format is encountered
      * @return TextFormatter to manage the string formatting of LocalTime input
      */
-    private TextFormatter<LocalTime> getLocalTimeFormatter(String format, LocalTime defaultValue) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+    private TextFormatter<LocalTime> getLocalTimeFormatter(LocalTime defaultValue) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(LocalTimeSpinner.format);
         StringConverter<LocalTime> converter = new StringConverter<>() {
             @Override
             public String toString(LocalTime time) {
@@ -129,6 +133,10 @@ public class LocalTimeSpinner extends Spinner<LocalTime> {
         });
     }
 
+    /**
+     * Get <code>EventHandler<MouseEvent></code> that allows for easy selection of time input displayed in spinner.
+     * @return EventHandler that configures time spinner input selection
+     */
     private EventHandler<MouseEvent> getTimeSpinnerSelectionRules() {
         return mouseEvent -> {
             int caretPos = LocalTimeSpinner.this.getEditor().getCaretPosition();

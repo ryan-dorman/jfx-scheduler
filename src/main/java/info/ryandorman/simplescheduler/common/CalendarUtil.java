@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler.common;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -7,37 +12,69 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.EnumSet;
 
+/**
+ * A utility class that allows easy retrieval ad information of days relative to the week, month, and year.
+ */
 public class CalendarUtil {
+    /**
+     * Provides the first date of the current week based on the current ZoneId.
+     * @return Date for the Monday of the current week
+     */
     public static ZonedDateTime getFirstDayOfWeek() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)).truncatedTo(ChronoUnit.DAYS);
     }
 
+    /**
+     * Provides the last date of the current week based on the current ZoneId.
+     * @return Date for the Sunday of the current week
+     */
     public static ZonedDateTime getLastDayOfWeek() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).truncatedTo(ChronoUnit.DAYS);
     }
 
+    /**
+     * Provides the first date of the current month based on the current ZoneId.
+     * @return Date for the first day of the current month
+     */
     public static ZonedDateTime getFirstDayOfMonth() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.firstDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
     }
 
+    /**
+     * Provides the last date of the current month based on the current ZoneId.
+     * @return Date for the last day of the current month
+     */
     public static ZonedDateTime getLastDayOfMonth() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.lastDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
     }
 
+    /**
+     * Provides the first date of the current year based on the current ZoneId.
+     * @return Date for the first day of the current year
+     */
     public static ZonedDateTime getFirstDayOfYear() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.firstDayOfYear()).truncatedTo(ChronoUnit.DAYS);
     }
 
+    /**
+     * Provides the last date of the current year based on the current ZoneId.
+     * @return Date for the last day of the current year
+     */
     public static ZonedDateTime getLastDayOfYear() {
         ZonedDateTime today = ZonedDateTime.now(ZoneId.systemDefault());
         return today.with(TemporalAdjusters.lastDayOfYear()).truncatedTo(ChronoUnit.DAYS);
     }
 
+    /**
+     * Test to determine if a day of the week falls on a weekend day (i.e., Saturday or Sunday)
+     * @param dayOfWeek Day of the week to test
+     * @return True if the day is a weekend else False
+     */
     public static boolean isWeekend(DayOfWeek dayOfWeek) {
         return EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY).contains(dayOfWeek);
     }

@@ -14,8 +14,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * A utility class that provides static methods to help with application localization. Helps obtain the correct times
- * and languages to be used before the data is displayed in the view.
+ * A utility class that assists with application localization. Helps obtain the correct times and languages to be used
+ * before the data is displayed in the view.
  */
 public class L10nUtil {
     /**
@@ -30,10 +30,20 @@ public class L10nUtil {
         return rb.getString(bundleKey);
     }
 
+    /**
+     * Convert UTC time coming from the Data Layer to Local time based on the current ZoneId.
+     * @param timestamp UTC time to be converted
+     * @return Local time based on the current timezone
+     */
     public static ZonedDateTime utcToLocal(Timestamp timestamp) {
             return ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
     }
 
+    /**
+     * Convert Local time coming from the View Layer to UTC for the Data Layer.
+     * @param zonedDateTime  Local time to be converted
+     * @return UTC time
+     */
     public static Timestamp LocalToUtc(ZonedDateTime zonedDateTime) {
         return Timestamp.from(Instant.from(ZonedDateTime.ofInstant(zonedDateTime.toInstant(), ZoneOffset.UTC)));
     }
