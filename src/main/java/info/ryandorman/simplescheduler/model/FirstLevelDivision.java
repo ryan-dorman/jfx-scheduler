@@ -22,12 +22,13 @@ public class FirstLevelDivision extends Base {
 
     /**
      * Accepts all parameters to allow for population of existing FirstLevelDivision data.
-     * @param id Unique identifier
-     * @param name Name used to identify the FirstLevelDivision
-     * @param country Country the FirstLevelDivision falls within
-     * @param created Date and time FirstLevelDivision was created
+     *
+     * @param id        Unique identifier
+     * @param name      Name used to identify the FirstLevelDivision
+     * @param country   Country the FirstLevelDivision falls within
+     * @param created   Date and time FirstLevelDivision was created
      * @param createdBy Source that created FirstLevelDivision
-     * @param updated Date and time FirstLevelDivision was last updated
+     * @param updated   Date and time FirstLevelDivision was last updated
      * @param updatedBy Source that updated FirstLevelDivision
      */
     public FirstLevelDivision(int id, String name, Country country, ZonedDateTime created, String createdBy,
@@ -39,6 +40,7 @@ public class FirstLevelDivision extends Base {
 
     /**
      * Gets name used to identify the FirstLevelDivision.
+     *
      * @return Name used to identify the FirstLevelDivision
      */
     public String getName() {
@@ -47,6 +49,7 @@ public class FirstLevelDivision extends Base {
 
     /**
      * Sets name used to identify the FirstLevelDivision.
+     *
      * @param name Name to set
      */
     public void setName(String name) {
@@ -56,7 +59,8 @@ public class FirstLevelDivision extends Base {
 
     /**
      * Gets Country the FirstLevelDivision falls within.
-     * @return  Country the division falls within
+     *
+     * @return Country the division falls within
      */
     public Country getCountry() {
         return country;
@@ -64,6 +68,7 @@ public class FirstLevelDivision extends Base {
 
     /**
      * Sets Country the FirstLevelDivision falls within.
+     *
      * @param country Country to set
      */
     public void setCountry(Country country) {
@@ -72,6 +77,7 @@ public class FirstLevelDivision extends Base {
 
     /**
      * Provides meaningful string representation of FirstLevelDivision properties and their values.
+     *
      * @return String representation of FirstLevelDivision properties
      */
     @Override

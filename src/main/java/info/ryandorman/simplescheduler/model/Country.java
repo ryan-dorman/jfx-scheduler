@@ -21,11 +21,12 @@ public class Country extends Base {
 
     /**
      * Accepts all parameters to allow for population of existing Country data.
-     * @param id Unique identifier
-     * @param name Name used to identify Country
-     * @param created Date and time Country was created
+     *
+     * @param id        Unique identifier
+     * @param name      Name used to identify Country
+     * @param created   Date and time Country was created
      * @param createdBy Source that created Country
-     * @param updated Date and time Country was last updated
+     * @param updated   Date and time Country was last updated
      * @param updatedBy Source that updated Country
      */
     public Country(int id, String name, ZonedDateTime created, String createdBy, ZonedDateTime updated,
@@ -36,6 +37,7 @@ public class Country extends Base {
 
     /**
      * Gets name used to identify Country.
+     *
      * @return Name used to identify Country
      */
     public String getName() {
@@ -44,6 +46,7 @@ public class Country extends Base {
 
     /**
      * Sets name used to identify Country.
+     *
      * @param name Name to set
      */
     public void setName(String name) {
@@ -52,6 +55,7 @@ public class Country extends Base {
 
     /**
      * Provides meaningful string representation of Country properties and their values.
+     *
      * @return String representation of Country properties
      */
     @Override

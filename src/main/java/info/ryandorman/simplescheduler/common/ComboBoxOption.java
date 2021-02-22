@@ -19,10 +19,24 @@ public class ComboBoxOption {
     private final Object value;
 
     /**
+     * Creates a new class instance and sets all fields
+     *
+     * @param id    Unique identifier that can be used to identify the option
+     * @param label Unique text to be displayed in the combo box as an option
+     * @param value Value associated with the label displayed to/selected by the user
+     */
+    public ComboBoxOption(int id, String label, Object value) {
+        this.id = id;
+        this.label = label;
+        this.value = value;
+    }
+
+    /**
      * Gets a <code>javafx.util.StringConverter</code> that can be used with a <code>javafx.scene.control.ComboBox</code>.
      * This converter configures the combo box to work with the interface of this class. A Stream and Lambda are used
      * within the created converter to increase the readability of the filter operation that occurs when converting a
      * string to a ComboBoxOption.
+     *
      * @param options Reference to the list of options that will be used in the combo box being configured
      * @return Converter for the combo box being configured
      */
@@ -43,19 +57,8 @@ public class ComboBoxOption {
     }
 
     /**
-     * Creates a new class instance and sets all fields
-     * @param id Unique identifier that can be used to identify the option
-     * @param label Unique text to be displayed in the combo box as an option
-     * @param value Value associated with the label displayed to/selected by the user
-     */
-    public ComboBoxOption(int id, String label, Object value) {
-        this.id = id;
-        this.label = label;
-        this.value = value;
-    }
-
-    /**
      * Gets the unique identifier
+     *
      * @return Unique identifier
      */
     public int getId() {
@@ -64,6 +67,7 @@ public class ComboBoxOption {
 
     /**
      * Gets the unique label
+     *
      * @return Unique label
      */
     public String getLabel() {
@@ -72,6 +76,7 @@ public class ComboBoxOption {
 
     /**
      * Gets the value
+     *
      * @return Value associated with the unique label
      */
     public Object getValue() {

@@ -14,6 +14,7 @@ public class ColumnIterator {
 
     /**
      * Creates a new class instance
+     *
      * @param initialIndex Value to start iterating from
      */
     public ColumnIterator(int initialIndex) {
@@ -22,6 +23,7 @@ public class ColumnIterator {
 
     /**
      * Reads the current iterator value and increments to the next value to be used
+     *
      * @return Current value of iterator
      */
     public int next() {

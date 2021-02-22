@@ -5,10 +5,13 @@ package info.ryandorman.simplescheduler.dao;
  *   ID: 001002824
  */
 
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ColumnIterator;
-import info.ryandorman.simplescheduler.model.*;
+import info.ryandorman.simplescheduler.model.Appointment;
+import info.ryandorman.simplescheduler.model.Contact;
+import info.ryandorman.simplescheduler.model.Customer;
+import info.ryandorman.simplescheduler.model.User;
 
 import java.io.IOException;
 import java.sql.*;
@@ -78,20 +81,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
     private static final String DELETE_APPOINTMENT_BY_CUSTOMER_ID = "DELETE FROM appointments WHERE customer_id = ?;";
 
     /**
-     * Maps data held in a <code>java.sql.ResultSet</code> to a Appointment entity.
-     * @param rs <code>java.sql.ResultSet</code> to map
-     * @return Appointment entity populated with data from <code>java.sql.ResultSet</code>
-     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Appointment data
-     */
-    private Appointment mapResult(ResultSet rs) throws SQLException {
-        ColumnIterator resultColumn = new ColumnIterator(1);
-        return mapResult(rs, resultColumn);
-    }
-
-    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Appointment entity. Allows specification of
      * <code>java.sql.ResultSet</code> column Appointment data starts at.
-     * @param rs <code>java.sql.ResultSet</code> to map
+     *
+     * @param rs           <code>java.sql.ResultSet</code> to map
      * @param resultColumn Column where Appointment data starts
      * @return Appointment entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Appointment data
@@ -116,7 +109,19 @@ public class AppointmentDaoImpl implements AppointmentDao {
                 rs.getString(resultColumn.next()),
                 L10nUtil.utcToLocal(rs.getTimestamp(resultColumn.next())),
                 rs.getString(resultColumn.next())
-                );
+        );
+    }
+
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a Appointment entity.
+     *
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @return Appointment entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Appointment data
+     */
+    private Appointment mapResult(ResultSet rs) throws SQLException {
+        ColumnIterator resultColumn = new ColumnIterator(1);
+        return mapResult(rs, resultColumn);
     }
 
     /**
@@ -221,7 +226,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
         }
 
         sysLogger.info(appointments.size() + "Appointments returned from database by " +
-                "AppointmentDao.getByCustomerIdAndDateTime=" + customerId + ", " +  utcStart + ", " + utcEnd);
+                "AppointmentDao.getByCustomerIdAndDateTime=" + customerId + ", " + utcStart + ", " + utcEnd);
         return appointments;
     }
 

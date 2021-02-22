@@ -20,8 +20,9 @@ public class Contact extends Base {
 
     /**
      * Accepts all parameters to allow for population of existing Contact data.
-     * @param id Unique identifier
-     * @param name Name used to identify Contact
+     *
+     * @param id    Unique identifier
+     * @param name  Name used to identify Contact
      * @param email Email address for Contact
      */
     public Contact(int id, String name, String email) {
@@ -32,6 +33,7 @@ public class Contact extends Base {
 
     /**
      * Gets name used to identify Contact.
+     *
      * @return Name used to identify Contact
      */
     public String getName() {
@@ -40,6 +42,7 @@ public class Contact extends Base {
 
     /**
      * Sets name used to identify Contact.
+     *
      * @param name Name to set
      */
     public void setName(String name) {
@@ -48,6 +51,7 @@ public class Contact extends Base {
 
     /**
      * Gets email address for Contact.
+     *
      * @return Email address for Contact
      */
     public String getEmail() {
@@ -56,6 +60,7 @@ public class Contact extends Base {
 
     /**
      * Sets email address for Contact.
+     *
      * @param email Email address to set
      */
     public void setEmail(String email) {
@@ -64,6 +69,7 @@ public class Contact extends Base {
 
     /**
      * Provides meaningful string representation of Country properties and their values.
+     *
      * @return String representation of Country properties
      */
     @Override

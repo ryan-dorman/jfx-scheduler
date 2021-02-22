@@ -6,8 +6,8 @@ package info.ryandorman.simplescheduler.dao;
  */
 
 
-import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.ColumnIterator;
+import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.model.Contact;
 
 import java.io.IOException;
@@ -22,13 +22,14 @@ import java.util.logging.Logger;
 /**
  * Allows access of persistent Contact data.
  */
-public class ContactDaoImpl implements ContactDao{
+public class ContactDaoImpl implements ContactDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private final String GET_ALL = "SELECT * FROM contacts;";
 
     /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Contact entity.
+     *
      * @param rs <code>java.sql.ResultSet</code> to map
      * @return Contact entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Contact data
@@ -41,7 +42,8 @@ public class ContactDaoImpl implements ContactDao{
     /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Contact entity. Allows specification of
      * <code>java.sql.ResultSet</code> column Contact data starts at.
-     * @param rs <code>java.sql.ResultSet</code> to map
+     *
+     * @param rs           <code>java.sql.ResultSet</code> to map
      * @param resultColumn Column where Contact data starts
      * @return Contact entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Contact data

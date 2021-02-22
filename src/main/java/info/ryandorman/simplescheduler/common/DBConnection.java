@@ -32,6 +32,7 @@ public class DBConnection {
 
     /**
      * Reads the database properties from <code>connection.properties</code> and sets up the datasource.
+     *
      * @throws IOException If there are issues reading the properties file
      */
     private static void initDataSource() throws IOException {
@@ -48,6 +49,7 @@ public class DBConnection {
     /**
      * Provides a database connection. The connection <em>should not</em> be obtained in a try-with-resources
      * to avoid closing the connection due to its extension of <code>java.lang.AutoClosable</code>.
+     *
      * @return Connection Reference to the application's current database connection
      * @throws SQLException If there is an issue establishing the connection
      * @throws IOException  If there are issues initializing the data source from the properties file
@@ -104,6 +106,7 @@ public class DBConnection {
 
     /**
      * Closes an existing <code>java.sql.Statement.PreparedStatement</code> associated with a connection.
+     *
      * @param stmt <code>java.sql.Statement.PreparedStatement</code> to be closed
      */
     public static void close(PreparedStatement stmt) {

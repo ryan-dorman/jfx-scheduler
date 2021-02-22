@@ -16,6 +16,7 @@ import java.util.List;
 public interface ContactDao {
     /**
      * Gets a <code>java.util.List</code> of all Contacts.
+     *
      * @return All Contacts
      */
     List<Contact> getAll();

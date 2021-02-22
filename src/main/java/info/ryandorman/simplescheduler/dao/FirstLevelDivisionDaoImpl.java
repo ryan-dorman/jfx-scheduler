@@ -5,9 +5,9 @@ package info.ryandorman.simplescheduler.dao;
  *   ID: 001002824
  */
 
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
@@ -32,10 +32,11 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
 
     /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a FirstLevelDivision entity.
+     *
      * @param rs <code>java.sql.ResultSet</code> to map
      * @return FirstLevelDivision entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary FirstLevelDivision
-     * data
+     *                      data
      */
     public static FirstLevelDivision mapResult(ResultSet rs) throws SQLException {
         ColumnIterator resultColumn = new ColumnIterator(1);
@@ -45,11 +46,12 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
     /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a FirstLevelDivision entity. Allows specification of
      * <code>java.sql.ResultSet</code> column FirstLevelDivision data starts at.
-     * @param rs <code>java.sql.ResultSet</code> to map
+     *
+     * @param rs           <code>java.sql.ResultSet</code> to map
      * @param resultColumn Column where FirstLevelDivision data starts
      * @return FirstLevelDivision entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary FirstLevelDivision
-     * data
+     *                      data
      */
     public static FirstLevelDivision mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         Country country = CountryDaoImpl.mapResult(rs, resultColumn);

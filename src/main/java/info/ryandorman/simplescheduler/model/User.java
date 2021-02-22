@@ -22,12 +22,13 @@ public class User extends Base {
 
     /**
      * Accepts all parameters to allow for population of existing User data.
-     * @param id Unique identifier
-     * @param name Name used to identify User
-     * @param password Character combination used to authenticate User
-     * @param created Date and time User was created
+     *
+     * @param id        Unique identifier
+     * @param name      Name used to identify User
+     * @param password  Character combination used to authenticate User
+     * @param created   Date and time User was created
      * @param createdBy Source that created User
-     * @param updated Date and time User was last updated
+     * @param updated   Date and time User was last updated
      * @param updatedBy Source that updated User
      */
     public User(int id, String name, String password, ZonedDateTime created, String createdBy, ZonedDateTime updated,
@@ -39,6 +40,7 @@ public class User extends Base {
 
     /**
      * Gets name of User.
+     *
      * @return Name of User
      */
     public String getName() {
@@ -47,6 +49,7 @@ public class User extends Base {
 
     /**
      * Sets name of User.
+     *
      * @param name Name to set
      */
     public void setName(String name) {
@@ -55,6 +58,7 @@ public class User extends Base {
 
     /**
      * Gets character combination used to authenticate User.
+     *
      * @return Character combination used to authenticate User
      */
     public String getPassword() {
@@ -63,6 +67,7 @@ public class User extends Base {
 
     /**
      * Sets character combination used to authenticate User.
+     *
      * @param password Character combination to set
      */
     public void setPassword(String password) {
@@ -71,6 +76,7 @@ public class User extends Base {
 
     /**
      * Provides meaningful string representation of User properties and their values.
+     *
      * @return String representation of User properties
      */
     @Override

@@ -5,14 +5,17 @@ package info.ryandorman.simplescheduler.dao;
  *   ID: 001002824
  */
 
+import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
-import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -50,6 +53,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Customer entity.
+     *
      * @param rs <code>java.sql.ResultSet</code> to map
      * @return Customer entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Customer data
@@ -62,7 +66,8 @@ public class CustomerDaoImpl implements CustomerDao {
     /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Customer entity. Allows specification of
      * <code>java.sql.ResultSet</code> column Customer data starts at.
-     * @param rs <code>java.sql.ResultSet</code> to map
+     *
+     * @param rs           <code>java.sql.ResultSet</code> to map
      * @param resultColumn Column where Customer data starts
      * @return Customer entity populated with data from <code>java.sql.ResultSet</code>
      * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Customer data

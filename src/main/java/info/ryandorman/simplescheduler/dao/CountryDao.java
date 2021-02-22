@@ -15,6 +15,7 @@ import java.util.List;
 public interface CountryDao {
     /**
      * Gets a <code>java.util.List</code> of all Countries.
+     *
      * @return All Countries
      */
     List<Country> getAll();

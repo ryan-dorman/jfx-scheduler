@@ -35,11 +35,8 @@ import java.util.stream.Collectors;
 public class MainViewController implements Initializable {
 
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-    private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
-
     public static User currentUser;
-
+    private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
     // Container
     @FXML
     private BorderPane mainView;
@@ -56,7 +53,8 @@ public class MainViewController implements Initializable {
 
     /**
      * Initializes the controller. Sets the initial View chosen on the navigation menu.
-     * @param url Location used to resolve relative paths
+     *
+     * @param url            Location used to resolve relative paths
      * @param resourceBundle null
      */
     @Override

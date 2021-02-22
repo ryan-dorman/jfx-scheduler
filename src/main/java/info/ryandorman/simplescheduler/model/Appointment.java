@@ -29,6 +29,7 @@ public class Appointment extends Base {
 
     /**
      * Accepts all parameters to allow for population of existing Contact data.
+     *
      * @param id          Unique identifier
      * @param title       Title of Appointment
      * @param description Description of Appointment
@@ -61,6 +62,7 @@ public class Appointment extends Base {
 
     /**
      * Gets title of Appointment.
+     *
      * @return Title of Appointment
      */
     public String getTitle() {
@@ -69,6 +71,7 @@ public class Appointment extends Base {
 
     /**
      * Sets title of Appointment.
+     *
      * @param title Title to set
      */
     public void setTitle(String title) {
@@ -77,6 +80,7 @@ public class Appointment extends Base {
 
     /**
      * Gets description of Appointment.
+     *
      * @return Description of Appointment
      */
     public String getDescription() {
@@ -85,6 +89,7 @@ public class Appointment extends Base {
 
     /**
      * Sets description of Appointment.
+     *
      * @param description Description to set
      */
     public void setDescription(String description) {
@@ -93,6 +98,7 @@ public class Appointment extends Base {
 
     /**
      * Gets location of Appointment.
+     *
      * @return Location of Appointment
      */
     public String getLocation() {
@@ -101,6 +107,7 @@ public class Appointment extends Base {
 
     /**
      * Sets location of Appointment.
+     *
      * @param location Location to set
      */
     public void setLocation(String location) {
@@ -109,6 +116,7 @@ public class Appointment extends Base {
 
     /**
      * Gets type of Appointment.
+     *
      * @return Type of Appointment
      */
     public String getType() {
@@ -117,6 +125,7 @@ public class Appointment extends Base {
 
     /**
      * Sets type of Appointment.
+     *
      * @param type Type to set
      */
     public void setType(String type) {
@@ -125,6 +134,7 @@ public class Appointment extends Base {
 
     /**
      * Gets start date and time of Appointment.
+     *
      * @return Start date and time of Appointment
      */
     public ZonedDateTime getStart() {
@@ -133,6 +143,7 @@ public class Appointment extends Base {
 
     /**
      * Sets start date and time of Appointment.
+     *
      * @param start Start date and time to set
      */
     public void setStart(ZonedDateTime start) {
@@ -141,6 +152,7 @@ public class Appointment extends Base {
 
     /**
      * Gets end date and time of Appointment.
+     *
      * @return End date and time of Appointment
      */
     public ZonedDateTime getEnd() {
@@ -149,6 +161,7 @@ public class Appointment extends Base {
 
     /**
      * Sets end date and time of Appointment.
+     *
      * @param end End date and time to set
      */
     public void setEnd(ZonedDateTime end) {
@@ -157,6 +170,7 @@ public class Appointment extends Base {
 
     /**
      * Gets customer associated with Appointment.
+     *
      * @return Customer associated with Appointment
      */
     public Customer getCustomer() {
@@ -165,6 +179,7 @@ public class Appointment extends Base {
 
     /**
      * Sets customer associated with Appointment.
+     *
      * @param customer Customer to set
      */
     public void setCustomer(Customer customer) {
@@ -173,6 +188,7 @@ public class Appointment extends Base {
 
     /**
      * Gets user associated with Appointment.
+     *
      * @return User associated with Appointment
      */
     public User getUser() {
@@ -181,6 +197,7 @@ public class Appointment extends Base {
 
     /**
      * Sets user associated with Appointment
+     *
      * @param user User to set
      */
     public void setUser(User user) {
@@ -189,6 +206,7 @@ public class Appointment extends Base {
 
     /**
      * Gets contact associated with Appointment.
+     *
      * @return Contact associated with Appointment
      */
     public Contact getContact() {
@@ -197,6 +215,7 @@ public class Appointment extends Base {
 
     /**
      * Sets contact associated with Appointment.
+     *
      * @param contact Contact to set
      */
     public void setContact(Contact contact) {
@@ -205,6 +224,7 @@ public class Appointment extends Base {
 
     /**
      * Provides meaningful string representation of Appointment properties and their values.
+     *
      * @return String representation of Appointment properties
      */
     @Override

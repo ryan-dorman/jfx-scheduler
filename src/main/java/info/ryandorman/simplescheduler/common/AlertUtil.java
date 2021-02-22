@@ -5,7 +5,9 @@ package info.ryandorman.simplescheduler.common;
  *   ID: 001002824
  */
 
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 
 import java.util.Optional;
 
@@ -16,12 +18,14 @@ public class AlertUtil {
     /**
      * Prevents direct class instantiation. Methods should be accessed statically.
      */
-    private AlertUtil(){};
+    private AlertUtil() {
+    }
 
     /**
      * Creates a confirmation window that requires user feedback to determine which path the application takes.
-     * @param title Title of the window
-     * @param header Header in the window
+     *
+     * @param title   Title of the window
+     * @param header  Header in the window
      * @param content Content in main body of window
      * @return A boolean that indicates the user's choice
      */
@@ -31,8 +35,9 @@ public class AlertUtil {
 
     /**
      * Creates a warning window that notifies the user and requires they accept to continue.
-     * @param title Title of the window
-     * @param header Header in the window
+     *
+     * @param title   Title of the window
+     * @param header  Header in the window
      * @param content Content in main body of window
      * @return A boolean that indicates the user has accepted the warning
      */
@@ -42,8 +47,9 @@ public class AlertUtil {
 
     /**
      * Creates a warning window that informs the user and requires they accept to continue.
-     * @param title Title of the window
-     * @param header Header in the window
+     *
+     * @param title   Title of the window
+     * @param header  Header in the window
      * @param content Content in main body of window
      */
     public static void inform(String title, String header, String content) {
@@ -53,9 +59,10 @@ public class AlertUtil {
     /**
      * Allows easy population of a <code>javafx.scene.control.Alert</code> that is displayed until the user selects a
      * confirmation/choice.
-     * @param type Type of <code>Alert.AlertType</code> to display
-     * @param title Title of the window
-     * @param header Header in the window
+     *
+     * @param type    Type of <code>Alert.AlertType</code> to display
+     * @param title   Title of the window
+     * @param header  Header in the window
      * @param content Content in main body of window
      * @return A boolean that indicates the user has accepted the alert
      */
