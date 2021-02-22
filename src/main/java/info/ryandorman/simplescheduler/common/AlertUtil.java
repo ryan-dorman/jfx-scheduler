@@ -39,7 +39,7 @@ public class AlertUtil {
     }
 
     /**
-     * Create a warning window that informs the user and requires they accept to continue.
+     * Creates a warning window that informs the user and requires they accept to continue.
      *
      * @param title Title of the window
      * @param header Header in the window
@@ -50,8 +50,8 @@ public class AlertUtil {
     }
 
     /**
-     * A wrapper function that allows easy population of a <code>javafx.scene.control.Alert</code> that is displayed
-     * until the user selects a confirmation/choice.
+     * Allows easy population of a <code>javafx.scene.control.Alert</code> that is displayed until the user selects a
+     * confirmation/choice.
      *
      * @param type Type of <code>Alert.AlertType</code> to display
      * @param title Title of the window

@@ -7,9 +7,13 @@ package info.ryandorman.simplescheduler.model;
 
 import java.time.ZonedDateTime;
 
+/**
+ * Data model to hold User data.
+ */
 public class User extends Base {
     private String name;
     private String password;
+
 
     public User() {
     }
