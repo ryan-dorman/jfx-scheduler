@@ -23,8 +23,13 @@ import java.util.logging.Logger;
  * Allows access of persistent Contact data.
  */
 public class ContactDaoImpl implements ContactDao {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    /**
+     * MySQL statement to get all Contacts
+     */
     private final String GET_ALL = "SELECT * FROM contacts;";
 
     /**

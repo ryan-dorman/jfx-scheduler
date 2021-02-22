@@ -24,8 +24,13 @@ import java.util.logging.Logger;
  * Allows access of persistent Appointment data.
  */
 public class AppointmentDaoImpl implements AppointmentDao {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    /**
+     * MySQL statement to get all Appointments
+     */
     private static final String GET_ALL = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
             "FROM appointments app " +
             "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
@@ -34,7 +39,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN users u ON app.user_id = u.user_id " +
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "ORDER BY app.start;";
-
+    /**
+     * MySQL statement to get all Appointments that start within the given date and time window
+     */
     private static final String GET_BY_START_DATE_TIME_WINDOW = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
             "FROM appointments app " +
             "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
@@ -44,7 +51,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "WHERE app.start BETWEEN ? AND ? " +
             "ORDER BY app.start;";
-
+    /**
+     * MySQL statement to get all Appointments for a specific Customer that occur within the given date and time window
+     */
     private static final String GET_BY_CUSTOMER_ID_AND_DATE_TIME_WINDOW = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
             "FROM appointments app " +
             "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
@@ -55,7 +64,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "WHERE app.customer_id = ? " +
             "AND (? BETWEEN app.start AND app.end OR ? BETWEEN app.start AND app.end OR app.start BETWEEN ? AND ?) " +
             "ORDER BY app.start;";
-
+    /**
+     * MySQL statement to get a Appointment with a specified identifier
+     */
     private static final String GET_BY_ID = "SELECT co.*, fld.*, c.*, u.*, con.*, app.* " +
             "FROM appointments app " +
             "LEFT JOIN customers c ON app.customer_id = c.customer_id " +
@@ -65,19 +76,27 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
             "WHERE app.appointment_id = ? " +
             "ORDER BY app.start;";
-
+    /**
+     * MySQL statement to create a new Appointment
+     */
     private static final String CREATE_APPOINTMENT = "INSERT appointments " +
             "(title, description, location, type, start, end, customer_id, user_id, contact_id, created_by, " +
             "last_updated_by) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
+    /**
+     * MySQL statement to update an existing Appointment
+     */
     private static final String UPDATE_APPOINTMENT = "UPDATE appointments " +
             "SET title = ?, description = ?, location = ?, type = ?, start = ?, end = ?, customer_id = ?, " +
             "user_id = ?, contact_id = ?, last_update = NOW(), last_updated_by = ? " +
             "WHERE appointment_id = ?;";
-
+    /**
+     * MySQL statement to delete an existing Appointment
+     */
     private static final String DELETE_APPOINTMENT = "DELETE FROM appointments WHERE appointment_id = ?;";
-
+    /**
+     * MySQL statement to delete existing Appointments for a specific Customer
+     */
     private static final String DELETE_APPOINTMENT_BY_CUSTOMER_ID = "DELETE FROM appointments WHERE customer_id = ?;";
 
     /**

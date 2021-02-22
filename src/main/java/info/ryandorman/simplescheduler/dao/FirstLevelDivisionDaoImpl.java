@@ -24,8 +24,13 @@ import java.util.logging.Logger;
  * Allows access of persistent FirstLevelDivision data.
  */
 public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    /**
+     * MySQL statement to get all FirstLevelDivisions by their unique Country identifier
+     */
     private static final String GET_BY_COUNTRY_ID = "SELECT co.*, fld.* FROM first_level_divisions fld " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "WHERE fld.country_id = ?;";

@@ -24,31 +24,46 @@ import java.util.logging.Logger;
  * Allows access of persistent Customer data.
  */
 public class CustomerDaoImpl implements CustomerDao {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    /**
+     * MySQL statement to get all Customers
+     */
     private static final String GET_ALL = "SELECT co.*, fld.*, c.* FROM customers c " +
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id;";
-
+    /**
+     * MySQL statement to get a Customer with a specified identifier
+     */
     private static final String GET_BY_ID = "SELECT co.*, fld.*, c.* FROM customers c " +
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "WHERE c.customer_id = ?;";
-
+    /**
+     * MySQL statement to get a Customer with a first or last name like the name given
+     */
     private static final String GET_BY_NAME_LIKE = "SELECT co.*, fld.*, c.* FROM customers c " +
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "WHERE LOWER(c.customer_name) LIKE CONCAT('%', ?, '%')";
-
+    /**
+     * MySQL statement to create a new Customer
+     */
     private static final String CREATE_CUSTOMER = "INSERT customers " +
             "(customer_name, address, postal_code, phone, division_id, created_by, last_updated_by) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?);";
-
+    /**
+     * MySQL statement to update an existing Customer
+     */
     private static final String UPDATE_CUSTOMER = "UPDATE customers " +
             "SET customer_name = ?, address = ?, postal_code = ?, phone = ?, " +
             "division_id = ?, last_update = NOW(), last_updated_by = ? " +
             "WHERE customer_id = ?;";
-
+    /**
+     * MySQL statement to delete an existing Customer
+     */
     private static final String DELETE_CUSTOMER = "DELETE FROM customers WHERE customer_id = ?;";
 
     /**

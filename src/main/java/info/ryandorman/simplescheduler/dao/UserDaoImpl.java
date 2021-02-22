@@ -23,10 +23,21 @@ import java.util.logging.Logger;
  * Allows access of persistent User data.
  */
 public class UserDaoImpl implements UserDao {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    /**
+     * MySQL statement to get all Users
+     */
     private static final String GET_ALL = "SELECT * FROM users;";
+    /**
+     * MySQL statement to get a User with a specified identifier
+     */
     private static final String GET_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
+    /**
+     * MySQL statement to get a User with a specified name
+     */
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
     /**

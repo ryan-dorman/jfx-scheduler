@@ -23,8 +23,13 @@ import java.util.logging.Logger;
  * Allows access of persistent Country data.
  */
 public class CountryDaoImpl implements CountryDao {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
+    /**
+     * MySQL statement to get all Countries
+     */
     private static final String GET_ALL = "SELECT * FROM countries;";
 
     /**
