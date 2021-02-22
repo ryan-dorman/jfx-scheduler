@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * Allows easy access to persistent Contact data.
+ * Allows predictable access to persistent Contact data.
  */
 public interface ContactDao {
     /**

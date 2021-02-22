@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * {@inheritDoc}
+ * Allows access of persistent FirstLevelDivision data.
  */
 public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

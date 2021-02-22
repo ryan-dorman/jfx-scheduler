@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * {@inheritDoc}
+ * Allows access of persistent Customer data.
  */
 public class CustomerDaoImpl implements CustomerDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

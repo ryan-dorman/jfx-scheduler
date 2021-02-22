@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * {@inheritDoc}
+ * Allows access of persistent Appointment data.
  */
 public class AppointmentDaoImpl implements AppointmentDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);

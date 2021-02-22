@@ -10,7 +10,7 @@ import info.ryandorman.simplescheduler.model.FirstLevelDivision;
 import java.util.List;
 
 /**
- * Allows easy access to persistent FirstLevelDivision data.
+ * Allows predictable access to persistent FirstLevelDivision data.
  */
 public interface FirstLevelDivisionDao {
     /**

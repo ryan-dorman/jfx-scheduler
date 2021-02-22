@@ -10,7 +10,7 @@ import info.ryandorman.simplescheduler.model.Country;
 import java.util.List;
 
 /**
- * Allows easy access to persistent Country data.
+ * Allows predictable access to persistent Country data.
  */
 public interface CountryDao {
     /**

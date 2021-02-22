@@ -10,7 +10,7 @@ import info.ryandorman.simplescheduler.model.User;
 import java.util.List;
 
 /**
- * Allows easy access to persistent User data.
+ * Allows predictable access to persistent User data.
  */
 public interface UserDao {
     /**

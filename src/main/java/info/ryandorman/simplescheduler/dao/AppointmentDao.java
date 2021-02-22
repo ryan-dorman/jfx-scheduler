@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
- * Allows easy access to persistent Appointment data.
+ * Allows predictable access to persistent Appointment data.
  */
 public interface AppointmentDao {
     /**

@@ -10,7 +10,7 @@ import info.ryandorman.simplescheduler.model.Customer;
 import java.util.List;
 
 /**
- * Allows easy access to persistent Customer data.
+ * Allows predictable access to persistent Customer data.
  */
 public interface CustomerDao {
     /**

@@ -1,1 +1,0 @@
-When testing french language settings. Set in Main: Locale.setDefault(new Locale("fr"));

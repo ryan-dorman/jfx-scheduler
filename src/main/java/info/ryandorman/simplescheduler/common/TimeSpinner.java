@@ -140,9 +140,9 @@ public class TimeSpinner extends Spinner<LocalTime> {
     }
 
     /**
-     * Get <code>javafx.event.EventHandler<MouseEvent></code> that allows for easy selection of hour and minute input
+     * Get <code>javafx.event.EventHandler</code> that allows for easy selection of hour and minute input
      * displayed in the TimeSpinner. A Lambda is used to simplify formatting and quickly return the
-     * <code>javafx.event.EventHandler<MouseEvent></code> needed to create the correct selection behavior.
+     * <code>javafx.event.EventHandler</code> needed to create the correct selection behavior.
      * @return EventHandler that configures the TimeSpinner's input selection
      */
     private EventHandler<MouseEvent> getTimeSpinnerSelectionRules() {
