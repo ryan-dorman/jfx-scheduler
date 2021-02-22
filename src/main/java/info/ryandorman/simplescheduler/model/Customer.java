@@ -8,7 +8,7 @@ package info.ryandorman.simplescheduler.model;
 import java.time.ZonedDateTime;
 
 /**
- * Data model to hold Customer data.
+ * Holds Customer data.
  */
 public class Customer extends Base {
     private String name;
@@ -25,7 +25,6 @@ public class Customer extends Base {
 
     /**
      * Accepts all parameters to allow for population of existing Customer data.
-     *
      * @param id Unique identifier
      * @param name First and lLast Name of Customer
      * @param address Street address of Customer (e.g., 123 ABC Street, White Plains)
@@ -33,9 +32,9 @@ public class Customer extends Base {
      * @param phone Phone number of customer
      * @param division Region or State of Customer
      * @param created Date and time Customer was created
-     * @param createdBy Source that created the Customer
+     * @param createdBy Source that created Customer
      * @param updated Date and time Customer was last updated
-     * @param updatedBy Source that updated the Customer
+     * @param updatedBy Source that updated Customer
      */
     public Customer(int id, String name, String address, String postalCode, String phone,
                     FirstLevelDivision division, ZonedDateTime created, String createdBy, ZonedDateTime updated,
@@ -50,7 +49,6 @@ public class Customer extends Base {
 
     /**
      * Gets the first and last Name of Customer.
-     *
      * @return First and last Name of Customer
      */
     public String getName() {
@@ -59,7 +57,6 @@ public class Customer extends Base {
 
     /**
      * Sets the first and last Name of Customer.
-     *
      * @param name First and last Name to set
      */
     public void setName(String name) {
@@ -68,7 +65,6 @@ public class Customer extends Base {
 
     /**
      * Gets the street address of Customer.
-     *
      * @return Street address of Customer
      */
     public String getAddress() {
@@ -77,7 +73,6 @@ public class Customer extends Base {
 
     /**
      * Sets the street address of Customer.
-     *
      * @param address Street address to set
      */
     public void setAddress(String address) {
@@ -86,7 +81,6 @@ public class Customer extends Base {
 
     /**
      * Gets postal Code of Customer's address.
-     *
      * @return Postal Code of Customer
      */
     public String getPostalCode() {
@@ -95,7 +89,6 @@ public class Customer extends Base {
 
     /**
      * Sets postal Code of Customer's address.
-     *
      * @param postalCode Postal code to set
      */
     public void setPostalCode(String postalCode) {
@@ -104,7 +97,6 @@ public class Customer extends Base {
 
     /**
      * Gets phone number of customer.
-     *
      * @return Phone number of customer
      */
     public String getPhone() {
@@ -113,7 +105,6 @@ public class Customer extends Base {
 
     /**
      * Sets phone number of customer.
-     *
      * @param phone Phone number to set
      */
     public void setPhone(String phone) {
@@ -122,7 +113,6 @@ public class Customer extends Base {
 
     /**
      * Gets Region or State of Customer.
-     *
      * @return Region or State of Customer
      */
     public FirstLevelDivision getDivision() {
@@ -131,7 +121,6 @@ public class Customer extends Base {
 
     /**
      * Sets Region or State of Customer.
-     *
      * @param division Region or State to set
      */
     public void setDivision(FirstLevelDivision division) {
@@ -139,8 +128,7 @@ public class Customer extends Base {
     }
 
     /**
-     * Provides useful string representation of Customer properties and their values.
-     *
+     * Provides meaningful string representation of Customer properties and their values.
      * @return String representation of Customer properties
      */
     @Override

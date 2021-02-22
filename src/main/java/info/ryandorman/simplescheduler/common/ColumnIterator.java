@@ -6,7 +6,7 @@ package info.ryandorman.simplescheduler.common;
  */
 
 /**
- * Iterator to cleanly keep track of the current data being read from a <code>java.sql.ResultSet</code> or into a
+ * Keeps track of the current data being read from a <code>java.sql.ResultSet</code> or into a
  * <code>java.sql.PreparedStatement</code>.
  */
 public class ColumnIterator {

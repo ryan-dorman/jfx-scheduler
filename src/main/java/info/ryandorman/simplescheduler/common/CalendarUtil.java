@@ -13,8 +13,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.EnumSet;
 
 /**
- * A utility class that allows easy retrieval of and information on days relative to the week, month, and year of the
- * current date.
+ * Allows for easy retrieval of and information on days relative to the week, month, and year of the current date.
  */
 public class CalendarUtil {
     /**

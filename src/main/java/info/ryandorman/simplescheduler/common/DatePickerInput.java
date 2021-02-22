@@ -12,8 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 /**
- * Improved version of <code>javafx.scene.control.DatePicker</code> that ensures user text input causes the proper value
- * updates.
+ * Improves <code>javafx.scene.control.DatePicker</code> to ensures user text input causes the proper value updates.
  */
 public class DatePickerInput extends DatePicker {
 

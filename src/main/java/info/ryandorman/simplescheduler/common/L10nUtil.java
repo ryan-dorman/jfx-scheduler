@@ -14,14 +14,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * A utility class that assists with application localization. Helps obtain the correct times and languages for the
- * current locale.
+ * Assists with application localization. Helps obtain the correct times and languages for the current locale.
  */
 public class L10nUtil {
     /**
      * Gets the language string associated with a given key from <code>languageBundle_**.properties</code> based on the
      * default locale detected.
-     *
      * @param bundleKey Associated with a value in <code>languageBundle_**.properties</code>
      * @return Language string for the locale
      */
@@ -33,7 +31,6 @@ public class L10nUtil {
     /**
      * Converts UTC time coming from a <code>java.sql.Timestamp</code> to a <code>java.time.ZonedDateTime</code> based
      * on the current ZoneId.
-     *
      * @param timestamp UTC time to be converted
      * @return Local time based on the current timezone
      */
@@ -44,7 +41,6 @@ public class L10nUtil {
     /**
      * Converts local time stored in a <code>java.time.ZonedDateTime</code> to UTC in the form of a
      * <code>java.sql.Timestamp</code>.
-     *
      * @param zonedDateTime Local time to be converted
      * @return UTC time
      */

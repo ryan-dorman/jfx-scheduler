@@ -10,7 +10,7 @@ import javafx.util.StringConverter;
 import java.util.List;
 
 /**
- * wrapper class that allows for easy creation and predictable interaction with items/options used set in a
+ * Allows for easy creation and predictable interaction with items/options used set in a
  * <code>javafx.scene.control.ComboBox</code>.
  */
 public class ComboBoxOption {
@@ -19,10 +19,10 @@ public class ComboBoxOption {
     private final Object value;
 
     /**
-     * Gets a <code>javafx.util.StringConverter</code> that is can be used as a converter for
-     * <code>javafx.scene.control.ComboBox</code>. This converter handles the configuration needed for the combo box to
-     * work with the interface of this class.
-     *
+     * Gets a <code>javafx.util.StringConverter</code> that can be used with a <code>javafx.scene.control.ComboBox</code>.
+     * This converter configures the combo box to work with the interface of this class. A Stream and Lambda are used
+     * within the created converter to increase the readability of the filter operation that occurs when converting a
+     * string to a ComboBoxOption.
      * @param options Reference to the list of options that will be used in the combo box being configured
      * @return Converter for the combo box being configured
      */
@@ -35,8 +35,9 @@ public class ComboBoxOption {
 
             @Override
             public ComboBoxOption fromString(String string) {
-                return options.stream().filter(option ->
-                        option.getLabel().equals(string)).findFirst().orElse(null);
+                return options.stream()
+                        .filter(option -> option.getLabel().equals(string))
+                        .findFirst().orElse(null);
             }
         };
     }

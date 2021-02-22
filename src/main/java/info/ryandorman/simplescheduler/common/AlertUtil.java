@@ -10,13 +10,12 @@ import javafx.scene.control.*;
 import java.util.Optional;
 
 /**
- * A utility class that allows easy creation and setup of <code>javafx.scene.control.Alert</code> components.
+ * Allows easy creation and setup of <code>javafx.scene.control.Alert</code> components.
  */
 public class AlertUtil {
 
     /**
      * Creates a confirmation window that requires user feedback to determine which path the application takes.
-     *
      * @param title Title of the window
      * @param header Header in the window
      * @param content Content in main body of window
@@ -28,7 +27,6 @@ public class AlertUtil {
 
     /**
      * Creates a warning window that notifies the user and requires they accept to continue.
-     *
      * @param title Title of the window
      * @param header Header in the window
      * @param content Content in main body of window
@@ -40,7 +38,6 @@ public class AlertUtil {
 
     /**
      * Creates a warning window that informs the user and requires they accept to continue.
-     *
      * @param title Title of the window
      * @param header Header in the window
      * @param content Content in main body of window
@@ -52,7 +49,6 @@ public class AlertUtil {
     /**
      * Allows easy population of a <code>javafx.scene.control.Alert</code> that is displayed until the user selects a
      * confirmation/choice.
-     *
      * @param type Type of <code>Alert.AlertType</code> to display
      * @param title Title of the window
      * @param header Header in the window

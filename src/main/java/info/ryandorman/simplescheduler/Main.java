@@ -20,7 +20,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * The entry point to the application. It starts the application and initializes the loggers.
+ * Starts the application and initializes the loggers.
  */
 public class Main extends Application {
 
@@ -52,7 +52,6 @@ public class Main extends Application {
 
     /**
      * Takes in any CLI arguments and passes them to the JavaFx application.
-     *
      * @param args Array of arguments passed to the JVM on application start
      */
     public static void main(String[] args) {
@@ -63,7 +62,6 @@ public class Main extends Application {
 
     /**
      * Starts the JavaFx application and shows the initial view <code>LoginView.fxml</code>.
-     *
      * @param primaryStage The primary JavaFx stage the applications scenes are loaded onto
      * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot locate the <code>*.fxml</code>
      * file.
@@ -79,8 +77,7 @@ public class Main extends Application {
     }
 
     /**
-     * Stop the JavaFx application and closes any open Database connection.
-     *
+     * Stops the JavaFx application and closes any open Database connection.
      * @throws Exception There is trouble stopping the application
      */
     @Override
