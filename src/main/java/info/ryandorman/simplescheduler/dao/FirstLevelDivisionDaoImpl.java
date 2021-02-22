@@ -31,6 +31,12 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
             "WHERE fld.country_id = ?;";
 
     /**
+     * Creates a new class instance for this Data Access Object.
+     */
+    public FirstLevelDivisionDaoImpl() {
+    }
+
+    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a FirstLevelDivision entity.
      *
      * @param rs <code>java.sql.ResultSet</code> to map

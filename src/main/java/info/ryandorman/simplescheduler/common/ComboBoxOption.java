@@ -14,16 +14,25 @@ import java.util.List;
  * <code>javafx.scene.control.ComboBox</code>.
  */
 public class ComboBoxOption {
+    /**
+     * Unique identifier
+     */
     private final int id;
+    /**
+     * Unique label displayed in the combo box
+     */
     private final String label;
+    /**
+     * Value associated with the label
+     */
     private final Object value;
 
     /**
      * Creates a new class instance and sets all fields
      *
-     * @param id    Unique identifier that can be used to identify the option
-     * @param label Unique text to be displayed in the combo box as an option
-     * @param value Value associated with the label displayed to/selected by the user
+     * @param id    Unique identifier
+     * @param label Unique label displayed in the combo box
+     * @param value Value associated with the label
      */
     public ComboBoxOption(int id, String label, Object value) {
         this.id = id;

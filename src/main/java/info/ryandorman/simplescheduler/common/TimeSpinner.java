@@ -20,10 +20,13 @@ import java.time.format.DateTimeParseException;
 
 /**
  * Extends <code>javafx.scene.control.Spinner</code> to handle time input. Design inspired by
- * <a href="https://stackoverflow.com/questions/32613619/how-to-make-a-timespinner-in-javafx.">How to make a TimeSpinner
- * in JavaFx</a>.
+ * <a target="_blank" href="https://stackoverflow.com/questions/32613619/how-to-make-a-timespinner-in-javafx.">How to
+ * make a TimeSpinner in JavaFx</a>.
  */
 public class TimeSpinner extends Spinner<LocalTime> {
+    /**
+     * Default format pattern to display in TimeSpinner input
+     */
     private static final String format = "h:mm a";
 
     /**
@@ -43,12 +46,23 @@ public class TimeSpinner extends Spinner<LocalTime> {
         this(format, defaultValue);
     }
 
+    /**
+     * Creates a new class instance that sets the default input value and time format to the defined parameters.
+     *
+     * @param format       Time format pattern appropriate for <code>java.time.format.DateTimeFormatter</code>
+     * @param defaultValue Default input value (e.g., time) to display.
+     */
     public TimeSpinner(String format, LocalTime defaultValue) {
         this.setValueFactory(getSpinnerLocalTimeFactory(format));
         this.getEditor().addEventHandler(MouseEvent.MOUSE_CLICKED, getTimeSpinnerSelectionRules());
         setDefaultValue(defaultValue);
     }
 
+    /**
+     * Sets the default input value to the user defined time parameter.
+     *
+     * @param defaultValue Default input value (e.g., time) to display.
+     */
     public void setDefaultValue(LocalTime defaultValue) {
         this.getEditor().setTextFormatter(getLocalTimeFormatter(defaultValue));
     }

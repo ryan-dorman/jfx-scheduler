@@ -28,6 +28,12 @@ public class ContactDaoImpl implements ContactDao {
     private final String GET_ALL = "SELECT * FROM contacts;";
 
     /**
+     * Creates a new class instance for this Data Access Object.
+     */
+    public ContactDaoImpl() {
+    }
+
+    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Contact entity.
      *
      * @param rs <code>java.sql.ResultSet</code> to map

@@ -30,6 +30,12 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
     /**
+     * Creates a new class instance for this Data Access Object.
+     */
+    public UserDaoImpl() {
+    }
+
+    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a User entity. Allows specification of <code>java.sql.ResultSet</code>
      * column User data starts at.
      *

@@ -52,6 +52,12 @@ public class CustomerDaoImpl implements CustomerDao {
     private static final String DELETE_CUSTOMER = "DELETE FROM customers WHERE customer_id = ?;";
 
     /**
+     * Creates a new class instance for this Data Access Object.
+     */
+    public CustomerDaoImpl() {
+    }
+
+    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Customer entity.
      *
      * @param rs <code>java.sql.ResultSet</code> to map

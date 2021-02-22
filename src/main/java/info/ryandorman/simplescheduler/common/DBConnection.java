@@ -20,8 +20,17 @@ import java.util.logging.Logger;
  * Auto-commit is turned off by default on connections. <em>Close the connection before the application exits.</em>
  */
 public class DBConnection {
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    /**
+     * Datasource to connect to
+     */
     private static MysqlDataSource d;
+    /**
+     * Connection with the datasource
+     */
     private static Connection conn;
 
     /**

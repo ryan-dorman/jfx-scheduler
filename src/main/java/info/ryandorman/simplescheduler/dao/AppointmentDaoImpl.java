@@ -81,6 +81,12 @@ public class AppointmentDaoImpl implements AppointmentDao {
     private static final String DELETE_APPOINTMENT_BY_CUSTOMER_ID = "DELETE FROM appointments WHERE customer_id = ?;";
 
     /**
+     * Creates a new class instance for this Data Access Object.
+     */
+    public AppointmentDaoImpl() {
+    }
+
+    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Appointment entity. Allows specification of
      * <code>java.sql.ResultSet</code> column Appointment data starts at.
      *

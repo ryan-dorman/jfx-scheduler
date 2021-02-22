@@ -10,6 +10,9 @@ package info.ryandorman.simplescheduler.common;
  * <code>java.sql.PreparedStatement</code>.
  */
 public class ColumnIterator {
+    /**
+     * Current value of iterator.
+     */
     private int current;
 
     /**

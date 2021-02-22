@@ -28,6 +28,12 @@ public class CountryDaoImpl implements CountryDao {
     private static final String GET_ALL = "SELECT * FROM countries;";
 
     /**
+     * Creates a new class instance for this Data Access Object.
+     */
+    public CountryDaoImpl() {
+    }
+
+    /**
      * Maps data held in a <code>java.sql.ResultSet</code> to a Country entity.
      *
      * @param rs <code>java.sql.ResultSet</code> to map
