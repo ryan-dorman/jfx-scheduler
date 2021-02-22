@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler.dao;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.common.ColumnIterator;
@@ -12,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * {@inheritDoc}
+ */
 public class AppointmentDaoImpl implements AppointmentDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -69,11 +77,25 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
     private static final String DELETE_APPOINTMENT_BY_CUSTOMER_ID = "DELETE FROM appointments WHERE customer_id = ?;";
 
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a Appointment entity.
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @return Appointment entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Appointment data
+     */
     private Appointment mapResult(ResultSet rs) throws SQLException {
         ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a Appointment entity. Allows specification of
+     * <code>java.sql.ResultSet</code> column Appointment data starts at.
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @param resultColumn Column where Appointment data starts
+     * @return Appointment entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary Appointment data
+     */
     public static Appointment mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         Customer customer = CustomerDaoImpl.mapResult(rs, resultColumn);
         User user = UserDaoImpl.mapResult(rs, resultColumn);
@@ -97,6 +119,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
                 );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Appointment> getAll() {
         Connection conn;
@@ -125,6 +150,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return appointments;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Appointment> getByStartDateTimeWindow(ZonedDateTime start, ZonedDateTime end) {
         Connection conn;
@@ -158,6 +186,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return appointments;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Appointment> getByCustomerIdAndDateTimeWindow(int customerId, ZonedDateTime start, ZonedDateTime end) {
         Connection conn;
@@ -194,6 +225,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return appointments;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Appointment getById(int id) {
         Connection conn;
@@ -227,6 +261,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return appointment;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int create(Appointment appointment) {
         Connection conn;
@@ -265,6 +302,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return created;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int update(Appointment appointment) {
         Connection conn;
@@ -303,6 +343,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return updated;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int delete(int id) {
         Connection conn;
@@ -330,6 +373,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
         return deleted;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int deleteByCustomerId(int customerId) {
         Connection conn;

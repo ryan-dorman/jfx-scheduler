@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface FirstLevelDivisionDao {
     /**
-     * Gets a code>java.util.List</code> of FirstLevelDivisions associated with a unique Country identifier.
+     * Gets a <code>java.util.List</code> of FirstLevelDivisions associated with a unique Country identifier.
      * @param countryId Unique Country identifier
      * @return All FirstLevelDivisions associated with unique Country identifier
      */

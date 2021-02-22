@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * @inheritDoc
+ * {@inheritDoc}
  */
 public class ContactDaoImpl implements ContactDao{
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -55,7 +55,7 @@ public class ContactDaoImpl implements ContactDao{
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<Contact> getAll() {

@@ -24,7 +24,6 @@ import java.time.format.DateTimeParseException;
  * in JavaFx</a>.
  */
 public class TimeSpinner extends Spinner<LocalTime> {
-
     private static final String format = "h:mm a";
 
     /**

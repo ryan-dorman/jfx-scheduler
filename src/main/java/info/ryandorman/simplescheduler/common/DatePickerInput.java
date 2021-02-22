@@ -15,7 +15,9 @@ import java.time.format.DateTimeParseException;
  * Improves <code>javafx.scene.control.DatePicker</code> to ensures user text input causes the proper value updates.
  */
 public class DatePickerInput extends DatePicker {
-
+    /**
+     * Setups overrides on default <code>javafx.scene.control.DatePicker</code> behavior.
+     */
     public DatePickerInput() {
         setPickerValueBasedOnInput();
     }

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * @inheritDoc
+ * {@inheritDoc}
  */
 public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -70,7 +70,7 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<FirstLevelDivision> getByCountryId(int countryId) {

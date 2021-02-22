@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * @inheritDoc
+ * {@inheritDoc}
  */
 public class UserDaoImpl implements UserDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -61,7 +61,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<User> getAll() {
@@ -91,7 +91,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public User getById(int id) {
@@ -126,7 +126,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public User getByName(String name) {

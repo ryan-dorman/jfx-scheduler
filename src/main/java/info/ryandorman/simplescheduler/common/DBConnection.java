@@ -25,7 +25,7 @@ public class DBConnection {
     private static Connection conn;
 
     /**
-     * Constructor is private to direct prevent class instantiation.
+     * Prevents direct class instantiation. Methods should be accessed statically.
      */
     private DBConnection() {
     }

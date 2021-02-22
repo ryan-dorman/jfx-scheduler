@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * @inheritDoc
+ * {@inheritDoc}
  */
 public class CountryDaoImpl implements CountryDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -58,7 +58,7 @@ public class CountryDaoImpl implements CountryDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<Country> getAll() {

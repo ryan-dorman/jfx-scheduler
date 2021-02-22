@@ -13,6 +13,10 @@ import java.util.Optional;
  * Allows easy creation and setup of <code>javafx.scene.control.Alert</code> components.
  */
 public class AlertUtil {
+    /**
+     * Prevents direct class instantiation. Methods should be accessed statically.
+     */
+    private AlertUtil(){};
 
     /**
      * Creates a confirmation window that requires user feedback to determine which path the application takes.

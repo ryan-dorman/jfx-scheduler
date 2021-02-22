@@ -25,7 +25,6 @@ import java.util.logging.Logger;
  * login activity.
  */
 public class Main extends Application {
-
     private static Logger sysLogger = null;
 
     static {

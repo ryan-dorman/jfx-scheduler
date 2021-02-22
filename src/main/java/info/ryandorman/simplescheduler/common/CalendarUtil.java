@@ -17,6 +17,11 @@ import java.util.EnumSet;
  */
 public class CalendarUtil {
     /**
+     * Prevents direct class instantiation. Methods should be accessed statically.
+     */
+    private CalendarUtil() {};
+
+    /**
      * Provides the first date of the current week based on the current ZoneId.
      * @return Date for the Monday of the current week
      */

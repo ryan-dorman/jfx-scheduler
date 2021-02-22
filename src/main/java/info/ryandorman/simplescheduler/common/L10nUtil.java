@@ -18,6 +18,11 @@ import java.util.ResourceBundle;
  */
 public class L10nUtil {
     /**
+     * Prevents direct class instantiation. Methods should be accessed statically.
+     */
+    private L10nUtil() {};
+
+    /**
      * Gets the language string associated with a given key from <code>languageBundle_**.properties</code> based on the
      * default locale detected.
      * @param bundleKey Associated with a value in <code>languageBundle_**.properties</code>

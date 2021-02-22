@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * @inheritDoc
+ * {@inheritDoc}
  */
 public class CustomerDaoImpl implements CustomerDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -90,7 +90,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<Customer> getAll() {
@@ -121,7 +121,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public Customer getById(int id) {
@@ -158,7 +158,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public List<Customer> getByNameLike(String name) {
@@ -190,7 +190,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public int create(Customer customer) {
@@ -227,7 +227,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public int update(Customer customer) {
@@ -264,7 +264,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public int delete(int id) {
