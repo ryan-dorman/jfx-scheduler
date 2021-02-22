@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler.dao;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.common.ColumnIterator;
@@ -14,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * @inheritDoc
+ */
 public class UserDaoImpl implements UserDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -21,11 +29,25 @@ public class UserDaoImpl implements UserDao {
     private static final String GET_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
     private static final String GET_BY_NAME = "SELECT * FROM users WHERE user_name = ?;";
 
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a User entity.
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @return User entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary User data
+     */
     private User mapResult(ResultSet rs) throws SQLException {
         ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a User entity. Allows specification of <code>java.sql.ResultSet</code>
+     * column User data starts at.
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @param resultColumn Column where User data starts
+     * @return User entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary User data
+     */
     public static User mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         return new User(
                 rs.getInt(resultColumn.next()),
@@ -38,6 +60,9 @@ public class UserDaoImpl implements UserDao {
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<User> getAll() {
         Connection conn;
@@ -65,6 +90,9 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public User getById(int id) {
         Connection conn;
@@ -97,6 +125,9 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public User getByName(String name) {
         Connection conn;

@@ -1,5 +1,10 @@
 package info.ryandorman.simplescheduler.dao;
 
+/*
+ *   Ryan Dorman
+ *   ID: 001002824
+ */
+
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.common.ColumnIterator;
@@ -15,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * @inheritDoc
+ */
 public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -22,11 +30,27 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "WHERE fld.country_id = ?;";
 
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a FirstLevelDivision entity.
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @return FirstLevelDivision entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary FirstLevelDivision
+     * data
+     */
     public static FirstLevelDivision mapResult(ResultSet rs) throws SQLException {
         ColumnIterator resultColumn = new ColumnIterator(1);
         return mapResult(rs, resultColumn);
     }
 
+    /**
+     * Maps data held in a <code>java.sql.ResultSet</code> to a FirstLevelDivision entity. Allows specification of
+     * <code>java.sql.ResultSet</code> column FirstLevelDivision data starts at.
+     * @param rs <code>java.sql.ResultSet</code> to map
+     * @param resultColumn Column where FirstLevelDivision data starts
+     * @return FirstLevelDivision entity populated with data from <code>java.sql.ResultSet</code>
+     * @throws SQLException Occurs if <code>java.sql.ResultSet</code> does not contain all necessary FirstLevelDivision
+     * data
+     */
     public static FirstLevelDivision mapResult(ResultSet rs, ColumnIterator resultColumn) throws SQLException {
         Country country = CountryDaoImpl.mapResult(rs, resultColumn);
         FirstLevelDivision division = new FirstLevelDivision(
@@ -45,6 +69,9 @@ public class FirstLevelDivisionDaoImpl implements FirstLevelDivisionDao {
         return division;
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
     public List<FirstLevelDivision> getByCountryId(int countryId) {
         Connection conn;

@@ -14,24 +14,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.ZoneId;
 import java.util.logging.FileHandler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * Starts the application and initializes the loggers.
+ * Starts the application and initializes the loggers. Logger configuration based on global properties in
+ * <code>logging.properties</code>. By default <code>java.util.logging.FileHandler</code>s are specified in a static
+ * block to allow for the creation of two unique log files. One log captures system activity and the other captures user
+ * login activity.
  */
 public class Main extends Application {
 
     private static Logger sysLogger = null;
-    private static Logger userLogger = null;
 
-    /**
-     * Sets the global logging configurations based on global properties in <code>logging.properties</code>.
-     * By default <code>java.util.logging.FileHandler</code>s are specified in the static block to allow for the creation
-     * of two unique log files. One log captures system activity and the other captures user login activity.
-     */
     static {
         try {
             String rootPath = System.getProperty("user.dir");
@@ -43,7 +39,7 @@ public class Main extends Application {
             sysLogger.addHandler(sysFh);
 
             FileHandler userFh = new FileHandler(rootPath + "/login_activity.txt", true);
-            userLogger = Logger.getLogger("userActivity");
+            Logger userLogger = Logger.getLogger("userActivity");
             userLogger.addHandler(userFh);
         } catch (IOException e) {
             e.printStackTrace();

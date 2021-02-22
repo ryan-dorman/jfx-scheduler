@@ -86,8 +86,7 @@ public class CustomersViewController implements Initializable {
                     customers.add(customer);
                 }
             } catch (NumberFormatException e) {
-                String name = input.toLowerCase(Locale.ROOT);
-                customers.setAll(customerDao.getByNameLike(name));
+                customers.setAll(customerDao.getByNameLike(input));
             }
             customersTable.setItems(customers);
             clearSearchButton.setVisible(true);
