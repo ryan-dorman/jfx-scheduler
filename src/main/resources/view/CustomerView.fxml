@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="450.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.CustomerViewController">
+<AnchorPane prefHeight="500.0" prefWidth="450.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.CustomerViewController">
     <children>
         <VBox prefHeight="500.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>

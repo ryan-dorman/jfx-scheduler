@@ -8,8 +8,7 @@ package info.ryandorman.simplescheduler.model;
 import java.time.ZonedDateTime;
 
 /**
- * The Base data model includes the shared metadata properties coming from the data layer that exist across
- * entities.
+ * The Base data model. It includes the shared metadata properties  that exist across entities.
  */
 public abstract class Base {
     protected int id;
@@ -28,9 +27,9 @@ public abstract class Base {
      * Accepts all parameters to allow for population of existing entity metadata.
      * @param id Unique entity identifier
      * @param created Date and time entity was created
-     * @param createdBy User that created the entity
+     * @param createdBy Source that created the entity
      * @param updated Date and time entity was last updated
-     * @param updatedBy User that updated the entity
+     * @param updatedBy Source that updated the entity
      */
     public Base(int id, ZonedDateTime created, String createdBy, ZonedDateTime updated, String updatedBy) {
         this.id = id;
@@ -77,18 +76,18 @@ public abstract class Base {
     }
 
     /**
-     * Gets name of user that created the entity.
+     * Gets name of the source that created the entity.
      *
-     * @return Name of user that created the entity
+     * @return Name of source that created the entity
      */
     public String getCreatedBy() {
         return createdBy;
     }
 
     /**
-     * Sets name of user that created the entity.
+     * Sets name of the source that created the entity.
      *
-     * @param createdBy Name of user to set
+     * @param createdBy Name of source to set
      */
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
@@ -113,18 +112,18 @@ public abstract class Base {
     }
 
     /**
-     * Gets name of user that updated the entity.
+     * Gets name of the source that updated the entity.
      *
-     * @return Name of user that updated the entity
+     * @return Name of source that updated the entity
      */
     public String getUpdatedBy() {
         return updatedBy;
     }
 
     /**
-     * Sets name of user that updated the entity.
+     * Sets name of the source that updated the entity.
      *
-     * @param updatedBy Name of user to set
+     * @param updatedBy Name of source to set
      */
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;

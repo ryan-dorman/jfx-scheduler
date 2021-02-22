@@ -20,7 +20,7 @@
 
 <?import info.ryandorman.simplescheduler.common.TimeSpinner?>
 <?import info.ryandorman.simplescheduler.common.DatePickerInput?>
-<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.AppointmentViewController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="info.ryandorman.simplescheduler.controller.AppointmentViewController">
     <children>
         <VBox prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
