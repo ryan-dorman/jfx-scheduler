@@ -36,8 +36,8 @@ public class TimeSpinner extends Spinner<LocalTime> {
     }
 
     /**
-     *  Creates a new class instance that sets the default input value to the user defined <code>java.time.LocalTime
-     *  </code> parameter.
+     *  Creates a new class instance that sets the default input value to the user defined time parameter.
+     *
      * @param defaultValue Default input value (e.g., time) to display.
      */
     public TimeSpinner(LocalTime defaultValue) {
@@ -55,10 +55,10 @@ public class TimeSpinner extends Spinner<LocalTime> {
     }
 
     /**
-     * Get a <code>SpinnerValueFactory</code> that allow LocalTime input into the JavaFX Spinner.
+     * Gets a <code>javafx.scene.control.SpinnerValueFactory</code> that allows <code>java.time.LocalTime</code> input.
      *
-     * @param format String representing the DateTimeFormat to display LocalTime in
-     * @return SpinnerValueFactory to be used as a Spinner's value factory
+     * @param format String representing the format to display the time input
+     * @return factory to be used as TimeSpinner's value factory
      */
     private SpinnerValueFactory<LocalTime> getSpinnerLocalTimeFactory(String format) {
         return new SpinnerValueFactory<>() {
@@ -106,10 +106,10 @@ public class TimeSpinner extends Spinner<LocalTime> {
     }
 
     /**
-     * Get a <code>TextFormatter</code> that can parse LocalTime to and from string input.
+     * Gets a <code>javafx.scene.control.TextFormatter</code> that can parse LocalTime to and from user's text input.
      *
-     * @param defaultValue The LocalTime value to return if an invalid string format is encountered
-     * @return TextFormatter to manage the string formatting of LocalTime input
+     * @param defaultValue The <code>java.time.LocalTime</code> value to return if an invalid string format is encountered
+     * @return Formatter to manage the string formatting of time input into the TimeSpinner
      */
     private TextFormatter<LocalTime> getLocalTimeFormatter(LocalTime defaultValue) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TimeSpinner.format);
@@ -144,8 +144,11 @@ public class TimeSpinner extends Spinner<LocalTime> {
     }
 
     /**
-     * Get <code>EventHandler<MouseEvent></code> that allows for easy selection of time input displayed in spinner.
-     * @return EventHandler that configures time spinner input selection
+     * Get <code>javafx.event.EventHandler<MouseEvent></code> that allows for easy selection of hour and minute input
+     * displayed in the TimeSpinner. A Lambda is used to simplify formatting and quickly return the
+     * <code>javafx.event.EventHandler<MouseEvent></code> needed to create the correct selection behavior.
+     *
+     * @return EventHandler that configures the TimeSpinner's input selection
      */
     private EventHandler<MouseEvent> getTimeSpinnerSelectionRules() {
         return mouseEvent -> {

@@ -23,7 +23,7 @@ public class DatePickerInput extends DatePicker {
 
     /**
      * Sets dates available for selection in the <code>javafx.scene.control.DatePicker</code> window to only weekdays in
-     * the present and future. A Java 8 Lambda is used to easily set up the callback to override
+     * the present and future. A  Lambda is used to easily set up the <code>javafx.util.Callback</code> that overrides
      * <code>DateCell::updateItem</code>
      */
     public void setRestrictBusinessDays() {
