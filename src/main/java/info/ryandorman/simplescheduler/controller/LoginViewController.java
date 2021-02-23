@@ -100,6 +100,7 @@ public class LoginViewController implements Initializable {
 
     /**
      * Handles login and informs User of any issues.
+     *
      * @param actionEvent Event created by User interaction with <code>loginButton</code>
      * @throws IOException The MainView did not load successfully.
      */
@@ -147,6 +148,7 @@ public class LoginViewController implements Initializable {
 
     /**
      * Loads <code>MainView.fxml</code> and pass the current User's data to the <code>MainViewController</code>.
+     *
      * @param actionEvent Reference to event fired by the User choice
      * @param currentUser User currently authorized and accessing the application
      * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot load <code>MainView.fxml</code>.

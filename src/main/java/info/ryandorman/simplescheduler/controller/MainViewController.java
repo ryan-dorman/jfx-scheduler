@@ -166,11 +166,14 @@ public class MainViewController implements Initializable {
 
         if (upcomingUserAppointments.size() > 0) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm a");
-            String appointmentSummary = "";
+            StringBuilder appointmentSummary = new StringBuilder();
 
             for (Appointment app : upcomingUserAppointments) {
-                appointmentSummary += "\n" + app.getId() + "\t" + app.getType() + "\t" +
-                        app.getStart().format(formatter);
+                appointmentSummary
+                        .append("\n")
+                        .append(app.getId()).append("\t")
+                        .append(app.getType()).append("\t")
+                        .append(app.getStart().format(formatter));
             }
 
             AlertUtil.inform("Your Appointments", "Upcoming Appointments",
