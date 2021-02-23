@@ -29,43 +29,80 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+/**
+ * Handles the logic associated with user authorization and logging into the application.
+ */
 public class LoginViewController implements Initializable {
+    /**
+     * User Logger
+     */
     private static final Logger userLogger = Logger.getLogger("userActivity");
+    /**
+     * User Data Access Object
+     */
     private final UserDao userDao = new UserDaoImpl();
+    /**
+     * Counter to track login attempts
+     */
     private int loginAttempts = 0;
 
-    // Login Labels
+    /**
+     * Label for the username input field
+     */
     @FXML
     private Label usernameLabel;
-
+    /**
+     * Label for the password input field
+     */
     @FXML
     private Label passwordLabel;
-
+    /**
+     * Label to describe User zone
+     */
     @FXML
     private Label userZoneLabel;
-
+    /**
+     * Label to display current zone application is being accessed from
+     */
     @FXML
     private Label userZone;
-
-    // Login Fields
+    /**
+     * Input field for username
+     */
     @FXML
     private TextField usernameField;
-
+    /**
+     * Input field for password
+     */
     @FXML
     private TextField passwordField;
-
-    // Login Buttons
+    /**
+     * Button that triggers login
+     */
     @FXML
     private Button loginButton;
-
+    /**
+     * Button that closes application
+     */
     @FXML
     private Button closeButton;
 
+    /**
+     * Initializes the controller. Determines the User's zone and localizes the LoginView accordingly.
+     *
+     * @param url            Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupLoginForm();
     }
 
+    /**
+     * Handles login and informs User of any issues.
+     * @param actionEvent Event created by User interaction with <code>loginButton</code>
+     * @throws IOException The MainView did not load successfully.
+     */
     @FXML
     public void onLogin(ActionEvent actionEvent) throws IOException {
         String username = usernameField.getText().trim();
@@ -100,11 +137,20 @@ public class LoginViewController implements Initializable {
         }
     }
 
+    /**
+     * Handles application close.
+     */
     @FXML
     public void onCancel() {
         Platform.exit();
     }
 
+    /**
+     * Loads <code>MainView.fxml</code> and pass the current User's data to the <code>MainViewController</code>.
+     * @param actionEvent Reference to event fired by the User choice
+     * @param currentUser User currently authorized and accessing the application
+     * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot load <code>MainView.fxml</code>.
+     */
     private void loadMainView(ActionEvent actionEvent, User currentUser) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/MainView.fxml"));
@@ -122,6 +168,9 @@ public class LoginViewController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Determines the User's zone and localize the LoginView labels accordingly.
+     */
     private void setupLoginForm() {
         // Set label and button text with correct language
         usernameLabel.setText(L10nUtil.getLanguage("label.username"));

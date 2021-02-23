@@ -61,7 +61,7 @@ public class Main extends Application {
     /**
      * Starts the JavaFx application and shows the initial view <code>LoginView.fxml</code>.
      * @param primaryStage The primary JavaFx stage the applications scenes are loaded onto
-     * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot locate the <code>*.fxml</code>
+     * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot locate the <code>LoginView.fxml</code>
      * file.
      */
     @Override

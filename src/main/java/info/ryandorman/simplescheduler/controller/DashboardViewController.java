@@ -32,21 +32,37 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DashboardViewController implements Initializable {
-
+    /**
+     * List of all Appointments to display data for
+     */
     private final List<Appointment> appointments = new ArrayList<>();
+    /**
+     * Appointment Data Access Object
+     */
+    private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
+    /**
+     * Contact Data Access Object
+     */
+    private final ContactDao contactDao = new ContactDaoImpl();
 
-    AppointmentDao appointmentDao = new AppointmentDaoImpl();
-    ContactDao contactDao = new ContactDaoImpl();
-
+    /**
+     * Date input for start of filter window
+     */
     @FXML
     private DatePickerInput startDatePicker;
-
+    /**
+     * Date input for end of filter window
+     */
     @FXML
     private DatePickerInput endDatePicker;
-
+    /**
+     * ComboBox for categories of Customer Appointment aggregation
+     */
     @FXML
     private ComboBox<ComboBoxOption> aggregationComboBox;
-
+    /**
+     * BarChart to display Customer Appointments by the selected aggregation category
+     */
     @FXML
     private BarChart<String, Number> appointmentBarChart;
 

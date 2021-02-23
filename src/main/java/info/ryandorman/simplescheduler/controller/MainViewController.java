@@ -29,13 +29,21 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Controller for the the MainView of the application. Handles the logic associated with the navigation items
- * in the application and loading the appropriate child views into the MainView based on the navigation item selected.
+ * Handles the logic associated with the navigation menu in the application and using the selected item to populate the
+ * MainView.
  */
 public class MainViewController implements Initializable {
-
+    /**
+     * System Logger
+     */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    /**
+     * Current User logged into the application
+     */
     public static User currentUser;
+    /**
+     * Appointment Data Access Object
+     */
     private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
 
     /**
@@ -43,19 +51,16 @@ public class MainViewController implements Initializable {
      */
     @FXML
     private BorderPane mainView;
-
     /**
      * Tab that activates the Dashboard View
      */
     @FXML
     private Button dashboardButton;
-
     /**
      * Tab that activates the Customers View
      */
     @FXML
     private Button customersButton;
-
     /**
      * Tab that activates the Appointments View
      */
