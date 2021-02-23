@@ -56,58 +56,93 @@ public class DashboardViewController implements Initializable {
     @FXML
     private DatePickerInput endDatePicker;
     /**
-     * ComboBox for categories of Customer Appointment aggregation
+     * ComboBox of categories for Customer Appointment aggregation
      */
     @FXML
     private ComboBox<ComboBoxOption> aggregationComboBox;
     /**
-     * BarChart to display Customer Appointments by the selected aggregation category
+     * BarChart to display Customer Appointments by selected aggregation category
      */
     @FXML
     private BarChart<String, Number> appointmentBarChart;
-
+    /**
+     * X-axis for Customer Appointments BarChart
+     */
     @FXML
     private CategoryAxis appointmentXAxis;
-
+    /**
+     * Y-axis for Customer Appointments BarChart
+     */
     @FXML
     private NumberAxis appointmentYAxis;
-
+    /**
+     * LineChart to display Users Workloads over time
+     */
     @FXML
     private LineChart<String, Number> userLineChart;
-
+    /**
+     * X-axis for User Workload LineChart
+     */
     @FXML
     private CategoryAxis userXAxis;
-
+    /**
+     * Y-axis for User Workload LineChart
+     */
     @FXML
     private NumberAxis userYAxis;
-
+    /**
+     * ComboBox of Contacts for Contact schedule selection
+     */
     @FXML
     private ComboBox<ComboBoxOption> contactComboBox;
-
+    /**
+     * Table to display selected Contacts Schedule
+     */
     @FXML
     private TableView<Appointment> scheduleTable;
-
+    /**
+     * Unique Identifier column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, Integer> idColumn;
-
+    /**
+     * Start date and time column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, String> startColumn;
-
+    /**
+     * End date and time column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, String> endColumn;
-
+    /**
+     * Title column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, String> titleColumn;
-
+    /**
+     * Type column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, String> typeColumn;
-
+    /**
+     * Description column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, String> descriptionColumn;
-
+    /**
+     * Customer unique identifier column for scheduled Appointment
+     */
     @FXML
     private TableColumn<Appointment, Integer> customerIdColumn;
 
+    /**
+     * Initializes the controller. Configures the charts and table displaying the reports and load the initial data to
+     * report on.
+     *
+     * @param url            Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupDatePickers();
