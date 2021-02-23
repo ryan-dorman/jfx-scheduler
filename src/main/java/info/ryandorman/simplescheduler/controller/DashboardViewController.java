@@ -152,6 +152,9 @@ public class DashboardViewController implements Initializable {
         onDateFilter();
     }
 
+    /**
+     * Handles new date filter input and updates view if needed.
+     */
     @FXML
     public void onDateFilter() {
         ZonedDateTime startDate = startDatePicker.valueProperty().getValue().atStartOfDay(ZoneId.systemDefault());
@@ -168,11 +171,19 @@ public class DashboardViewController implements Initializable {
         }
     }
 
+    /**
+     * Sets date filter inputs to default to start and end of current year.
+     */
     private void setupDatePickers() {
         startDatePicker.setValue(CalendarUtil.getFirstDayOfYear().toLocalDate());
         endDatePicker.setValue(CalendarUtil.getLastDayOfYear().toLocalDate());
     }
 
+    /**
+     * Sets Customer Appointments aggregation combo box to display options: Type. Month, Type by Month. Updates the
+     * Customer Appointments BarChart on selection. A Lambda is used to increase readability and simplify access to the
+     * <code>javafx.beans.value.ChangeListener</code> interface.
+     */
     private void setupAggregationComboBox() {
         ObservableList<ComboBoxOption> aggregationOptions = FXCollections.observableArrayList();
         ComboBoxOption type = new ComboBoxOption(1, "Type", "type");
@@ -194,6 +205,11 @@ public class DashboardViewController implements Initializable {
         aggregationComboBox.setValue(type);
     }
 
+    /**
+     * Sets Contact Schedule combo box to display Contacts as options. Updates the Contact schedule currently displayed
+     * in the view on selection. A Lambda is used to increase readability and simplify access to the
+     * <code>javafx.beans.value.ChangeListener</code> interface.
+     */
     private void setupContactComboBox() {
         ObservableList<ComboBoxOption> contactOptions = contactDao.getAll()
                 .stream()
