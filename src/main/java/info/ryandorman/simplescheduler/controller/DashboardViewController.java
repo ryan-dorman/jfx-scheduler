@@ -153,7 +153,7 @@ public class DashboardViewController implements Initializable {
     }
 
     /**
-     * Handles new date filter input and updates view if needed.
+     * Handles new date filter input and updates view.
      */
     @FXML
     public void onDateFilter() {
@@ -230,6 +230,9 @@ public class DashboardViewController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the Contact Schedule table so it can display the appropriate Appointment data.
+     */
     private void setupScheduleTableView() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MM/dd/yy h:mm a");
 
@@ -246,6 +249,9 @@ public class DashboardViewController implements Initializable {
                 new SimpleObjectProperty<>(appointmentData.getValue().getCustomer().getId()));
     }
 
+    /**
+     * Reads the Customer Appointment aggregation category and populates the BarChart with the correct data.
+     */
     private void populateCustomerAppointments() {
         ComboBoxOption aggregation = aggregationComboBox.getValue();
 
@@ -286,8 +292,15 @@ public class DashboardViewController implements Initializable {
         }
     }
 
+    /**
+     * Transforms the Appointment data into a map of aggregated counts for each Appointment type (e.g., {
+     * typeOne=2, typeTwo=5, ... }) and sets the counts into BarChart series. Streams and lambdas are used to increase
+     * ease and readability of data transformations.
+     *
+     * @return List of data series containing the Appointment type counts to set in the BarChart
+     */
     private List<XYChart.Series<String, Number>> getCustomerAppointmentsByType() {
-        // Tally up counts in a map (i.e., bag) for appointments by type
+        // Tally up counts in a map for appointments by type
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
 
         Map<String, Long> counts = new LinkedHashMap<>(appointments.stream()
@@ -307,6 +320,13 @@ public class DashboardViewController implements Initializable {
         return seriesList;
     }
 
+    /**
+     * Transforms the Appointment data into a map of aggregated counts for each Appointment month (e.g., {
+     * JAN=2, FEB=5, ... }) and sets the counts into BarChart series. Streams and lambdas are used to increase
+     * ease and readability of data transformations.
+     *
+     * @return List of data series containing the Appointment month counts to set in the BarChart
+     */
     private List<XYChart.Series<String, Number>> getCustomerAppointmentsByMonth() {
         // Tally up counts in a map (i.e., bag) for appointments by month
         Map<String, Long> counts = new LinkedHashMap<>();
@@ -315,6 +335,7 @@ public class DashboardViewController implements Initializable {
         Map<Month, Long> unsortedCounts = appointments.stream()
                 .collect(Collectors.groupingBy(a ->
                         a.getStart().getMonth(), Collectors.counting()));
+
         // Sort counts by month and convert month to String for display
         counts.putAll((Map<String, Long>) unsortedCounts.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
@@ -339,6 +360,13 @@ public class DashboardViewController implements Initializable {
         return seriesList;
     }
 
+    /**
+     * Transforms the Appointment data into a map of aggregated counts for each Appointment month and type combination
+     * (e.g., { JAN&&typeOne=3, JAN&&typeTwo, FEB&&TypeOne=5, ... }) and sets the counts into BarChart series. Streams
+     * and lambdas are used to increase ease and readability of data transformations.
+     *
+     * @return List of data series containing the Appointment month counts to set in the BarChart
+     */
     private List<XYChart.Series<String, Number>> getCustomerAppointmentsByTypeAndMonth() {
         // Tally up counts in a map (i.e., bag) for appointments by type & month
         final String CATEGORY_DELIMITER = "&&";
