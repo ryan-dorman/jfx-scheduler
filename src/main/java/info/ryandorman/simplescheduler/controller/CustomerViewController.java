@@ -1,7 +1,7 @@
 package info.ryandorman.simplescheduler.controller;
 
-import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.common.AlertUtil;
+import info.ryandorman.simplescheduler.common.ComboBoxOption;
 import info.ryandorman.simplescheduler.dao.*;
 import info.ryandorman.simplescheduler.model.Country;
 import info.ryandorman.simplescheduler.model.Customer;
@@ -102,7 +102,8 @@ public class CustomerViewController implements Initializable {
     /**
      * Allows a an existing Customer to be populated into the form for updating. If the Customer does not exist
      * the modal will close.
-     * @param currentStage Reference to the Current modal stage
+     *
+     * @param currentStage       Reference to the Current modal stage
      * @param selectedCustomerId Unique identifier of the customer to be updated
      */
     public void initData(Stage currentStage, int selectedCustomerId) {
@@ -134,6 +135,11 @@ public class CustomerViewController implements Initializable {
         }
     }
 
+    /**
+     * Handles Customer update or creation based on form input field values.
+     *
+     * @param actionEvent Event triggered by Save button
+     */
     @FXML
     public void onSave(ActionEvent actionEvent) {
         int saved;
@@ -171,6 +177,11 @@ public class CustomerViewController implements Initializable {
         currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
+    /**
+     * Handles cancel of current Customer update or create and closes the modal.
+     *
+     * @param actionEvent Event triggered by cancel button
+     */
     @FXML
     public void onCancel(ActionEvent actionEvent) {
         // Confirm cancel before closing the associated Modal
@@ -183,6 +194,9 @@ public class CustomerViewController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the Country combo box with the current Country options.
+     */
     private void setupCountryComboBox() {
         // Load Countries for ComboBox
         ObservableList<ComboBoxOption> countryOptions = countryDao.getAll()
@@ -200,6 +214,11 @@ public class CustomerViewController implements Initializable {
         countryComboBox.setItems(countryOptions);
     }
 
+    /**
+     * Sets up the First Level Division combo box for the specified Country.
+     *
+     * @param countryId Unique identifier for the Country to filter divisions by
+     */
     private void setupDivisionComboBox(int countryId) {
         ObservableList<ComboBoxOption> divisionOptions = divisionDao.getByCountryId(countryId)
                 .stream()

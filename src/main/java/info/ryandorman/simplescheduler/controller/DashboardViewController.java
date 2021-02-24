@@ -480,6 +480,7 @@ public class DashboardViewController implements Initializable {
      * Calculates the upper bounds to use on a chart's y-axis based on the data to be displayed in the chart. Streams
      * and lambdas allow for quick exploration of the nested <code>seriesList</code> data structure to assess the max
      * range of the data.
+     *
      * @param seriesList List of all series to be displayed in chart
      * @return Number to set as the charts upper bound
      */
@@ -519,8 +520,9 @@ public class DashboardViewController implements Initializable {
 
     /**
      * Loads Appointment data for the date range specified replacing all existing data.
+     *
      * @param start Start of Appointment date range
-     * @param end End of Appointment date range
+     * @param end   End of Appointment date range
      */
     private void loadAppointmentsInWindow(ZonedDateTime start, ZonedDateTime end) {
         appointments.clear();
