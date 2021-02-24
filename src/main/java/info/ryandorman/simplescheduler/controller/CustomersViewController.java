@@ -28,43 +28,77 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Handles the logic associated with display a table of all Customers and provides options to search for, create, update
+ * or delete Customers.
+ */
 public class CustomersViewController implements Initializable {
-
+    /**
+     * Appointment Data Access Object
+     */
     private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
+    /**
+     * Customer Data Access Object
+     */
     private final CustomerDao customerDao = new CustomerDaoImpl();
 
-    // Customers Table
+    /**
+     * Table for Customers data
+     */
     @FXML
     private TableView<Customer> customersTable;
-
+    /**
+     * Unique Identifier column for Customers table
+     */
     @FXML
     private TableColumn<Customer, Integer> idColumn;
-
+    /**
+     * Name column for Customers table
+     */
     @FXML
     private TableColumn<Customer, String> nameColumn;
-
+    /**
+     * Phone number column for Customers table
+     */
     @FXML
     private TableColumn<Customer, String> phoneColumn;
-
+    /**
+     * Address column for Customers table
+     */
     @FXML
     private TableColumn<Customer, String> addressColumn;
-
+    /**
+     * Postal code column for Customers table
+     */
     @FXML
     private TableColumn<Customer, String> postalCodeColumn;
-
+    /**
+     * First Level Division column for Customers table
+     */
     @FXML
     private TableColumn<Customer, String> divisionColumn;
-
+    /**
+     * Country column for Customers table
+     */
     @FXML
     private TableColumn<Customer, String> countryColumn;
-
-    // Filter
+    /**
+     * Input field Customer search
+     */
     @FXML
     private TextField searchField;
-
+    /**
+     * Button tp clear search
+     */
     @FXML
     private Button clearSearchButton;
 
+    /**
+     * Initializes the controller. Sets up the Customers table and populates the data.
+     *
+     * @param url            Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupCustomersTableView();
