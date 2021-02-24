@@ -105,6 +105,9 @@ public class CustomersViewController implements Initializable {
         loadCustomers();
     }
 
+    /**
+     * Handles search for Customer by unique identifier or name and filters the table with the results.
+     */
     @FXML
     public void onSearch() {
         String input = searchField.getText().trim();
@@ -126,6 +129,9 @@ public class CustomersViewController implements Initializable {
         }
     }
 
+    /**
+     * Handles clearing of the Customer search input and resets the data in the Customers table.
+     */
     @FXML
     public void onClearSearch() {
         searchField.clear();
@@ -133,11 +139,23 @@ public class CustomersViewController implements Initializable {
         clearSearchButton.setVisible(false);
     }
 
+    /**
+     * Handles the creation of the Customer modal window to create a new Customer.
+     *
+     * @param actionEvent Event trigger by Create button
+     * @throws IOException The Customer modal fails to open
+     */
     @FXML
     public void onCreate(ActionEvent actionEvent) throws IOException {
         loadCustomerView(actionEvent, "Create Customer", -1);
     }
 
+    /**
+     * Handles the creation of the Customer modal window to update a existing Customer.
+     *
+     * @param actionEvent Event trigger by Update button
+     * @throws IOException The Customer modal fails to open
+     */
     @FXML
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
@@ -147,6 +165,9 @@ public class CustomersViewController implements Initializable {
         }
     }
 
+    /**
+     * Handles the deletion of existing customers.
+     */
     @FXML
     public void onDelete() {
         Customer selectedCustomer = customersTable.getSelectionModel().getSelectedItem();
@@ -173,8 +194,11 @@ public class CustomersViewController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the Customer table so it can display the appropriate Customer data.
+     */
     private void setupCustomersTableView() {
-        // Hide clear for filter
+        // Hide clear search button
         clearSearchButton.setVisible(false);
         // Setup Customers Table View Columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -188,11 +212,22 @@ public class CustomersViewController implements Initializable {
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
     }
 
+    /**
+     * Loads Customers data and replaces all existing data in the table with it.
+     */
     private void loadCustomers() {
         ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
         customersTable.setItems(customers);
     }
 
+    /**
+     * Load the Customer modal and set it up for either creating or updating a Customer.
+     *
+     * @param actionEvent      Event triggered by Create or Update buttons
+     * @param title            Title of the modal
+     * @param selectCustomerId Valid identifier for the Customer to be updated; If not valid modal will be for creation.
+     * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot load <code>CustomerView.fxml</code>.
+     */
     private void loadCustomerView(ActionEvent actionEvent, String title, int selectCustomerId) throws IOException {
         Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
