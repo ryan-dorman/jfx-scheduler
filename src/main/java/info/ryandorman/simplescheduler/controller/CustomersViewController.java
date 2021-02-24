@@ -93,7 +93,7 @@ public class CustomersViewController implements Initializable {
     @FXML
     private TextField searchField;
     /**
-     * Button tp clear search
+     * Button to clear search
      */
     @FXML
     private Button clearSearchButton;
@@ -171,7 +171,7 @@ public class CustomersViewController implements Initializable {
     }
 
     /**
-     * Handles the deletion of existing customers.
+     * Handles the deletion of existing Customers.
      */
     @FXML
     public void onDelete() {
@@ -200,6 +200,14 @@ public class CustomersViewController implements Initializable {
     }
 
     /**
+     * Loads Customer data and replaces all existing data in the table with it.
+     */
+    private void loadCustomers() {
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
+        customersTable.setItems(customers);
+    }
+
+    /**
      * Sets up the Customer table so it can display the appropriate Customer data.
      */
     private void setupCustomersTableView() {
@@ -215,14 +223,6 @@ public class CustomersViewController implements Initializable {
                 new SimpleStringProperty(customerData.getValue().getDivision().getName()));
         countryColumn.setCellValueFactory(customerData ->
                 new SimpleStringProperty(customerData.getValue().getDivision().getCountry().getName()));
-    }
-
-    /**
-     * Loads Customers data and replaces all existing data in the table with it.
-     */
-    private void loadCustomers() {
-        ObservableList<Customer> customers = FXCollections.observableArrayList(customerDao.getAll());
-        customersTable.setItems(customers);
     }
 
     /**

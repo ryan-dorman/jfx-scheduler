@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * Handles the logic associated with a detailed display of Appointment data for creating or updating a Appointment.
+ */
 public class AppointmentViewController implements Initializable {
     /**
      * Appointment Data Access Object

@@ -1,7 +1,7 @@
 package info.ryandorman.simplescheduler.controller;
 
-import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.common.AlertUtil;
+import info.ryandorman.simplescheduler.common.CalendarUtil;
 import info.ryandorman.simplescheduler.dao.AppointmentDao;
 import info.ryandorman.simplescheduler.dao.AppointmentDaoImpl;
 import info.ryandorman.simplescheduler.model.Appointment;
@@ -31,62 +31,112 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Handles the logic associated with display a table of all Appointments and provides options to filter, create, update
+ * or delete Appointments.
+ */
 public class AppointmentsViewController implements Initializable {
-
+    /**
+     * Appointment Data Access Object
+     */
     private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
 
-    // Appointments Table
+    /**
+     * Table for Appointments data
+     */
     @FXML
-    TableView<Appointment> appointmentsTable;
-
+    private TableView<Appointment> appointmentsTable;
+    /**
+     * Unique Identifier column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, Integer> idColumn;
-
+    /**
+     * Title column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> titleColumn;
-
+    /**
+     * Description column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> descriptionColumn;
-
+    /**
+     * Location column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> locationColumn;
-
+    /**
+     * Contact column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> contactColumn;
-
+    /**
+     * Type column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> typeColumn;
-
+    /**
+     * Start date and time column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> startColumn;
-
+    /**
+     * End date and time column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, String> endColumn;
-
+    /**
+     * Customer identifier column for Appointments table
+     */
     @FXML
     private TableColumn<Appointment, Integer> customerIdColumn;
-
-    // Radio Buttons
+    /**
+     * Button to clear and filters
+     */
     @FXML
     private RadioButton allRadioButton;
-
+    /**
+     * Button to filter by Appointments this week
+     */
     @FXML
     private RadioButton thisWeekRadioButton;
-
+    /**
+     * Button to filter by Appointments this month
+     */
     @FXML
     private RadioButton thisMonthRadioButton;
 
+    /**
+     * Initializes the controller. Sets up the Appointments table, populates the data, and sets up the radio buttons for
+     * filtering.
+     *
+     * @param url            Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupAppointmentsTableView();
         setupFilterRadioButtons();
     }
 
+    /**
+     * Handles the creation of the Appointment modal window to create a new Appointment.
+     *
+     * @param actionEvent Event trigger by Create button
+     * @throws IOException The Appointment modal fails to open
+     */
     @FXML
     public void onCreate(ActionEvent actionEvent) throws IOException {
         loadAppointmentView(actionEvent, "Create Appointment", -1);
     }
 
+    /**
+     * Handles the creation of the Appointment modal window to update a existing Appointment.
+     *
+     * @param actionEvent Event trigger by Update button
+     * @throws IOException The Appointment modal fails to open
+     */
     @FXML
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
@@ -96,6 +146,9 @@ public class AppointmentsViewController implements Initializable {
         }
     }
 
+    /**
+     * Handles the deletion of existing Appointments.
+     */
     @FXML
     public void onDelete() {
         Appointment selectedAppointment = appointmentsTable.getSelectionModel().getSelectedItem();
@@ -121,17 +174,26 @@ public class AppointmentsViewController implements Initializable {
         }
     }
 
+    /**
+     * Loads Appointment data and replaces all existing data in the table with it.
+     */
     private void loadAppointments() {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList(appointmentDao.getAll());
         appointmentsTable.setItems(appointments);
     }
 
+    /**
+     * Loads Appointment data with the specified date filter and replaces all existing data in the table with it.
+     */
     private void filterAppointments(ZonedDateTime start, ZonedDateTime end) {
         List<Appointment> filteredAppointments = appointmentDao.getByStartDateTimeWindow(start, end);
         ObservableList<Appointment> appointments = FXCollections.observableArrayList(filteredAppointments);
         appointmentsTable.setItems(appointments);
     }
 
+    /**
+     * Sets up the Appointment table so it can display the appropriate Appointment data.
+     */
     private void setupAppointmentsTableView() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy h:mm a");
 
@@ -151,6 +213,9 @@ public class AppointmentsViewController implements Initializable {
                 new SimpleObjectProperty<>(appointmentData.getValue().getCustomer().getId()));
     }
 
+    /**
+     * Sets up the radio buttons for filtering the Appointment data by date.
+     */
     private void setupFilterRadioButtons() {
         // Setup radio buttons, default to all appointments shown
         ToggleGroup filters = new ToggleGroup();
@@ -177,6 +242,15 @@ public class AppointmentsViewController implements Initializable {
         allRadioButton.setSelected(true);
     }
 
+    /**
+     * Load the Appointment modal and set it up for either creating or updating a Appointment.
+     *
+     * @param actionEvent         Event triggered by Create or Update buttons
+     * @param title               Title of the modal
+     * @param selectAppointmentId Valid identifier for the Appointment to be updated; If not valid modal will be for
+     *                            creation.
+     * @throws IOException The <Code>javafx.fxml.FXMLLoader</Code> cannot load <code>AppointmentView.fxml</code>.
+     */
     private void loadAppointmentView(ActionEvent actionEvent, String title, int selectAppointmentId) throws IOException {
         Stage customerStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
