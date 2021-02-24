@@ -362,8 +362,8 @@ public class DashboardViewController implements Initializable {
 
     /**
      * Transforms the Appointment data into a map of aggregated counts for each Appointment month and type combination
-     * (e.g., { JAN&&typeOne=3, JAN&&typeTwo, FEB&&TypeOne=5, ... }) and sets the counts into BarChart series. Streams
-     * and lambdas are used to increase ease and readability of data transformations.
+     * (e.g., { JAN&&typeOne=3, JAN&&typeTwo=1, FEB&&TypeOne=5, ... }) and sets the counts into BarChart series for each
+     * type by month. Streams and lambdas are used to increase ease and readability of data transformations.
      *
      * @return List of data series containing the Appointment month counts to set in the BarChart
      */
@@ -411,6 +411,13 @@ public class DashboardViewController implements Initializable {
         return seriesList;
     }
 
+    /**
+     * Transforms the Appointment data into a map of aggregated counts for each user Appointment per month year combo
+     * (e.g., { userOne={ 01-2020=1, 02-2021=4, ... }, userTwo={ 02-2021=1 }, ... }). The counts are then displayed in
+     * the User Workload LineChart. Streams and lambdas are used to increase ease and readability of data transformations.
+     * @param startDate
+     * @param endDate
+     */
     private void populateUserWorkload(ZonedDateTime startDate, ZonedDateTime endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M-yy");
         List<XYChart.Series<String, Number>> seriesList = new ArrayList<>();
