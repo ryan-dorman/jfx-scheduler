@@ -31,6 +31,9 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Handles the controller logic associated with creating data reports and displaying them on the Dashboard.
+ */
 public class DashboardViewController implements Initializable {
     /**
      * List of all Appointments to display data for
@@ -412,9 +415,11 @@ public class DashboardViewController implements Initializable {
     }
 
     /**
-     * Transforms the Appointment data into a map of counts for each user Appointment per month-year in the date range
-     * (e.g., { userOne={ 01-2020=1, 02-2021=4, ... }, userTwo={ 02-2021=1 }, ... }). The counts are then displayed in
-     * the User Workload LineChart. Streams and lambdas are used to increase ease and readability of data transformations.
+     * Uses the Dashboard's date range to populate the LineChart with time series data. Handles Transformation of
+     * Appointment data into a map of counts for each user Appointment per month-year in the date range
+     * (e.g., { userOne={ 01-2020=1, 02-2021=4, ... }, userTwo={ 02-2021=1 }, ... }). The counts are displayed in
+     * the User Workload LineChart. Streams and lambdas allow for easy map construction and simplify the flow of data
+     * transformations.
      *
      * @param startDate Start date range of time series
      * @param endDate   End date range of time series
@@ -471,20 +476,26 @@ public class DashboardViewController implements Initializable {
         seriesList.forEach(userLineChart.getData()::add);
     }
 
+    /**
+     * Calculates the upper bounds to use on a chart's y-axis based on the data to be displayed in the chart. Streams
+     * and lambdas allow for quick exploration of the nested <code>seriesList</code> data structure to assess the max
+     * range of the data.
+     * @param seriesList List of all series to be displayed in chart
+     * @return Number to set as the charts upper bound
+     */
     private long getChartUpperBounds(List<XYChart.Series<String, Number>> seriesList) {
         // Determine upper bounds of Y axis range
-
         long upperBound = 5L;
-        // Get max for each series list then find the max of that
+        // Get max for each series list, then find the max of that
         long maxCount = seriesList.stream()
                 // Map each series to the entry with the max Y value
                 .map(series -> series.getData().stream()
                         .max(Comparator.comparing(XYChart.Data<String, Number>::getYValue,
                                 Comparator.comparingLong(Number::longValue))))
-                // Get the Max Y value of all series
+                // Get the data point with the max Y value of all entries that remain
                 .max(Comparator.comparing(data -> data.isPresent() ? data.get().getYValue() : 0L,
                         Comparator.comparingLong(Number::longValue)))
-                // The the Y value as long
+                // Get the max data points value as long
                 .flatMap(max -> max.map(entry -> entry.getYValue().longValue()))
                 .orElse(0L);
 
@@ -493,6 +504,9 @@ public class DashboardViewController implements Initializable {
         return upperBound;
     }
 
+    /**
+     * Reads the Contact Schedule combo box and populates the Table with the correct data.
+     */
     private void populateContactSchedule() {
         int contactId = contactComboBox.getValue().getId();
         ObservableList<Appointment> schedule = appointments
@@ -503,6 +517,11 @@ public class DashboardViewController implements Initializable {
         scheduleTable.setItems(schedule);
     }
 
+    /**
+     * Loads Appointment data for the date range specified replacing all existing data.
+     * @param start Start of Appointment date range
+     * @param end End of Appointment date range
+     */
     private void loadAppointmentsInWindow(ZonedDateTime start, ZonedDateTime end) {
         appointments.clear();
         appointments.addAll(appointmentDao.getByStartDateTimeWindow(start, end));

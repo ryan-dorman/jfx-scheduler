@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * Handles the logic associated with the navigation menu in the application and using the selected item to populate the
- * MainView.
+ * Handles the controller logic associated with the navigation menu in the application and using the selected item to
+ * populate the MainView.
  */
 public class MainViewController implements Initializable {
     /**

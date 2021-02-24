@@ -22,46 +22,89 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * Handles the logic associated with a detailed display of Customer data for creating or updating a Customer.
+ */
 public class CustomerViewController implements Initializable {
-
+    /**
+     * Customer Data Access Object
+     */
     private final CustomerDao customerDao = new CustomerDaoImpl();
+    /**
+     * Country Data Access Object
+     */
     private final CountryDao countryDao = new CountryDaoImpl();
+    /**
+     * First Level Division Data Access Object
+     */
     private final FirstLevelDivisionDao divisionDao = new FirstLevelDivisionDaoImpl();
-
+    /**
+     * Current customer being created or updated
+     */
     private Customer currentCustomer = new Customer();
+    /**
+     * Is the current interaction a create or update
+     */
     private boolean isUpdating = false;
 
-    // Modal Header
+    /**
+     * Label to display header of modal
+     */
     @FXML
     private Label header;
-
-    // Customer Fields
+    /**
+     * Input field for id
+     */
     @FXML
     private TextField idTextField;
-
+    /**
+     * Input field for name
+     */
     @FXML
     private TextField nameTextField;
-
+    /**
+     * Input field for phone number
+     */
     @FXML
     private TextField phoneTextField;
-
+    /**
+     * Input field for address
+     */
     @FXML
     private TextField addressTextField;
-
+    /**
+     * Input field for postal code
+     */
     @FXML
     private TextField postalCodeTextField;
-
+    /**
+     * Combo box for Country
+     */
     @FXML
     private ComboBox<ComboBoxOption> countryComboBox;
-
+    /**
+     * Combo box for First Level Division
+     */
     @FXML
     private ComboBox<ComboBoxOption> divisionComboBox;
 
+    /**
+     * Initializes the controller. Sets up the options necessary for the combo boxes.
+     *
+     * @param url            Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupCountryComboBox();
     }
 
+    /**
+     * Allows a an existing Customer to be populated into the form for updating. If the Customer does not exist
+     * the modal will close.
+     * @param currentStage Reference to the Current modal stage
+     * @param selectedCustomerId Unique identifier of the customer to be updated
+     */
     public void initData(Stage currentStage, int selectedCustomerId) {
         // Setup modal for editing
         isUpdating = true;

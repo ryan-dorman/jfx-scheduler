@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 /**
- * Handles the logic associated with user authorization and logging into the application.
+ * Handles the controller logic for user authorization and logging into the application.
  */
 public class LoginViewController implements Initializable {
     /**
