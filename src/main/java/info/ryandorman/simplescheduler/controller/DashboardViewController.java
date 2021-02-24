@@ -412,11 +412,12 @@ public class DashboardViewController implements Initializable {
     }
 
     /**
-     * Transforms the Appointment data into a map of aggregated counts for each user Appointment per month year combo
+     * Transforms the Appointment data into a map of counts for each user Appointment per month-year in the date range
      * (e.g., { userOne={ 01-2020=1, 02-2021=4, ... }, userTwo={ 02-2021=1 }, ... }). The counts are then displayed in
      * the User Workload LineChart. Streams and lambdas are used to increase ease and readability of data transformations.
-     * @param startDate
-     * @param endDate
+     *
+     * @param startDate Start date range of time series
+     * @param endDate   End date range of time series
      */
     private void populateUserWorkload(ZonedDateTime startDate, ZonedDateTime endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M-yy");
@@ -449,7 +450,7 @@ public class DashboardViewController implements Initializable {
         userAppointments.forEach((userName, apps) -> {
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.setName(userName);
-            Map<String,Long> workloadCounts = apps.stream()
+            Map<String, Long> workloadCounts = apps.stream()
                     .collect(Collectors.groupingBy(app -> app.getStart().format(formatter), Collectors.counting()));
 
             // For each month-year set user counts or 0 if none
