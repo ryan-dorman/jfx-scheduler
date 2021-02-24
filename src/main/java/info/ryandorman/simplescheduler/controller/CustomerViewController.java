@@ -109,7 +109,7 @@ public class CustomerViewController implements Initializable {
      * the modal will close.
      *
      * @param currentStage       Reference to the Current modal stage
-     * @param selectedCustomerId Unique identifier of the customer to be updated
+     * @param selectedCustomerId Unique identifier of the Customer to be updated
      */
     public void initData(Stage currentStage, int selectedCustomerId) {
         // Setup modal for editing
@@ -200,7 +200,8 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     * Sets up the Country combo box with the current Country options.
+     * Sets up the Country combo box with the current Country options. Lambdas increase readability and ease of
+     * mapping Country records to options for the combo box.
      */
     private void setupCountryComboBox() {
         // Load Countries for ComboBox
@@ -220,7 +221,8 @@ public class CustomerViewController implements Initializable {
     }
 
     /**
-     * Sets up the First Level Division combo box for the specified Country.
+     * Sets up the First Level Division combo box for the specified Country. Lambdas increase readability and ease of
+     * mapping First Level Division records to options for the combo box.
      *
      * @param countryId Unique identifier for the Country to filter divisions by
      */

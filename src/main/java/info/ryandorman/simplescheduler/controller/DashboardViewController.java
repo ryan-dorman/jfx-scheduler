@@ -215,8 +215,8 @@ public class DashboardViewController implements Initializable {
 
     /**
      * Sets Contact Schedule combo box to display Contacts as options. Updates the Contact schedule currently displayed
-     * in the view on selection. A Lambda is used to increase readability and simplify access to the
-     * <code>javafx.beans.value.ChangeListener</code> interface.
+     * in the view on selection. Lambdas increase readability of the data mapping from contacts to combo boxes, and they
+     * simplify access to the <code>javafx.beans.value.ChangeListener</code> interface.
      */
     private void setupContactComboBox() {
         ObservableList<ComboBoxOption> contactOptions = contactDao.getAll()

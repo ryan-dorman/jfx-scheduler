@@ -6,15 +6,16 @@ import info.ryandorman.simplescheduler.model.Appointment;
 import info.ryandorman.simplescheduler.model.Contact;
 import info.ryandorman.simplescheduler.model.Customer;
 import info.ryandorman.simplescheduler.model.User;
-import info.ryandorman.simplescheduler.common.DatePickerInput;
-import info.ryandorman.simplescheduler.common.TimeSpinner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -26,56 +27,104 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AppointmentViewController implements Initializable {
-
+    /**
+     * Appointment Data Access Object
+     */
     private final AppointmentDao appointmentDao = new AppointmentDaoImpl();
+    /**
+     * Customer Data Access Object
+     */
     private final CustomerDao customerDao = new CustomerDaoImpl();
+    /**
+     * Contact Data Access Object
+     */
     private final ContactDao contactDao = new ContactDaoImpl();
+    /**
+     * User Data Access Object
+     */
     private final UserDao userDao = new UserDaoImpl();
-
+    /**
+     * Current Appointment being created or updated
+     */
     private Appointment currentAppointment = new Appointment();
+    /**
+     * Is the current interaction a create or update
+     */
     private boolean isUpdating = false;
 
-    // Modal Header
+    /**
+     * Label to display header of modal
+     */
     @FXML
     private Label header;
-
-    // Appointment Fields
+    /**
+     * Input field for id
+     */
     @FXML
     private TextField idTextField;
-
+    /**
+     * Input field for title
+     */
     @FXML
     private TextField titleTextField;
-
+    /**
+     * Input field for description
+     */
     @FXML
     private TextArea descriptionTextArea;
-
+    /**
+     * Input field for location
+     */
     @FXML
     private TextField locationTextField;
-
+    /**
+     * Input field for type
+     */
     @FXML
     private TextField typeTextField;
-
+    /**
+     * Date picker field for start date
+     */
     @FXML
     private DatePickerInput startDatePicker;
-
+    /**
+     * Spinner for start time
+     */
     @FXML
     private TimeSpinner startTimeSpinner;
-
+    /**
+     * Date picker field for end date
+     */
     @FXML
     private DatePickerInput endDatePicker;
-
+    /**
+     * Spinner for end time
+     */
     @FXML
     private TimeSpinner endTimeSpinner;
-
+    /**
+     * Combo box for Customers
+     */
     @FXML
     private ComboBox<ComboBoxOption> customerComboBox;
-
+    /**
+     * Combo box for Contacts
+     */
     @FXML
     private ComboBox<ComboBoxOption> contactComboBox;
-
+    /**
+     * Combo box for Users
+     */
     @FXML
     private ComboBox<ComboBoxOption> userComboBox;
 
+    /**
+     * Initializes the controller. Sets up the options necessary for the combo boxes and configure inputs for dates and
+     * times.
+     *
+     * @param url            Location used to resolve relative paths
+     * @param resourceBundle null
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupCustomerComboBox();
@@ -85,6 +134,13 @@ public class AppointmentViewController implements Initializable {
         setupLocalTimeSpinners();
     }
 
+    /**
+     * Allows a an existing Appointment to be populated into the form for updating. If the Appointment does not exist
+     * the modal will close.
+     *
+     * @param currentStage          Reference to the Current modal stage
+     * @param selectedAppointmentId Unique identifier of the Appointment to be updated
+     */
     public void initData(Stage currentStage, int selectedAppointmentId) {
         // Setup modal for editing
         isUpdating = true;
@@ -125,6 +181,11 @@ public class AppointmentViewController implements Initializable {
         }
     }
 
+    /**
+     * Handles Appointment update or creation based on form input field values.
+     *
+     * @param actionEvent Event triggered by Save button
+     */
     @FXML
     public void onSave(ActionEvent actionEvent) {
         int saved;
@@ -180,6 +241,11 @@ public class AppointmentViewController implements Initializable {
         currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
+    /**
+     * Handles cancel of current Appointment update or create and closes the modal.
+     *
+     * @param actionEvent Event triggered by cancel button
+     */
     @FXML
     public void onCancel(ActionEvent actionEvent) {
         // Confirm cancel before closing the associated Modal
@@ -192,6 +258,10 @@ public class AppointmentViewController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the Customer combo box with the current Customer options. Lambdas increase readability and ease of
+     * mapping Customer records to options for the combo box.
+     */
     private void setupCustomerComboBox() {
         ObservableList<ComboBoxOption> customerOptions = customerDao.getAll()
                 .stream()
@@ -201,6 +271,10 @@ public class AppointmentViewController implements Initializable {
         customerComboBox.setItems(customerOptions);
     }
 
+    /**
+     * Sets up the Contact combo box with the current Contact options. Lambdas increase readability and ease of
+     * mapping Contact records to options for the combo box.
+     */
     private void setupContactComboBox() {
         ObservableList<ComboBoxOption> contactOptions = contactDao.getAll()
                 .stream()
@@ -210,6 +284,10 @@ public class AppointmentViewController implements Initializable {
         contactComboBox.setItems(contactOptions);
     }
 
+    /**
+     * Sets up the User combo box with the current User options. Lambdas increase readability and ease of
+     * mapping User records to options for the combo box.
+     */
     private void setupUserComboBox() {
         ObservableList<ComboBoxOption> userOptions = userDao.getAll()
                 .stream()
@@ -219,6 +297,9 @@ public class AppointmentViewController implements Initializable {
         userComboBox.setItems(userOptions);
     }
 
+    /**
+     * Sets up the default vales for the date pickers.
+     */
     private void setupDatePickers() {
         LocalDate defaultDate = LocalDate.now();
         while (CalendarUtil.isWeekend(defaultDate.getDayOfWeek())) {
@@ -234,7 +315,9 @@ public class AppointmentViewController implements Initializable {
     }
 
 
-
+    /**
+     * Sets up the default vales for the time spinners.
+     */
     private void setupLocalTimeSpinners() {
         Instant now = Instant.now();
         ZonedDateTime eastern = now.atZone(ZoneId.of("America/New_York"));
@@ -249,6 +332,15 @@ public class AppointmentViewController implements Initializable {
         endTimeSpinner.getValueFactory().setValue(openingTime.plusMinutes(30));
     }
 
+    /**
+     * Checks that an Appointment has a valid start and end and does not double book a Customer.
+     *
+     * @param appointmentId Unique identifier of Appointment being updated; -1 for new Appointments
+     * @param customer      Customer to participate in Appointment
+     * @param start         Start date and time of Appointment
+     * @param end           End date and time of Appointment
+     * @throws DateTimeException The Appointment is not for a valid date and time window
+     */
     private void validateAppointment(int appointmentId, Customer customer, ZonedDateTime start,
                                      ZonedDateTime end) throws DateTimeException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
