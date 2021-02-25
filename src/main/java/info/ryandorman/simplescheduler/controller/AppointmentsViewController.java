@@ -184,6 +184,8 @@ public class AppointmentsViewController implements Initializable {
 
     /**
      * Loads Appointment data with the specified date filter and replaces all existing data in the table with it.
+     * @param start Date and time to start filter window
+     * @param end Date and time to end filter window
      */
     private void filterAppointments(ZonedDateTime start, ZonedDateTime end) {
         List<Appointment> filteredAppointments = appointmentDao.getByStartDateTimeWindow(start, end);

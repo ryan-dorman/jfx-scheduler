@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="zip">
+    <output-path>$PROJECT_DIR$/out/artifacts/zip</output-path>
+    <root id="root">
+      <element id="archive" name="dorman_simple_scheduler.zip">
+        <element id="dir-copy" path="$PROJECT_DIR$" />
+      </element>
+    </root>
+  </artifact>
+</component>
