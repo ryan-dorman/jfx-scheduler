@@ -351,7 +351,7 @@ public class AppointmentViewController implements Initializable {
         ZonedDateTime easternStart = start.withZoneSameInstant(ZoneId.of("America/New_York"));
         ZonedDateTime easternOpening = easternStart.withHour(8).withMinute(0).withSecond(0);
         ZonedDateTime easternEnd = end.withZoneSameInstant(ZoneId.of("America/New_York"));
-        ZonedDateTime easternClosing = easternEnd.withHour(22).withMinute(0).withSecond(0);
+        ZonedDateTime easternClosing = easternOpening.withHour(22).withMinute(0).withSecond(0);
 
         boolean weekendAppointment = CalendarUtil.isWeekend(easternStart.getDayOfWeek()) ||
                 CalendarUtil.isWeekend(easternEnd.getDayOfWeek());
