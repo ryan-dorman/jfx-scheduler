@@ -1,6 +1,0 @@
-out/
-.idea/
-resources/connection.properties
-login_activity.txt
-sys_activity.txt
-*.iml
