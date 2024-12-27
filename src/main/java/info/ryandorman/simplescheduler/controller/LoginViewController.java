@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.controller;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.common.AlertUtil;
 import info.ryandorman.simplescheduler.common.L10nUtil;
 import info.ryandorman.simplescheduler.dao.UserDao;

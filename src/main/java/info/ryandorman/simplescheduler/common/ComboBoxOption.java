@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import javafx.util.StringConverter;
 
 import java.util.List;

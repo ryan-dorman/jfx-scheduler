@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.ZoneId;

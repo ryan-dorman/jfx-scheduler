@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 

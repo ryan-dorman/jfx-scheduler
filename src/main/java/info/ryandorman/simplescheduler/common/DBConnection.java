@@ -1,35 +1,25 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
-import com.mysql.cj.jdbc.MysqlDataSource;
-
-import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- * Allows straight forward access to a Database connection. The connection properties are read from
- * <code>connection.properties</code>. Allows only one open DB connection to be obtained throughout the application.
- * Auto-commit is turned off by default on connections. <em>Close the connection before the application exits.</em>
+ * Provides straightforward access to a Database connection. This implementation uses an H2 in-memory database.
+ * The database schema is initialized upon connection using the <code>initDB.sql</code> file located in the resources.
+ * Only one open DB connection is allowed throughout the application. Auto-commit is turned off by default.
+ * <em>Close the connection before the application exits.</em>
  */
 public class DBConnection {
     /**
-     * System Logger
+     * System Logger for logging connection and transaction status.
      */
     private static final Logger sysLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     /**
-     * Datasource to connect to
-     */
-    private static MysqlDataSource d;
-    /**
-     * Connection with the datasource
+     * Connection to the database.
      */
     private static Connection conn;
 
@@ -40,83 +30,83 @@ public class DBConnection {
     }
 
     /**
-     * Reads the database properties from <code>connection.properties</code> and sets up the datasource.
+     * Initializes the database connection to the H2 in-memory database.
+     * Executes the schema initialization script (<code>initDB.sql</code>) if available.
      *
-     * @throws IOException If there are issues reading the properties file
+     * @throws SQLException If there are issues establishing the connection or executing the initialization script.
      */
-    private static void initDataSource() throws IOException {
-        Properties connectionProps = new Properties();
-        connectionProps.load(DBConnection.class.getClassLoader().getResourceAsStream("connection.properties"));
+    private static void initConnection() throws SQLException {
+        String url = "jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false";
+        String user = "sa";
+        String password = "";
 
-        d = new MysqlDataSource();
-        d.setUrl(connectionProps.getProperty("url"));
-        d.setDatabaseName(connectionProps.getProperty("name"));
-        d.setUser(connectionProps.getProperty("user"));
-        d.setPassword(connectionProps.getProperty("pass"));
+        // Establish the database connection
+        conn = DriverManager.getConnection(url, user, password);
+        conn.setAutoCommit(false);
+        sysLogger.info("Database connection created: " + conn.toString());
+
+        // Initialize the schema
+        try (var stmt = conn.createStatement()) {
+            stmt.execute("RUNSCRIPT FROM 'classpath:initDB.sql'");
+            sysLogger.info("Database schema initialized.");
+
+            stmt.execute("RUNSCRIPT FROM 'classpath:initData.sql'");
+            sysLogger.info("Database data initialized.");
+        } catch (SQLException e) {
+            sysLogger.severe("Failed to initialize schema: " + e.getMessage());
+            throw e;
+        }
     }
 
     /**
      * Provides a database connection. The connection <em>should not</em> be obtained in a try-with-resources
-     * to avoid closing the connection due to its extension of <code>java.lang.AutoClosable</code>.
+     * to avoid closing the connection due to its implementation of <code>AutoClosable</code>.
      *
-     * @return Connection Reference to the application's current database connection
-     * @throws SQLException If there is an issue establishing the connection
-     * @throws IOException  If there are issues initializing the data source from the properties file
+     * @return Connection Reference to the application's current database connection.
+     * @throws SQLException If there is an issue establishing the connection.
      */
-    public static Connection getConnection() throws SQLException, IOException {
-        if (d == null) {
-            initDataSource();
-        }
-
+    public static Connection getConnection() throws SQLException {
         if (conn == null || conn.isClosed()) {
-            conn = d.getConnection();
-            conn.setAutoCommit(false);
-            sysLogger.info("Database connection created: " + conn.toString());
-            sysLogger.info("Database Auto Commit: " + conn.getAutoCommit());
-        } else {
-            sysLogger.info("Using existing connection: " + conn.toString());
+            initConnection();
         }
-
         return conn;
     }
 
     /**
      * Commits any open transactions to the database.
+     * This ensures that all pending changes are persisted.
      */
     public static void commit() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.commit();
-                sysLogger.info("Committing open database transactions for connection : " + conn.toString());
+                sysLogger.info("Committed open database transactions.");
             }
         } catch (SQLException e) {
-            sysLogger.severe("Database commit failed for connection: " + conn.toString());
-            sysLogger.severe(e.getMessage());
-            e.printStackTrace();
+            sysLogger.severe("Failed to commit transactions: " + e.getMessage());
         }
     }
 
     /**
      * Closes the existing connection to the database.
+     * Ensures any open transactions are committed before closing.
      */
     public static void close() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.commit();
                 conn.close();
-                sysLogger.info("Database connection closed: " + conn.toString());
+                sysLogger.info("Database connection closed.");
             }
         } catch (SQLException e) {
-            sysLogger.severe("Database connection could not close: " + conn.toString());
-            sysLogger.severe(e.getMessage());
-            e.printStackTrace();
+            sysLogger.severe("Failed to close database connection: " + e.getMessage());
         }
     }
 
     /**
-     * Closes an existing <code>java.sql.Statement.PreparedStatement</code> associated with a connection.
+     * Closes an existing <code>java.sql.PreparedStatement</code> associated with the current connection.
      *
-     * @param stmt <code>java.sql.Statement.PreparedStatement</code> to be closed
+     * @param stmt The <code>PreparedStatement</code> to be closed.
      */
     public static void close(PreparedStatement stmt) {
         try {
@@ -124,9 +114,7 @@ public class DBConnection {
                 stmt.close();
             }
         } catch (SQLException e) {
-            sysLogger.severe("Database statement could not close: " + stmt.toString());
-            sysLogger.severe(e.getMessage());
-            e.printStackTrace();
+            sysLogger.severe("Failed to close PreparedStatement: " + e.getMessage());
         }
     }
 }

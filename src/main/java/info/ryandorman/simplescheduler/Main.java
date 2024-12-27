@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.common.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

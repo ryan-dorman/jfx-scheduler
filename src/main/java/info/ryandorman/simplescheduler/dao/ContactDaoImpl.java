@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.dao;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 
 import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
@@ -86,7 +81,7 @@ public class ContactDaoImpl implements ContactDao {
                 contacts.add(contact);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {

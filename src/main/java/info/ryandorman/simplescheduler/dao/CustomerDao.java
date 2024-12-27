@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.dao;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.model.Customer;
 
 import java.util.List;

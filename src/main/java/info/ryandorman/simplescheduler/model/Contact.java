@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.model;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 /**
  * Holds Contact data.
  */

@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;

@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.dao;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
@@ -37,8 +32,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "LEFT JOIN users u ON app.user_id = u.user_id " +
-            "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
-            "ORDER BY app.start;";
+            "LEFT JOIN contacts con ON app.contact_id = con.contact_id " +
+            "ORDER BY app.start_time;";
     /**
      * MySQL statement to get all Appointments that start within the given date and time window
      */
@@ -48,9 +43,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "LEFT JOIN users u ON app.user_id = u.user_id " +
-            "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
-            "WHERE app.start BETWEEN ? AND ? " +
-            "ORDER BY app.start;";
+            "LEFT JOIN contacts con ON app.contact_id = con.contact_id " +
+            "WHERE app.start_time BETWEEN ? AND ? " +
+            "ORDER BY app.start_time;";
     /**
      * MySQL statement to get all Appointments for a specific Customer that occur within the given date and time window
      */
@@ -60,10 +55,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "LEFT JOIN users u ON app.user_id = u.user_id " +
-            "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
+            "LEFT JOIN contacts con ON app.contact_id = con.contact_id " +
             "WHERE app.customer_id = ? " +
-            "AND (? BETWEEN app.start AND app.end OR ? BETWEEN app.start AND app.end OR app.start BETWEEN ? AND ?) " +
-            "ORDER BY app.start;";
+            "AND (? BETWEEN app.start_time AND app.end_time OR ? BETWEEN app.start_time AND app.end_time OR app.start_time BETWEEN ? AND ?) " +
+            "ORDER BY app.start_time;";
     /**
      * MySQL statement to get a Appointment with a specified identifier
      */
@@ -73,21 +68,21 @@ public class AppointmentDaoImpl implements AppointmentDao {
             "LEFT JOIN first_level_divisions fld ON c.division_id = fld.division_id " +
             "LEFT JOIN countries co ON fld.country_id = co.country_id " +
             "LEFT JOIN users u ON app.user_id = u.user_id " +
-            "LEFT JOIN contacts con ON app.contact_id = con.contact_Id " +
+            "LEFT JOIN contacts con ON app.contact_id = con.contact_id " +
             "WHERE app.appointment_id = ? " +
-            "ORDER BY app.start;";
+            "ORDER BY app.start_time;";
     /**
      * MySQL statement to create a new Appointment
      */
-    private static final String CREATE_APPOINTMENT = "INSERT appointments " +
-            "(title, description, location, type, start, end, customer_id, user_id, contact_id, created_by, " +
+    private static final String CREATE_APPOINTMENT = "INSERT INTO appointments " +
+            "(title, description, location, type, start_time, end_time, customer_id, user_id, contact_id, created_by, " +
             "last_updated_by) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     /**
      * MySQL statement to update an existing Appointment
      */
     private static final String UPDATE_APPOINTMENT = "UPDATE appointments " +
-            "SET title = ?, description = ?, location = ?, type = ?, start = ?, end = ?, customer_id = ?, " +
+            "SET title = ?, description = ?, location = ?, type = ?, start_time = ?, end_time = ?, customer_id = ?, " +
             "user_id = ?, contact_id = ?, last_update = NOW(), last_updated_by = ? " +
             "WHERE appointment_id = ?;";
     /**
@@ -169,7 +164,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
                 appointments.add(appointment);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -204,7 +199,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
                 appointments.add(appointment);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -243,7 +238,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
                 appointments.add(appointment);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -275,7 +270,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
                 appointment = mapResult(rs);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -320,7 +315,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
             created = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -361,7 +356,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
             updated = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -391,7 +386,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
             deleted = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -421,7 +416,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 
             deleted = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {

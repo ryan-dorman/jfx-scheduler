@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 /**
  * Keeps track of the current data being read from a <code>java.sql.ResultSet</code> or into a
  * <code>java.sql.PreparedStatement</code>.

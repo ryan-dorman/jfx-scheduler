@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.dao;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
@@ -51,7 +46,7 @@ public class CustomerDaoImpl implements CustomerDao {
     /**
      * MySQL statement to create a new Customer
      */
-    private static final String CREATE_CUSTOMER = "INSERT customers " +
+    private static final String CREATE_CUSTOMER = "INSERT INTO customers " +
             "(customer_name, address, postal_code, phone, division_id, created_by, last_updated_by) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?);";
     /**
@@ -135,7 +130,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 customers.add(customer);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -166,7 +161,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 customer = mapResult(rs);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -204,7 +199,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 customers.add(customer);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -240,7 +235,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
             created = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -277,7 +272,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
             updated = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -307,7 +302,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
             deleted = stmt.getUpdateCount();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {

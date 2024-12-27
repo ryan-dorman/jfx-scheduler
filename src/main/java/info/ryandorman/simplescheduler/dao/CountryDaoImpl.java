@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.dao;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
@@ -90,7 +85,7 @@ public class CountryDaoImpl implements CountryDao {
                 countries.add(country);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {

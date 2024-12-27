@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.dao;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import info.ryandorman.simplescheduler.common.ColumnIterator;
 import info.ryandorman.simplescheduler.common.DBConnection;
 import info.ryandorman.simplescheduler.common.L10nUtil;
@@ -98,7 +93,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -129,7 +124,7 @@ public class UserDaoImpl implements UserDao {
                 user = mapResult(rs);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -165,7 +160,7 @@ public class UserDaoImpl implements UserDao {
                 user = mapResult(rs);
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             sysLogger.severe(e.getMessage());
             e.printStackTrace();
         } finally {

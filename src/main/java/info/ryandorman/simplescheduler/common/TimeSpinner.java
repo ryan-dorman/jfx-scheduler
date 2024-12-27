@@ -1,10 +1,5 @@
 package info.ryandorman.simplescheduler.common;
 
-/*
- *   Ryan Dorman
- *   ID: 001002824
- */
-
 import javafx.event.EventHandler;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
